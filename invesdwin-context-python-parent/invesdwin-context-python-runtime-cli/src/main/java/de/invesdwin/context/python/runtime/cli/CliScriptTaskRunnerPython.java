@@ -8,13 +8,14 @@ import org.springframework.beans.factory.FactoryBean;
 import com.github.rcaller.rstuff.RCaller;
 
 import de.invesdwin.context.python.runtime.cli.pool.RCallerObjectPool;
-import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.AScriptTaskPython;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
 @Named
-public final class CliScriptTaskRunnerPython implements IScriptTaskRunnerR, FactoryBean<CliScriptTaskRunnerPython> {
+public final class CliScriptTaskRunnerPython
+        implements IScriptTaskRunnerPython, FactoryBean<CliScriptTaskRunnerPython> {
 
     public static final CliScriptTaskRunnerPython INSTANCE = new CliScriptTaskRunnerPython();
 
@@ -26,7 +27,7 @@ public final class CliScriptTaskRunnerPython implements IScriptTaskRunnerR, Fact
     public CliScriptTaskRunnerPython() {}
 
     @Override
-    public <T> T run(final AScriptTaskR<T> scriptTask) {
+    public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
         final RCaller rcaller;
         try {

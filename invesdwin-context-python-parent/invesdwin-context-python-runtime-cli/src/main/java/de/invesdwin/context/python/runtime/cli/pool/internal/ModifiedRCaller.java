@@ -17,7 +17,7 @@ import com.github.rcaller.rstuff.ROutputParser;
 import com.github.rcaller.rstuff.RStreamHandler;
 
 import de.invesdwin.context.python.runtime.cli.CliScriptTaskRunnerPython;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.lang.Reflections;
 import de.invesdwin.util.lang.Strings;
 
@@ -61,7 +61,7 @@ public class ModifiedRCaller extends RCaller {
             @Override
             public void messageReceived(final String senderName, final String msg) {
                 if (Strings.isNotBlank(msg)) {
-                    IScriptTaskRunnerR.LOG.debug(msg);
+                    IScriptTaskRunnerPython.LOG.debug(msg);
                 }
             }
         });
@@ -74,7 +74,7 @@ public class ModifiedRCaller extends RCaller {
             @Override
             public void messageReceived(final String senderName, final String msg) {
                 if (Strings.isNotBlank(msg)) {
-                    IScriptTaskRunnerR.LOG.warn(msg);
+                    IScriptTaskRunnerPython.LOG.warn(msg);
                 }
             }
         });

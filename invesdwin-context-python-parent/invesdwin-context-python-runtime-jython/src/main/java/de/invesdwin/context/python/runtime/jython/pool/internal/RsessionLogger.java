@@ -5,7 +5,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import org.math.R.Rsession;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.lang.Reflections;
 import de.invesdwin.util.lang.Strings;
 
@@ -22,24 +22,24 @@ public final class RsessionLogger implements org.math.R.Logger {
         if (Strings.isNotBlank(text)) {
             switch (level) {
             case OUTPUT:
-                IScriptTaskRunnerR.LOG.debug(text);
+                IScriptTaskRunnerPython.LOG.debug(text);
                 errorMessage.setLength(0);
             case INFO:
-                IScriptTaskRunnerR.LOG.trace(text);
+                IScriptTaskRunnerPython.LOG.trace(text);
                 errorMessage.setLength(0);
                 break;
             case WARNING:
-                IScriptTaskRunnerR.LOG.warn(text);
+                IScriptTaskRunnerPython.LOG.warn(text);
                 errorMessage.append(text);
                 errorMessage.append("\n");
                 break;
             case ERROR:
-                IScriptTaskRunnerR.LOG.error(text);
+                IScriptTaskRunnerPython.LOG.error(text);
                 errorMessage.append(text);
                 errorMessage.append("\n");
                 break;
             default:
-                IScriptTaskRunnerR.LOG.trace(text);
+                IScriptTaskRunnerPython.LOG.trace(text);
                 errorMessage.setLength(0);
                 break;
             }

@@ -8,13 +8,14 @@ import org.rosuda.REngine.REXP;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.python.runtime.jython.pool.RsessionObjectPool;
-import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.AScriptTaskPython;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
 @Named
-public final class JythonScriptTaskRunnerPython implements IScriptTaskRunnerR, FactoryBean<JythonScriptTaskRunnerPython> {
+public final class JythonScriptTaskRunnerPython
+        implements IScriptTaskRunnerPython, FactoryBean<JythonScriptTaskRunnerPython> {
 
     public static final JythonScriptTaskRunnerPython INSTANCE = new JythonScriptTaskRunnerPython();
 
@@ -24,7 +25,7 @@ public final class JythonScriptTaskRunnerPython implements IScriptTaskRunnerR, F
     public JythonScriptTaskRunnerPython() {}
 
     @Override
-    public <T> T run(final AScriptTaskR<T> scriptTask) {
+    public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
         final Rsession rsession;
         try {

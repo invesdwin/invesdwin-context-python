@@ -11,13 +11,14 @@ import org.rosuda.JRI.Rengine;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.python.runtime.jep.internal.LoggingRMainLoopCallbacks;
-import de.invesdwin.context.r.runtime.contract.AScriptTaskR;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR;
+import de.invesdwin.context.r.runtime.contract.AScriptTaskPython;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.error.Throwables;
 
 @Immutable
 @Named
-public final class JepScriptTaskRunnerPython implements IScriptTaskRunnerR, FactoryBean<JepScriptTaskRunnerPython> {
+public final class JepScriptTaskRunnerPython
+        implements IScriptTaskRunnerPython, FactoryBean<JepScriptTaskRunnerPython> {
 
     public static final JepScriptTaskRunnerPython INSTANCE = new JepScriptTaskRunnerPython();
 
@@ -44,7 +45,7 @@ public final class JepScriptTaskRunnerPython implements IScriptTaskRunnerR, Fact
     public JepScriptTaskRunnerPython() {}
 
     @Override
-    public <T> T run(final AScriptTaskR<T> scriptTask) {
+    public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
         RENGINE_LOCK.lock();
         try {
