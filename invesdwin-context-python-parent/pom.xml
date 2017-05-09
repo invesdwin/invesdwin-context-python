@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>de.invesdwin</groupId>
+		<artifactId>invesdwin-context-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath />
+	</parent>
+	<artifactId>invesdwin-context-python-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License (LGPL), Version 3.0</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+		</license>
+	</licenses>
+
+
+	<modules>
+		<module>invesdwin-context-python-runtime-contract</module>
+		<module>invesdwin-context-python-runtime-jython</module>
+		<module>invesdwin-context-python-runtime-jep</module>
+		<module>invesdwin-context-python-runtime-cli</module>
+	</modules>
+
+	<properties>
+		<version.invesdwin-context-integration>${version.invesdwin-context}</version.invesdwin-context-integration>
+		<version.invesdwin-context-python>${version.invesdwin-context}</version.invesdwin-context-python>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-integration-parent</artifactId>
+				<version>${version.invesdwin-context-integration}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-python-runtime-contract</artifactId>
+				<version>${version.invesdwin-context-python}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-python-runtime-contract</artifactId>
+				<version>${version.invesdwin-context-python}</version>
+				<type>test-jar</type>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-python-runtime-cli</artifactId>
+				<version>${version.invesdwin-context-python}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-python-runtime-jep</artifactId>
+				<version>${version.invesdwin-context-python}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-python-runtime-jython</artifactId>
+				<version>${version.invesdwin-context-python}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>invesdwin.de-releases</name>
+			<url>http://invesdwin.de/artifactory/invesdwin-oss</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>invesdwin.de-snapshots</name>
+			<url>http://invesdwin.de/artifactory/invesdwin-oss</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>invesdwin-oss</id>
+			<url>http://invesdwin.de/artifactory/invesdwin-oss-remote</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>invesdwin-oss</id>
+			<url>http://invesdwin.de/artifactory/invesdwin-oss-remote</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
+

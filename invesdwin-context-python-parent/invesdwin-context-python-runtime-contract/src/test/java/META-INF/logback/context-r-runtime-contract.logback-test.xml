@@ -1,0 +1,7 @@
+<configuration>
+
+	<logger name="de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerR" additivity="true" level="DEBUG">
+	</logger>
+
+
+</configuration>
