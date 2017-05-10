@@ -56,7 +56,7 @@ public class InputsAndResultsTestBoolean {
 
             @Override
             public Resource getScriptResource() {
-                return new ClassPathResource(InputsAndResultsTestBoolean.class.getSimpleName() + ".R",
+                return new ClassPathResource(InputsAndResultsTestBoolean.class.getSimpleName() + ".py",
                         InputsAndResultsTestBoolean.class);
             }
 

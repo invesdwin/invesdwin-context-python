@@ -21,14 +21,15 @@
 
 	<modules>
 		<module>invesdwin-context-python-runtime-contract</module>
-		<!-- <module>invesdwin-context-python-runtime-jython</module>
-		<module>invesdwin-context-python-runtime-jep</module>
-		<module>invesdwin-context-python-runtime-py4j</module>-->
+		<!-- <module>invesdwin-context-python-runtime-jython</module> <module>invesdwin-context-python-runtime-jep</module> 
+			<module>invesdwin-context-python-runtime-py4j</module> -->
 	</modules>
 
 	<properties>
 		<version.invesdwin-context-integration>${version.invesdwin-context}</version.invesdwin-context-integration>
 		<version.invesdwin-context-python>${version.invesdwin-context}</version.invesdwin-context-python>
+
+		<version.jython>2.7.0</version.jython>
 	</properties>
 
 	<dependencyManagement>
@@ -67,6 +68,13 @@
 				<artifactId>invesdwin-context-python-runtime-jython</artifactId>
 				<version>${version.invesdwin-context-python}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.scijava</groupId>
+				<artifactId>jython-shaded</artifactId>
+				<version>${version.jython}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

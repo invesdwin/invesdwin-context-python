@@ -21,6 +21,11 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>jython-shaded</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

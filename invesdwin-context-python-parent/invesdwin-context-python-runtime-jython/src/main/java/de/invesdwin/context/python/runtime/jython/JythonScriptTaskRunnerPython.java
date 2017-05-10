@@ -3,11 +3,10 @@ package de.invesdwin.context.python.runtime.jython;
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
-import org.math.R.Rsession;
-import org.rosuda.REngine.REXP;
+import org.python.jsr223.PyScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
 
-import de.invesdwin.context.python.runtime.jython.pool.RsessionObjectPool;
+import de.invesdwin.context.python.runtime.jython.pool.PyScriptEngineObjectPool;
 import de.invesdwin.context.r.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.error.Throwables;
@@ -27,45 +26,36 @@ public final class JythonScriptTaskRunnerPython
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
-        final Rsession rsession;
+        final PyScriptEngine pyScriptEngine;
         try {
-            rsession = RsessionObjectPool.INSTANCE.borrowObject();
+            pyScriptEngine = PyScriptEngineObjectPool.INSTANCE.borrowObject();
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
         try {
             //inputs
-            final JythonScriptTaskInputsPython inputs = new JythonScriptTaskInputsPython(rsession);
+            final JythonScriptTaskInputsPython inputs = new JythonScriptTaskInputsPython(pyScriptEngine);
             scriptTask.populateInputs(inputs);
             inputs.close();
 
             //execute
-            eval(rsession, scriptTask.getScriptResourceAsString());
+            pyScriptEngine.eval(scriptTask.getScriptResourceAsString());
 
             //results
-            final JythonScriptTaskResultsPython results = new JythonScriptTaskResultsPython(rsession);
+            final JythonScriptTaskResultsPython results = new JythonScriptTaskResultsPython(pyScriptEngine);
             final T result = scriptTask.extractResults(results);
             results.close();
 
             //return
-            RsessionObjectPool.INSTANCE.returnObject(rsession);
+            PyScriptEngineObjectPool.INSTANCE.returnObject(pyScriptEngine);
             return result;
         } catch (final Throwable t) {
             try {
-                RsessionObjectPool.INSTANCE.invalidateObject(rsession);
+                PyScriptEngineObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
             } catch (final Exception e) {
                 throw new RuntimeException(e);
             }
             throw Throwables.propagate(t);
-        }
-    }
-
-    public static void eval(final Rsession rsession, final String expression) {
-        final REXP eval = rsession.eval(expression);
-        if (eval == null) {
-            throw new IllegalStateException(
-                    String.valueOf(de.invesdwin.context.python.runtime.jython.pool.internal.RsessionLogger.get(rsession)
-                            .getErrorMessage()));
         }
     }
 

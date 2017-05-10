@@ -56,7 +56,7 @@ public class InputsAndResultsTestInteger {
 
             @Override
             public Resource getScriptResource() {
-                return new ClassPathResource(InputsAndResultsTestInteger.class.getSimpleName() + ".R",
+                return new ClassPathResource(InputsAndResultsTestInteger.class.getSimpleName() + ".py",
                         InputsAndResultsTestInteger.class);
             }
 

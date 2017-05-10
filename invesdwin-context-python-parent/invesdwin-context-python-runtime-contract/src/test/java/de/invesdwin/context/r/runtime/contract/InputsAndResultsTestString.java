@@ -33,12 +33,12 @@ public class InputsAndResultsTestString {
         for (int i = 0; i < putStringVector.length; i++) {
             putStringVector[i] = i + "-" + i;
         }
-        final String[] putStringVectorNull = Objects.clone(putStringVector);
+        final String[] putStringVectorNull = Objects.deepClone(putStringVector);
         putStringVectorNull[1] = null;
 
         //putStringVectorAsList
         final List<String> putStringVectorAsList = Arrays.asList(putStringVector);
-        final List<String> putStringVectorAsListNull = Objects.clone(putStringVectorAsList);
+        final List<String> putStringVectorAsListNull = Objects.deepClone(putStringVectorAsList);
         putStringVectorAsListNull.set(1, null);
 
         //putStringMatrix
@@ -50,7 +50,7 @@ public class InputsAndResultsTestString {
             }
             putStringMatrix[i] = vector;
         }
-        final String[][] putStringMatrixNull = Objects.clone(putStringMatrix);
+        final String[][] putStringMatrixNull = Objects.deepClone(putStringMatrix);
         for (int i = 0; i < putStringMatrixNull[0].length; i++) {
             putStringMatrixNull[i][i] = null;
         }
@@ -60,7 +60,7 @@ public class InputsAndResultsTestString {
         for (final String[] vector : putStringMatrix) {
             putStringMatrixAsList.add(Arrays.asList(vector));
         }
-        final List<List<String>> putStringMatrixAsListNull = Objects.clone(putStringMatrixAsList);
+        final List<List<String>> putStringMatrixAsListNull = Objects.deepClone(putStringMatrixAsList);
         for (int i = 0; i < putStringMatrixAsListNull.get(0).size(); i++) {
             putStringMatrixAsListNull.get(i).set(i, null);
         }
@@ -69,7 +69,7 @@ public class InputsAndResultsTestString {
 
             @Override
             public Resource getScriptResource() {
-                return new ClassPathResource(InputsAndResultsTestString.class.getSimpleName() + ".R",
+                return new ClassPathResource(InputsAndResultsTestString.class.getSimpleName() + ".py",
                         InputsAndResultsTestString.class);
             }
 
