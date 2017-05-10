@@ -21,7 +21,8 @@
 
 	<modules>
 		<module>invesdwin-context-python-runtime-contract</module>
-		<!-- <module>invesdwin-context-python-runtime-jython</module> <module>invesdwin-context-python-runtime-jep</module> 
+		<module>invesdwin-context-python-runtime-jython</module>
+		<!-- <module>invesdwin-context-python-runtime-jep</module> 
 			<module>invesdwin-context-python-runtime-py4j</module> -->
 	</modules>
 
