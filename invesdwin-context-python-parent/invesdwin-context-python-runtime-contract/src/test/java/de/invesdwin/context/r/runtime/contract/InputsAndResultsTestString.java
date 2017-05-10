@@ -1,14 +1,18 @@
 package de.invesdwin.context.r.runtime.contract;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
+import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
@@ -68,12 +72,6 @@ public class InputsAndResultsTestString {
         new AScriptTaskPython<Void>() {
 
             @Override
-            public Resource getScriptResource() {
-                return new ClassPathResource(InputsAndResultsTestString.class.getSimpleName() + ".py",
-                        InputsAndResultsTestString.class);
-            }
-
-            @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putString("putString", putString);
                 inputs.putString("putStringWithNull", putStringWithNull);
@@ -89,6 +87,22 @@ public class InputsAndResultsTestString {
 
                 inputs.putStringMatrixAsList("putStringMatrixAsList", putStringMatrixAsList);
                 inputs.putStringMatrixAsList("putStringMatrixAsListWithNull", putStringMatrixAsListWithNull);
+            }
+
+            @Override
+            public void executeScript(final IScriptTaskEngine engine) {
+                final ClassPathResource resource = new ClassPathResource(
+                        InputsAndResultsTestString.class.getSimpleName() + ".py", InputsAndResultsTestString.class);
+                try (InputStream in = resource.getInputStream()) {
+                    String str = IOUtils.toString(in, StandardCharsets.UTF_8);
+                    engine.eval("import sys");
+                    if (engine.getResults().getBoolean("sys.version_info >= (3, 0)")) {
+                        str = str.replace("unicode", "str");
+                    }
+                    engine.eval(str);
+                } catch (final IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override

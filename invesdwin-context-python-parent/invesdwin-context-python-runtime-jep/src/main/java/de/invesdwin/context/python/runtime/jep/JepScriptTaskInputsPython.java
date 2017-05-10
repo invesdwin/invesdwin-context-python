@@ -3,32 +3,26 @@ package de.invesdwin.context.python.runtime.jep;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
-import jep.Jep;
 import jep.JepException;
 
 @NotThreadSafe
 public class JepScriptTaskInputsPython implements IScriptTaskInputs {
 
-    private Jep jep;
+    private final JepScriptTaskEnginePython engine;
 
-    public JepScriptTaskInputsPython(final Jep jep) {
-        this.jep = jep;
+    public JepScriptTaskInputsPython(final JepScriptTaskEnginePython engine) {
+        this.engine = engine;
     }
 
     @Override
-    public Jep getEngine() {
-        return jep;
-    }
-
-    @Override
-    public void close() {
-        jep = null;
+    public JepScriptTaskEnginePython getEngine() {
+        return engine;
     }
 
     @Override
     public void putString(final String variable, final String value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +31,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putStringVector(final String variable, final String[] value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -46,7 +40,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putStringMatrix(final String variable, final String[][] value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -55,7 +49,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putDouble(final String variable, final double value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -64,7 +58,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putDoubleVector(final String variable, final double[] value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +70,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putDoubleMatrix(final String variable, final double[][] value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -85,7 +79,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putInteger(final String variable, final int value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -94,7 +88,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putIntegerVector(final String variable, final int[] value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -106,7 +100,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putIntegerMatrix(final String variable, final int[][] value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -115,7 +109,8 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putBoolean(final String variable, final boolean value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
+            putExpression(variable, "bool(" + variable + ")");
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -124,7 +119,8 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putBooleanVector(final String variable, final boolean[] value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
+            putExpression(variable, "[bool(x) for x in " + variable + "]");
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -133,7 +129,8 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putBooleanMatrix(final String variable, final boolean[][] value) {
         try {
-            jep.set(variable, value);
+            engine.unwrap().set(variable, value);
+            putExpression(variable, "[[bool(y) for y in x] for x in " + variable + "]");
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -141,7 +138,7 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
 
     @Override
     public void putExpression(final String variable, final String expression) {
-        JepScriptTaskRunnerPython.eval(jep, variable + " = " + expression);
+        engine.eval(variable + " = " + expression);
     }
 
 }

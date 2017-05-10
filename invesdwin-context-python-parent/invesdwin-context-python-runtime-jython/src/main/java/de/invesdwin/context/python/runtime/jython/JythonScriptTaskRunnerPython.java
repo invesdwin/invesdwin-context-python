@@ -16,6 +16,8 @@ import de.invesdwin.util.error.Throwables;
 public final class JythonScriptTaskRunnerPython
         implements IScriptTaskRunnerPython, FactoryBean<JythonScriptTaskRunnerPython> {
 
+    public static final String INTERNAL_RESULT_VARIABLE = JythonScriptTaskRunnerPython.class.getSimpleName()
+            + "_result";
     public static final JythonScriptTaskRunnerPython INSTANCE = new JythonScriptTaskRunnerPython();
 
     /**
@@ -34,17 +36,15 @@ public final class JythonScriptTaskRunnerPython
         }
         try {
             //inputs
-            final JythonScriptTaskInputsPython inputs = new JythonScriptTaskInputsPython(pyScriptEngine);
-            scriptTask.populateInputs(inputs);
-            inputs.close();
+            final JythonScriptTaskEnginePython engine = new JythonScriptTaskEnginePython(pyScriptEngine);
+            scriptTask.populateInputs(engine.getInputs());
 
             //execute
-            pyScriptEngine.eval(scriptTask.getScriptResourceAsString());
+            scriptTask.executeScript(engine);
 
             //results
-            final JythonScriptTaskResultsPython results = new JythonScriptTaskResultsPython(pyScriptEngine);
-            final T result = scriptTask.extractResults(results);
-            results.close();
+            final T result = scriptTask.extractResults(engine.getResults());
+            engine.close();
 
             //return
             PyScriptEngineObjectPool.INSTANCE.returnObject(pyScriptEngine);

@@ -1,88 +1,131 @@
 package de.invesdwin.context.python.runtime.jython;
 
 import javax.annotation.concurrent.NotThreadSafe;
-
-import org.python.jsr223.PyScriptEngine;
+import javax.script.ScriptException;
 
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 
 @NotThreadSafe
 public class JythonScriptTaskResultsPython implements IScriptTaskResults {
 
-    private PyScriptEngine pyScriptEngine;
+    private final JythonScriptTaskEnginePython engine;
 
-    public JythonScriptTaskResultsPython(final PyScriptEngine pyScriptEngine) {
-        this.pyScriptEngine = pyScriptEngine;
+    public JythonScriptTaskResultsPython(final JythonScriptTaskEnginePython engine) {
+        this.engine = engine;
     }
 
     @Override
-    public PyScriptEngine getEngine() {
-        return pyScriptEngine;
-    }
-
-    @Override
-    public void close() {
-        pyScriptEngine = null;
+    public JythonScriptTaskEnginePython getEngine() {
+        return engine;
     }
 
     @Override
     public String getString(final String variable) {
-        return (String) pyScriptEngine.get(variable);
+        try {
+            return (String) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public String[] getStringVector(final String variable) {
-        return (String[]) pyScriptEngine.get(variable);
+        try {
+            return (String[]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public String[][] getStringMatrix(final String variable) {
-        return (String[][]) pyScriptEngine.get(variable);
+        try {
+            return (String[][]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public double getDouble(final String variable) {
-        return (double) pyScriptEngine.get(variable);
+        try {
+            return (double) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public double[] getDoubleVector(final String variable) {
-        return (double[]) pyScriptEngine.get(variable);
+        try {
+            return (double[]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public double[][] getDoubleMatrix(final String variable) {
-        return (double[][]) pyScriptEngine.get(variable);
+        try {
+            return (double[][]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public int getInteger(final String variable) {
-        return (int) pyScriptEngine.get(variable);
+        try {
+            final Number value = (Number) engine.unwrap().eval(variable);
+            return value.intValue();
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public int[] getIntegerVector(final String variable) {
-        return (int[]) pyScriptEngine.get(variable);
+        try {
+            return (int[]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public int[][] getIntegerMatrix(final String variable) {
-        return (int[][]) pyScriptEngine.get(variable);
+        try {
+            return (int[][]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean getBoolean(final String variable) {
-        return (boolean) pyScriptEngine.get(variable);
+        try {
+            return (boolean) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean[] getBooleanVector(final String variable) {
-        return (boolean[]) pyScriptEngine.get(variable);
+        try {
+            return (boolean[]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        return (boolean[][]) pyScriptEngine.get(variable);
+        try {
+            return (boolean[][]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

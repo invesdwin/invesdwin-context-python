@@ -8,8 +8,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
+import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
@@ -55,12 +55,6 @@ public class InputsAndResultsTestInteger {
         new AScriptTaskPython<Void>() {
 
             @Override
-            public Resource getScriptResource() {
-                return new ClassPathResource(InputsAndResultsTestInteger.class.getSimpleName() + ".py",
-                        InputsAndResultsTestInteger.class);
-            }
-
-            @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putInteger("putInteger", putInteger);
 
@@ -71,6 +65,12 @@ public class InputsAndResultsTestInteger {
                 inputs.putIntegerMatrix("putIntegerMatrix", putIntegerMatrix);
 
                 inputs.putIntegerMatrixAsList("putIntegerMatrixAsList", putIntegerMatrixAsList);
+            }
+
+            @Override
+            public void executeScript(final IScriptTaskEngine engine) {
+                engine.eval(new ClassPathResource(InputsAndResultsTestInteger.class.getSimpleName() + ".py",
+                        InputsAndResultsTestInteger.class));
             }
 
             @Override

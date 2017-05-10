@@ -16,7 +16,6 @@ import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Futures;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.error.Throwables;
-import de.invesdwin.util.lang.Strings;
 import io.netty.util.concurrent.FastThreadLocal;
 import jep.Jep;
 import jep.JepConfig;
@@ -68,17 +67,15 @@ public final class JepScriptTaskRunnerPython
                 final Jep jep = JEP.get().getJep();
                 try {
                     //inputs
-                    final JepScriptTaskInputsPython inputs = new JepScriptTaskInputsPython(jep);
-                    scriptTask.populateInputs(inputs);
-                    inputs.close();
+                    final JepScriptTaskEnginePython engine = new JepScriptTaskEnginePython(jep);
+                    scriptTask.populateInputs(engine.getInputs());
 
                     //execute
-                    eval(jep, scriptTask.getScriptResourceAsString());
+                    scriptTask.executeScript(engine);
 
                     //results
-                    final JepScriptTaskResultsPython results = new JepScriptTaskResultsPython(jep);
-                    final T result = scriptTask.extractResults(results);
-                    results.close();
+                    final T result = scriptTask.extractResults(engine.getResults());
+                    engine.close();
 
                     //return
                     return result;
@@ -109,23 +106,6 @@ public final class JepScriptTaskRunnerPython
         return true;
     }
 
-    /**
-     * https://github.com/mrj0/jep/issues/55
-     */
-    public static void eval(final Jep jep, final String expression) {
-        try {
-            for (final String line : Strings.split(expression, "\n")) {
-                jep.eval(line);
-            }
-            //            jep.set("_pythonScript", expression.trim());
-            //            jep.eval("exec _pythonScript");
-            //            jep.eval("del _pythonScript");
-            //            jep.eval("exec \"\"\"" + expression + "\"\"\"");
-        } catch (final JepException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static synchronized WrappedExecutorService getExecutor() {
         if (executor == null) {
             executor = Executors.newFixedThreadPool(JepScriptTaskRunnerPython.class.getSimpleName() + "_jep",
@@ -149,11 +129,13 @@ public final class JepScriptTaskRunnerPython
 
         JepWrapper() {
             try {
-                this.jep = new Jep(
-                        new JepConfig().setSharedModules(JepProperties.getSharedModules()).setInteractive(false));
+                this.jep = new Jep(new JepConfig().setSharedModules(JepProperties.getSharedModules())
+                        .setInteractive(false)
+                        .setRedirectOutputStreams(true));
             } catch (final JepException e) {
                 throw new RuntimeException(e);
             }
+            //TODO: verify that no mixing of python version is done by doing a simple expression check and seeing if no syntax error occurs
         }
 
         public Jep getJep() {
