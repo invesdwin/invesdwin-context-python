@@ -9,7 +9,11 @@
 	</parent>
 	<artifactId>invesdwin-context-python-runtime-jep</artifactId>
 	<packaging>jar</packaging>
-	
+
+	<!-- sudo apt-get install python-pip python3-pip -->
+	<!-- sudo echo 'JAVA_HOME="/usr/lib/jvm/default-java/"' >> /etc/environment -->
+	<!-- sudo pip install jep -->
+
 	<dependencies>
 		<dependency>
 			<groupId>de.invesdwin</groupId>
@@ -20,6 +24,11 @@
 			<artifactId>invesdwin-context-python-runtime-contract</artifactId>
 			<type>test-jar</type>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.mrj0</groupId>
+			<artifactId>jep</artifactId>
 		</dependency>
 	</dependencies>
 

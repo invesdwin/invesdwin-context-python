@@ -31,6 +31,7 @@
 		<version.invesdwin-context-python>${version.invesdwin-context}</version.invesdwin-context-python>
 
 		<version.jython>2.7.0</version.jython>
+		<version.jep>3.6.3</version.jep>
 	</properties>
 
 	<dependencyManagement>
@@ -75,7 +76,11 @@
 				<artifactId>jython-shaded</artifactId>
 				<version>${version.jython}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>com.github.mrj0</groupId>
+				<artifactId>jep</artifactId>
+				<version>${version.jep}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
