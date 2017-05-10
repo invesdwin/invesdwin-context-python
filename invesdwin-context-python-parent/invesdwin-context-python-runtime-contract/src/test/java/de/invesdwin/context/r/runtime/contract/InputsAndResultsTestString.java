@@ -26,20 +26,20 @@ public class InputsAndResultsTestString {
     public void testString() {
         //putString
         final String putString = "asdf";
-        final String putStringNull = null;
+        final String putStringWithNull = null;
 
         //putStringVector
         final String[] putStringVector = new String[3];
         for (int i = 0; i < putStringVector.length; i++) {
             putStringVector[i] = i + "-" + i;
         }
-        final String[] putStringVectorNull = Objects.deepClone(putStringVector);
-        putStringVectorNull[1] = null;
+        final String[] putStringVectorWithNull = Objects.deepClone(putStringVector);
+        putStringVectorWithNull[1] = null;
 
         //putStringVectorAsList
         final List<String> putStringVectorAsList = Arrays.asList(putStringVector);
-        final List<String> putStringVectorAsListNull = Objects.deepClone(putStringVectorAsList);
-        putStringVectorAsListNull.set(1, null);
+        final List<String> putStringVectorAsListWithNull = Objects.deepClone(putStringVectorAsList);
+        putStringVectorAsListWithNull.set(1, null);
 
         //putStringMatrix
         final String[][] putStringMatrix = new String[4][];
@@ -50,9 +50,9 @@ public class InputsAndResultsTestString {
             }
             putStringMatrix[i] = vector;
         }
-        final String[][] putStringMatrixNull = Objects.deepClone(putStringMatrix);
-        for (int i = 0; i < putStringMatrixNull[0].length; i++) {
-            putStringMatrixNull[i][i] = null;
+        final String[][] putStringMatrixWithNull = Objects.deepClone(putStringMatrix);
+        for (int i = 0; i < putStringMatrixWithNull[0].length; i++) {
+            putStringMatrixWithNull[i][i] = null;
         }
 
         //putStringMatrixAsList
@@ -60,9 +60,9 @@ public class InputsAndResultsTestString {
         for (final String[] vector : putStringMatrix) {
             putStringMatrixAsList.add(Arrays.asList(vector));
         }
-        final List<List<String>> putStringMatrixAsListNull = Objects.deepClone(putStringMatrixAsList);
-        for (int i = 0; i < putStringMatrixAsListNull.get(0).size(); i++) {
-            putStringMatrixAsListNull.get(i).set(i, null);
+        final List<List<String>> putStringMatrixAsListWithNull = Objects.deepClone(putStringMatrixAsList);
+        for (int i = 0; i < putStringMatrixAsListWithNull.get(0).size(); i++) {
+            putStringMatrixAsListWithNull.get(i).set(i, null);
         }
 
         new AScriptTaskPython<Void>() {
@@ -76,19 +76,19 @@ public class InputsAndResultsTestString {
             @Override
             public void populateInputs(final IScriptTaskInputs inputs) {
                 inputs.putString("putString", putString);
-                inputs.putString("putStringNull", putStringNull);
+                inputs.putString("putStringWithNull", putStringWithNull);
 
                 inputs.putStringVector("putStringVector", putStringVector);
-                inputs.putStringVector("putStringVectorNull", putStringVectorNull);
+                inputs.putStringVector("putStringVectorWithNull", putStringVectorWithNull);
 
                 inputs.putStringVectorAsList("putStringVectorAsList", putStringVectorAsList);
-                inputs.putStringVectorAsList("putStringVectorAsListNull", putStringVectorAsListNull);
+                inputs.putStringVectorAsList("putStringVectorAsListWithNull", putStringVectorAsListWithNull);
 
                 inputs.putStringMatrix("putStringMatrix", putStringMatrix);
-                inputs.putStringMatrix("putStringMatrixNull", putStringMatrixNull);
+                inputs.putStringMatrix("putStringMatrixWithNull", putStringMatrixWithNull);
 
                 inputs.putStringMatrixAsList("putStringMatrixAsList", putStringMatrixAsList);
-                inputs.putStringMatrixAsList("putStringMatrixAsListNull", putStringMatrixAsListNull);
+                inputs.putStringMatrixAsList("putStringMatrixAsListWithNull", putStringMatrixAsListWithNull);
             }
 
             @Override
@@ -96,34 +96,34 @@ public class InputsAndResultsTestString {
                 //getString
                 final String getString = results.getString("getString");
                 Assertions.assertThat(putString).isEqualTo(getString);
-                final String getStringNull = results.getString("getStringNull");
-                Assertions.assertThat(putStringNull).isEqualTo(getStringNull);
+                final String getStringWithNull = results.getString("getStringWithNull");
+                Assertions.assertThat(putStringWithNull).isEqualTo(getStringWithNull);
 
                 //getStringVector
                 final String[] getStringVector = results.getStringVector("getStringVector");
                 Assertions.assertThat(putStringVector).isEqualTo(getStringVector);
-                final String[] getStringVectorNull = results.getStringVector("getStringVectorNull");
-                Assertions.assertThat(putStringVectorNull).isEqualTo(getStringVectorNull);
+                final String[] getStringVectorWithNull = results.getStringVector("getStringVectorWithNull");
+                Assertions.assertThat(putStringVectorWithNull).isEqualTo(getStringVectorWithNull);
 
                 //getStringVectorAsList
                 final List<String> getStringVectorAsList = results.getStringVectorAsList("getStringVectorAsList");
                 Assertions.assertThat(putStringVectorAsList).isEqualTo(getStringVectorAsList);
-                final List<String> getStringVectorAsListNull = results
-                        .getStringVectorAsList("getStringVectorAsListNull");
-                Assertions.assertThat(putStringVectorAsListNull).isEqualTo(getStringVectorAsListNull);
+                final List<String> getStringVectorAsListWithNull = results
+                        .getStringVectorAsList("getStringVectorAsListWithNull");
+                Assertions.assertThat(putStringVectorAsListWithNull).isEqualTo(getStringVectorAsListWithNull);
 
                 //getStringMatrix
                 final String[][] getStringMatrix = results.getStringMatrix("getStringMatrix");
                 Assertions.assertThat(putStringMatrix).isEqualTo(getStringMatrix);
-                final String[][] getStringMatrixNull = results.getStringMatrix("getStringMatrixNull");
-                Assertions.assertThat(putStringMatrixNull).isEqualTo(getStringMatrixNull);
+                final String[][] getStringMatrixWithNull = results.getStringMatrix("getStringMatrixWithNull");
+                Assertions.assertThat(putStringMatrixWithNull).isEqualTo(getStringMatrixWithNull);
 
                 //getStringMatrixAsList
                 final List<List<String>> getStringMatrixAsList = results.getStringMatrixAsList("getStringMatrixAsList");
                 Assertions.assertThat(putStringMatrixAsList).isEqualTo(getStringMatrixAsList);
-                final List<List<String>> getStringMatrixAsListNull = results
-                        .getStringMatrixAsList("getStringMatrixAsListNull");
-                Assertions.assertThat(putStringMatrixAsListNull).isEqualTo(getStringMatrixAsListNull);
+                final List<List<String>> getStringMatrixAsListWithNull = results
+                        .getStringMatrixAsList("getStringMatrixAsListWithNull");
+                Assertions.assertThat(putStringMatrixAsListWithNull).isEqualTo(getStringMatrixAsListWithNull);
                 return null;
             }
         }.run(runner);
