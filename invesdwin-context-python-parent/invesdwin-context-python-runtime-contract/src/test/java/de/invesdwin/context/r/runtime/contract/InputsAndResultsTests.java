@@ -19,8 +19,12 @@ public class InputsAndResultsTests {
     }
 
     public void test() {
+        new InputsAndResultsTestFloat(runner).testFloat();
         new InputsAndResultsTestDouble(runner).testDouble();
+        new InputsAndResultsTestDecimal(runner).testDecimal();
+        new InputsAndResultsTestPercent(runner).testPercent();
         new InputsAndResultsTestInteger(runner).testInteger();
+        new InputsAndResultsTestLong(runner).testLong();
         new InputsAndResultsTestString(runner).testString();
         new InputsAndResultsTestBoolean(runner).testBoolean();
     }

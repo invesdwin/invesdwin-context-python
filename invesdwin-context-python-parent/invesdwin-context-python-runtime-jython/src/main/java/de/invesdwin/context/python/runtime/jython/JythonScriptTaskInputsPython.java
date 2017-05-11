@@ -34,6 +34,21 @@ public class JythonScriptTaskInputsPython implements IScriptTaskInputs {
     }
 
     @Override
+    public void putFloat(final String variable, final float value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putFloatVector(final String variable, final float[] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putFloatMatrix(final String variable, final float[][] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
     public void putDouble(final String variable, final double value) {
         engine.unwrap().put(variable, value);
     }
@@ -60,6 +75,21 @@ public class JythonScriptTaskInputsPython implements IScriptTaskInputs {
 
     @Override
     public void putIntegerMatrix(final String variable, final int[][] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putLong(final String variable, final long value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putLongVector(final String variable, final long[] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putLongMatrix(final String variable, final long[][] value) {
         engine.unwrap().put(variable, value);
     }
 

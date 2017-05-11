@@ -47,6 +47,33 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
     }
 
     @Override
+    public void putFloat(final String variable, final float value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void putFloatVector(final String variable, final float[] value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void putFloatMatrix(final String variable, final float[][] value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void putDouble(final String variable, final double value) {
         try {
             engine.unwrap().set(variable, value);
@@ -64,9 +91,6 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
         }
     }
 
-    /**
-     * http://permalink.gmane.org/gmane.comp.lang.r.rosuda.devel/87
-     */
     @Override
     public void putDoubleMatrix(final String variable, final double[][] value) {
         try {
@@ -94,11 +118,35 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
         }
     }
 
-    /**
-     * http://permalink.gmane.org/gmane.comp.lang.r.rosuda.devel/87
-     */
     @Override
     public void putIntegerMatrix(final String variable, final int[][] value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void putLong(final String variable, final long value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void putLongVector(final String variable, final long[] value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void putLongMatrix(final String variable, final long[][] value) {
         try {
             engine.unwrap().set(variable, value);
         } catch (final JepException e) {

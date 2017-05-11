@@ -6,11 +6,13 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
+import de.invesdwin.util.math.Floats;
+import de.invesdwin.util.math.Integers;
 import jep.JepException;
 
 @NotThreadSafe
-public class JepScriptTaskResultsPython implements IScriptTaskResults {
+public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
 
     private final JepScriptTaskEnginePython engine;
 
@@ -51,6 +53,33 @@ public class JepScriptTaskResultsPython implements IScriptTaskResults {
     }
 
     @Override
+    public float getFloat(final String variable) {
+        try {
+            return Floats.checkedCast(engine.unwrap().getValue(variable));
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public float[] getFloatVector(final String variable) {
+        try {
+            return Floats.checkedCastVector(engine.unwrap().getValue(variable));
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public float[][] getFloatMatrix(final String variable) {
+        try {
+            return Floats.checkedCastMatrix(engine.unwrap().getValue(variable));
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public double getDouble(final String variable) {
         try {
             return (double) engine.unwrap().getValue(variable);
@@ -80,8 +109,8 @@ public class JepScriptTaskResultsPython implements IScriptTaskResults {
     @Override
     public int getInteger(final String variable) {
         try {
-            final Number value = (Number) engine.unwrap().getValue(variable);
-            return value.intValue();
+            final Number number = (Number) engine.unwrap().getValue(variable);
+            return Integers.checkedCast(number);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -100,6 +129,34 @@ public class JepScriptTaskResultsPython implements IScriptTaskResults {
     public int[][] getIntegerMatrix(final String variable) {
         try {
             return (int[][]) engine.unwrap().getValue(variable);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public long getLong(final String variable) {
+        try {
+            final Number value = (Number) engine.unwrap().getValue(variable);
+            return value.longValue();
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public long[] getLongVector(final String variable) {
+        try {
+            return (long[]) engine.unwrap().getValue(variable);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public long[][] getLongMatrix(final String variable) {
+        try {
+            return (long[][]) engine.unwrap().getValue(variable);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -149,16 +206,6 @@ public class JepScriptTaskResultsPython implements IScriptTaskResults {
             matrix[i] = ArrayUtils.toPrimitive(vector.toArray(new Boolean[vector.size()]));
         }
         return matrix;
-    }
-
-    @Override
-    public boolean isDefined(final String variable) {
-        return getBoolean("'" + variable + "' in locals()");
-    }
-
-    @Override
-    public boolean isNull(final String variable) {
-        return getBoolean(variable + " is None");
     }
 
 }

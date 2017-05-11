@@ -3,10 +3,12 @@ package de.invesdwin.context.python.runtime.jython;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.script.ScriptException;
 
-import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
+import de.invesdwin.util.math.Floats;
+import de.invesdwin.util.math.Integers;
 
 @NotThreadSafe
-public class JythonScriptTaskResultsPython implements IScriptTaskResults {
+public class JythonScriptTaskResultsPython implements IScriptTaskResultsPython {
 
     private final JythonScriptTaskEnginePython engine;
 
@@ -47,6 +49,33 @@ public class JythonScriptTaskResultsPython implements IScriptTaskResults {
     }
 
     @Override
+    public float getFloat(final String variable) {
+        try {
+            return Floats.checkedCast(engine.unwrap().eval(variable));
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public float[] getFloatVector(final String variable) {
+        try {
+            return Floats.checkedCastVector(engine.unwrap().eval(variable));
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public float[][] getFloatMatrix(final String variable) {
+        try {
+            return Floats.checkedCastMatrix(engine.unwrap().eval(variable));
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public double getDouble(final String variable) {
         try {
             return (double) engine.unwrap().eval(variable);
@@ -76,8 +105,8 @@ public class JythonScriptTaskResultsPython implements IScriptTaskResults {
     @Override
     public int getInteger(final String variable) {
         try {
-            final Number value = (Number) engine.unwrap().eval(variable);
-            return value.intValue();
+            final Number number = (Number) engine.unwrap().eval(variable);
+            return Integers.checkedCast(number);
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }
@@ -96,6 +125,34 @@ public class JythonScriptTaskResultsPython implements IScriptTaskResults {
     public int[][] getIntegerMatrix(final String variable) {
         try {
             return (int[][]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public long getLong(final String variable) {
+        try {
+            final Number value = (Number) engine.unwrap().eval(variable);
+            return value.longValue();
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public long[] getLongVector(final String variable) {
+        try {
+            return (long[]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public long[][] getLongMatrix(final String variable) {
+        try {
+            return (long[][]) engine.unwrap().eval(variable);
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }
@@ -126,16 +183,6 @@ public class JythonScriptTaskResultsPython implements IScriptTaskResults {
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public boolean isDefined(final String variable) {
-        return getBoolean("'" + variable + "' in locals()");
-    }
-
-    @Override
-    public boolean isNull(final String variable) {
-        return getBoolean(variable + " is None");
     }
 
 }
