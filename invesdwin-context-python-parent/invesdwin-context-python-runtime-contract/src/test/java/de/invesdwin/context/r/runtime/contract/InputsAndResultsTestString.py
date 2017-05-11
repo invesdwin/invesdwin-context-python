@@ -1,5 +1,5 @@
 print("getString")
-if 'getString' in globals():
+if 'getString' in locals():
 	raise Exception("getString already defined!")
 getString = putString
 getStringType = type(getString)
@@ -9,7 +9,7 @@ if(getStringType is not unicode):
 	raise Exception("getString not unicode!")
 
 print("getStringWithNull")
-if 'getStringWithNull' in globals():
+if 'getStringWithNull' in locals():
 	raise Exception("getStringWithNull already defined!")
 getStringWithNull = putStringWithNull
 getStringWithNullType = type(getStringWithNull)
@@ -19,7 +19,7 @@ if(getStringWithNull is not None):
 	raise Exception("getStringWithNull not None!")
 
 print("getStringVector")
-if 'getStringVector' in globals():
+if 'getStringVector' in locals():
 	raise Exception("getStringVector already defined!")
 getStringVector = putStringVector
 getStringVectorType = type(getStringVector[0])
@@ -29,7 +29,7 @@ if(getStringVectorType is not unicode):
 	raise Exception("getStringVector not unicode!")
 
 print("getStringVectorWithNull")
-if 'getStringVectorWithNull' in globals():
+if 'getStringVectorWithNull' in locals():
 	raise Exception("getStringVectorWithNull already defined!")
 getStringVectorWithNull = putStringVectorWithNull
 getStringVectorWithNullType = type(getStringVectorWithNull[0])
@@ -41,7 +41,7 @@ if(getStringVectorWithNull[1] is not None):
 	raise Exception("getStringVectorWithNull[2] not None!")
 
 print("getStringVectorAsList")
-if 'getStringVectorAsList' in globals():
+if 'getStringVectorAsList' in locals():
 	raise Exception("getStringVectorAsList already defined!")
 getStringVectorAsList = putStringVectorAsList
 getStringVectorAsListType = type(getStringVectorAsList[0])
@@ -51,7 +51,7 @@ if(getStringVectorAsListType is not unicode):
 	raise Exception("getStringVectorAsList not unicode!")
 
 print("getStringVectorAsListWithNull")
-if 'getStringVectorAsListWithNull' in globals():
+if 'getStringVectorAsListWithNull' in locals():
 	raise Exception("getStringVectorAsListWithNull already defined!")
 getStringVectorAsListWithNull = putStringVectorAsListWithNull
 getStringVectorAsListWithNullType = type(getStringVectorAsListWithNull[0])
@@ -63,7 +63,7 @@ if(getStringVectorAsListWithNull[1] is not None):
 	raise Exception("getStringVectorAsListWithNull[1] not None!")
 
 print("getStringMatrix")
-if 'getStringMatrix' in globals():
+if 'getStringMatrix' in locals():
 	raise Exception("getStringMatrix already defined!")
 getStringMatrix = putStringMatrix
 getStringMatrixType = type(getStringMatrix[0][0])
@@ -73,7 +73,7 @@ if(getStringMatrixType is not unicode):
 	raise Exception("getStringMatrix not unicode!")
 
 print("getStringMatrixWithNull")
-if 'getStringMatrixWithNull' in globals():
+if 'getStringMatrixWithNull' in locals():
 	raise Exception("getStringMatrixWithNull already defined!")
 getStringMatrixWithNull = putStringMatrixWithNull
 getStringMatrixWithNullType = type(getStringMatrixWithNull[0][1])
@@ -89,7 +89,7 @@ if(getStringMatrixWithNull[2][2] is not None):
 	raise Exception("getStringMatrixWithNull[2][2] not None!")
 
 print("getStringMatrixAsList")
-if 'getStringMatrixAsList' in globals():
+if 'getStringMatrixAsList' in locals():
 	raise Exception("getStringMatrixAsList already defined!")
 getStringMatrixAsList = putStringMatrixAsList
 getStringMatrixAsListType = type(getStringMatrixAsList[0][0])
@@ -99,7 +99,7 @@ if(getStringMatrixAsListType is not unicode):
 	raise Exception("getStringMatrixAsList not unicode!")
 
 print("getStringMatrixAsListWithNull")
-if 'getStringMatrixAsListWithNull' in globals():
+if 'getStringMatrixAsListWithNull' in locals():
 	raise Exception("getStringMatrixAsListWithNull already defined!")
 getStringMatrixAsListWithNull = putStringMatrixAsListWithNull
 getStringMatrixAsListWithNullType = type(getStringMatrixAsListWithNull[0][1])

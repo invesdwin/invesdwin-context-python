@@ -1,5 +1,5 @@
 print("getInteger")
-if 'getInteger' in globals():
+if 'getInteger' in locals():
 	raise Exception("getInteger already defined!")
 getInteger = putInteger
 getIntegerType = type(getInteger)
@@ -9,7 +9,7 @@ if(getIntegerType is not int):
 	raise Exception("getInteger not int!")
 
 print("getIntegerVector")
-if 'getIntegerVector' in globals():
+if 'getIntegerVector' in locals():
 	raise Exception("getIntegerVector already defined!")
 getIntegerVector = putIntegerVector
 getIntegerVectorType = type(getIntegerVector[0])
@@ -19,7 +19,7 @@ if(getIntegerVectorType is not int):
 	raise Exception("getIntegerVector not int!")
 
 print("getIntegerVectorAsList")
-if 'getIntegerVectorAsList' in globals():
+if 'getIntegerVectorAsList' in locals():
 	raise Exception("getIntegerVectorAsList already defined!")
 getIntegerVectorAsList = putIntegerVectorAsList
 getIntegerVectorAsListType = type(getIntegerVectorAsList[0])
@@ -29,7 +29,7 @@ if(getIntegerVectorAsListType is not int):
 	raise Exception("getIntegerVectorAsList not int!")
 
 print("getIntegerMatrix")
-if 'getIntegerMatrix' in globals():
+if 'getIntegerMatrix' in locals():
 	raise Exception("getIntegerMatrix already defined!")
 getIntegerMatrix = putIntegerMatrix
 getIntegerMatrixType = type(getIntegerMatrix[0][0])
@@ -39,7 +39,7 @@ if(getIntegerMatrixType is not int):
 	raise Exception("getIntegerMatrix not int!")
 
 print("getIntegerMatrixAsList")
-if 'getIntegerMatrixAsList' in globals():
+if 'getIntegerMatrixAsList' in locals():
 	raise Exception("getIntegerMatrixAsList already defined!")
 getIntegerMatrixAsList = putIntegerMatrixAsList
 getIntegerMatrixAsListType = type(getIntegerMatrixAsList[0][0])

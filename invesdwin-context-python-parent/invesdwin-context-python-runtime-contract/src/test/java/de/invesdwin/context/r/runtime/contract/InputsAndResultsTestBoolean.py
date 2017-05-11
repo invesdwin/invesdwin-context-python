@@ -1,5 +1,5 @@
 print("getBoolean")
-if 'getBoolean' in globals():
+if 'getBoolean' in locals():
 	raise Exception("getBoolean already defined!")
 getBoolean = putBoolean
 print(type(getBoolean))
@@ -9,7 +9,7 @@ if(getBooleanType is not bool):
 	raise Exception("getBoolean not bool!")
 
 print("getBooleanVector")
-if 'getBooleanVector' in globals():
+if 'getBooleanVector' in locals():
 	raise Exception("getBooleanVector already defined!")
 getBooleanVector = putBooleanVector
 getBooleanVectorType = type(getBooleanVector[0])
@@ -20,7 +20,7 @@ if(getBooleanVectorType is not bool):
 	raise Exception("getBooleanVector not bool!")
 
 print("getBooleanVectorAsList")
-if 'getBooleanVectorAsList' in globals():
+if 'getBooleanVectorAsList' in locals():
 	raise Exception("getBooleanVectorAsList already defined!")
 getBooleanVectorAsList = putBooleanVectorAsList
 getBooleanVectorAsListType = type(getBooleanVectorAsList[0])
@@ -31,7 +31,7 @@ if(getBooleanVectorAsListType is not bool):
 	raise Exception("getBooleanVectorAsList not bool!")
 
 print("getBooleanMatrix")
-if 'getBooleanMatrix' in globals():
+if 'getBooleanMatrix' in locals():
 	raise Exception("getBooleanMatrix already defined!")
 getBooleanMatrix = putBooleanMatrix
 getBooleanMatrixType = type(getBooleanMatrix[0][0])
@@ -42,7 +42,7 @@ if(getBooleanMatrixType is not bool):
 	raise Exception("getBooleanMatrix not bool!")
 
 print("getBooleanMatrixAsList")
-if 'getBooleanMatrixAsList' in globals():
+if 'getBooleanMatrixAsList' in locals():
 	raise Exception("getBooleanMatrixAsList already defined!")
 getBooleanMatrixAsList = putBooleanMatrixAsList
 getBooleanMatrixAsListType = type(getBooleanMatrixAsList[0][0])

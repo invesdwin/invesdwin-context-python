@@ -151,4 +151,14 @@ public class JepScriptTaskResultsPython implements IScriptTaskResults {
         return matrix;
     }
 
+    @Override
+    public boolean isDefined(final String variable) {
+        return getBoolean("'" + variable + "' in locals()");
+    }
+
+    @Override
+    public boolean isNull(final String variable) {
+        return getBoolean(variable + " is None");
+    }
+
 }
