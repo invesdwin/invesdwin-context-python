@@ -64,6 +64,21 @@ public class JythonScriptTaskInputsPython implements IScriptTaskInputsPython {
     }
 
     @Override
+    public void putShort(final String variable, final short value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putShortVector(final String variable, final short[] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putShortMatrix(final String variable, final short[][] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
     public void putInteger(final String variable, final int value) {
         engine.unwrap().put(variable, value);
     }

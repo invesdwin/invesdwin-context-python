@@ -23,6 +23,7 @@ public class InputsAndResultsTests {
         new InputsAndResultsTestDouble(runner).testDouble();
         new InputsAndResultsTestDecimal(runner).testDecimal();
         new InputsAndResultsTestPercent(runner).testPercent();
+        new InputsAndResultsTestShort(runner).testShort();
         new InputsAndResultsTestInteger(runner).testInteger();
         new InputsAndResultsTestLong(runner).testLong();
         new InputsAndResultsTestString(runner).testString();

@@ -6,6 +6,7 @@ import javax.script.ScriptException;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
 import de.invesdwin.util.math.Floats;
 import de.invesdwin.util.math.Integers;
+import de.invesdwin.util.math.Shorts;
 
 @NotThreadSafe
 public class JythonScriptTaskResultsPython implements IScriptTaskResultsPython {
@@ -97,6 +98,34 @@ public class JythonScriptTaskResultsPython implements IScriptTaskResultsPython {
     public double[][] getDoubleMatrix(final String variable) {
         try {
             return (double[][]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public short getShort(final String variable) {
+        try {
+            final Number number = (Number) engine.unwrap().eval(variable);
+            return Shorts.checkedCast(number);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public short[] getShortVector(final String variable) {
+        try {
+            return (short[]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public short[][] getShortMatrix(final String variable) {
+        try {
+            return (short[][]) engine.unwrap().eval(variable);
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }

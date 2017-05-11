@@ -101,6 +101,33 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputsPython {
     }
 
     @Override
+    public void putShort(final String variable, final short value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void putShortVector(final String variable, final short[] value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void putShortMatrix(final String variable, final short[][] value) {
+        try {
+            engine.unwrap().set(variable, value);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void putInteger(final String variable, final int value) {
         try {
             engine.unwrap().set(variable, value);

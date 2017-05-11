@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
 import de.invesdwin.util.math.Floats;
 import de.invesdwin.util.math.Integers;
+import de.invesdwin.util.math.Shorts;
 import jep.JepException;
 
 @NotThreadSafe
@@ -101,6 +102,34 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     public double[][] getDoubleMatrix(final String variable) {
         try {
             return (double[][]) engine.unwrap().getValue(variable);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public short getShort(final String variable) {
+        try {
+            final Number number = (Number) engine.unwrap().getValue(variable);
+            return Shorts.checkedCast(number);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public short[] getShortVector(final String variable) {
+        try {
+            return (short[]) engine.unwrap().getValue(variable);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public short[][] getShortMatrix(final String variable) {
+        try {
+            return (short[][]) engine.unwrap().getValue(variable);
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
