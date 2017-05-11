@@ -19,6 +19,36 @@ public class JythonScriptTaskInputsPython implements IScriptTaskInputsPython {
     }
 
     @Override
+    public void putByte(final String variable, final byte value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putByteVector(final String variable, final byte[] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putByteMatrix(final String variable, final byte[][] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putCharacter(final String variable, final char value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putCharacterVector(final String variable, final char[] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
+    public void putCharacterMatrix(final String variable, final char[][] value) {
+        engine.unwrap().put(variable, value);
+    }
+
+    @Override
     public void putString(final String variable, final String value) {
         engine.unwrap().put(variable, value);
     }

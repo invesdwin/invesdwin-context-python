@@ -4,6 +4,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.script.ScriptException;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
+import de.invesdwin.util.math.Bytes;
+import de.invesdwin.util.math.Characters;
 import de.invesdwin.util.math.Floats;
 import de.invesdwin.util.math.Integers;
 import de.invesdwin.util.math.Shorts;
@@ -20,6 +22,60 @@ public class JythonScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public JythonScriptTaskEnginePython getEngine() {
         return engine;
+    }
+
+    @Override
+    public byte getByte(final String variable) {
+        try {
+            return Bytes.checkedCast(engine.unwrap().eval(variable));
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public byte[] getByteVector(final String variable) {
+        try {
+            return (byte[]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public byte[][] getByteMatrix(final String variable) {
+        try {
+            return (byte[][]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public char getCharacter(final String variable) {
+        try {
+            return Characters.checkedCast(engine.unwrap().eval(variable));
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public char[] getCharacterVector(final String variable) {
+        try {
+            return (char[]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public char[][] getCharacterMatrix(final String variable) {
+        try {
+            return (char[][]) engine.unwrap().eval(variable);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

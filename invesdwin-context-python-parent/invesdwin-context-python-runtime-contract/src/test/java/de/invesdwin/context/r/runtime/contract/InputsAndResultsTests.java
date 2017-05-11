@@ -19,6 +19,7 @@ public class InputsAndResultsTests {
     }
 
     public void test() {
+        new InputsAndResultsTestByte(runner).testByte();
         new InputsAndResultsTestFloat(runner).testFloat();
         new InputsAndResultsTestDouble(runner).testDouble();
         new InputsAndResultsTestDecimal(runner).testDecimal();
@@ -26,6 +27,7 @@ public class InputsAndResultsTests {
         new InputsAndResultsTestShort(runner).testShort();
         new InputsAndResultsTestInteger(runner).testInteger();
         new InputsAndResultsTestLong(runner).testLong();
+        new InputsAndResultsTestCharacter(runner).testCharacter();
         new InputsAndResultsTestString(runner).testString();
         new InputsAndResultsTestBoolean(runner).testBoolean();
     }

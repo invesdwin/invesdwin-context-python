@@ -7,6 +7,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.apache.commons.lang3.ArrayUtils;
 
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
+import de.invesdwin.util.math.Bytes;
+import de.invesdwin.util.math.Characters;
 import de.invesdwin.util.math.Floats;
 import de.invesdwin.util.math.Integers;
 import de.invesdwin.util.math.Shorts;
@@ -24,6 +26,60 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public JepScriptTaskEnginePython getEngine() {
         return engine;
+    }
+
+    @Override
+    public byte getByte(final String variable) {
+        try {
+            return Bytes.checkedCast(engine.unwrap().getValue(variable));
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public byte[] getByteVector(final String variable) {
+        try {
+            return (byte[]) engine.unwrap().getValue(variable);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public byte[][] getByteMatrix(final String variable) {
+        try {
+            return (byte[][]) engine.unwrap().getValue(variable);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public char getCharacter(final String variable) {
+        try {
+            return Characters.checkedCast(engine.unwrap().getValue(variable));
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public char[] getCharacterVector(final String variable) {
+        try {
+            return Characters.checkedCastVector(engine.unwrap().getValue(variable));
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public char[][] getCharacterMatrix(final String variable) {
+        try {
+            return (char[][]) engine.unwrap().getValue(variable);
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
