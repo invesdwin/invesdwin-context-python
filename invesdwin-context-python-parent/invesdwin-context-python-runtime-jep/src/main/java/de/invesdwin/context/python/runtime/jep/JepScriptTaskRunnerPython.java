@@ -133,9 +133,10 @@ public final class JepScriptTaskRunnerPython
                         .setInteractive(false)
                         .setRedirectOutputStreams(true));
             } catch (final JepException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(
+                        "Maybe you are mixing the python version with a different one for which jep was compiled for?",
+                        e);
             }
-            //TODO: verify that no mixing of python version is done by doing a simple expression check and seeing if no syntax error occurs
         }
 
         public Jep getJep() {
