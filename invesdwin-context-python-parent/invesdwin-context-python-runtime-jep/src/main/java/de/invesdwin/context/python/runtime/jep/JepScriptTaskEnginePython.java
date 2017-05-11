@@ -7,6 +7,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.apache.commons.io.FileUtils;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 import jep.Jep;
 
 @NotThreadSafe
@@ -49,6 +50,7 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
 
     @Override
     public void close() {
+        eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
         jep = null;
     }
 

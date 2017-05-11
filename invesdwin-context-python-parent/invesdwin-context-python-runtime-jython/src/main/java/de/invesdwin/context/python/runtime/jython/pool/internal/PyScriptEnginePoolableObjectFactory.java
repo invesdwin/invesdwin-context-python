@@ -8,6 +8,7 @@ import org.python.jsr223.PyScriptEngineFactory;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.pool.IPoolableObjectFactory;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 
 @ThreadSafe
 @Named
@@ -47,12 +48,7 @@ public final class PyScriptEnginePoolableObjectFactory
      */
     @Override
     public void passivateObject(final PyScriptEngine obj) throws Exception {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("for var in globals():\n");
-        sb.append("    if var[0] == '_': continue\n");
-        sb.append("\n");
-        sb.append("    del globals()[var]\n");
-        obj.eval(sb.toString());
+        obj.eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
     }
 
     @Override
