@@ -2,11 +2,11 @@ package de.invesdwin.context.python.runtime.jep;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsPython;
 import jep.JepException;
 
 @NotThreadSafe
-public class JepScriptTaskInputsPython implements IScriptTaskInputs {
+public class JepScriptTaskInputsPython implements IScriptTaskInputsPython {
 
     private final JepScriptTaskEnginePython engine;
 
@@ -182,11 +182,6 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputs {
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void putExpression(final String variable, final String expression) {
-        engine.eval(variable + " = " + expression);
     }
 
 }

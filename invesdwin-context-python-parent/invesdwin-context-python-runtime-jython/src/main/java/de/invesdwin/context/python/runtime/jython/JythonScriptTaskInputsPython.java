@@ -2,10 +2,10 @@ package de.invesdwin.context.python.runtime.jython;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.integration.script.IScriptTaskInputs;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsPython;
 
 @NotThreadSafe
-public class JythonScriptTaskInputsPython implements IScriptTaskInputs {
+public class JythonScriptTaskInputsPython implements IScriptTaskInputsPython {
 
     private final JythonScriptTaskEnginePython engine;
 
@@ -106,11 +106,6 @@ public class JythonScriptTaskInputsPython implements IScriptTaskInputs {
     @Override
     public void putBooleanMatrix(final String variable, final boolean[][] value) {
         engine.unwrap().put(variable, value);
-    }
-
-    @Override
-    public void putExpression(final String variable, final String expression) {
-        engine.eval(variable + " = " + expression);
     }
 
 }
