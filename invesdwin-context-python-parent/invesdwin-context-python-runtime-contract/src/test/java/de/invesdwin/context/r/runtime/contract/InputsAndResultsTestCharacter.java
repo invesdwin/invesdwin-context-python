@@ -80,7 +80,7 @@ public class InputsAndResultsTestCharacter {
                     String str = IOUtils.toString(in, StandardCharsets.UTF_8);
                     engine.eval("import sys");
                     if (engine.getResults().getBoolean("sys.version_info >= (3, 0)")) {
-                        str = str.replace("unicode_or_str", "str");
+                        str = str.replace("str", "bytes").replace("unicode", "str");
                     }
                     engine.eval(str);
                 } catch (final IOException e) {
