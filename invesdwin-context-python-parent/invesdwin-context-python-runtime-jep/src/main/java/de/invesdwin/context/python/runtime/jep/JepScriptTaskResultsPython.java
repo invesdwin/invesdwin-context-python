@@ -1,16 +1,16 @@
 package de.invesdwin.context.python.runtime.jep;
 
-import java.util.List;
-
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
+import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.math.Booleans;
 import de.invesdwin.util.math.Bytes;
 import de.invesdwin.util.math.Characters;
+import de.invesdwin.util.math.Doubles;
 import de.invesdwin.util.math.Floats;
 import de.invesdwin.util.math.Integers;
+import de.invesdwin.util.math.Longs;
 import de.invesdwin.util.math.Shorts;
 import jep.JepException;
 
@@ -40,7 +40,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public byte[] getByteVector(final String variable) {
         try {
-            return (byte[]) engine.unwrap().getValue(variable);
+            return Bytes.checkedCastVector(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -49,7 +49,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public byte[][] getByteMatrix(final String variable) {
         try {
-            return (byte[][]) engine.unwrap().getValue(variable);
+            return Bytes.checkedCastMatrix(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +76,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public char[][] getCharacterMatrix(final String variable) {
         try {
-            return (char[][]) engine.unwrap().getValue(variable);
+            return Characters.checkedCastMatrix(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -85,7 +85,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public String getString(final String variable) {
         try {
-            return (String) engine.unwrap().getValue(variable);
+            return Strings.checkedCast(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -94,7 +94,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public String[] getStringVector(final String variable) {
         try {
-            return (String[]) engine.unwrap().getValue(variable);
+            return Strings.checkedCastVector(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -103,7 +103,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public String[][] getStringMatrix(final String variable) {
         try {
-            return (String[][]) engine.unwrap().getValue(variable);
+            return Strings.checkedCastMatrix(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -139,7 +139,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public double getDouble(final String variable) {
         try {
-            return (double) engine.unwrap().getValue(variable);
+            return Doubles.checkedCast(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -148,7 +148,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public double[] getDoubleVector(final String variable) {
         try {
-            return (double[]) engine.unwrap().getValue(variable);
+            return Doubles.checkedCastVector(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -157,7 +157,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public double[][] getDoubleMatrix(final String variable) {
         try {
-            return (double[][]) engine.unwrap().getValue(variable);
+            return Doubles.checkedCastMatrix(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -166,8 +166,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public short getShort(final String variable) {
         try {
-            final Number number = (Number) engine.unwrap().getValue(variable);
-            return Shorts.checkedCast(number);
+            return Shorts.checkedCast(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -176,7 +175,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public short[] getShortVector(final String variable) {
         try {
-            return (short[]) engine.unwrap().getValue(variable);
+            return Shorts.checkedCastVector(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -185,7 +184,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public short[][] getShortMatrix(final String variable) {
         try {
-            return (short[][]) engine.unwrap().getValue(variable);
+            return Shorts.checkedCastMatrix(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -194,8 +193,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public int getInteger(final String variable) {
         try {
-            final Number number = (Number) engine.unwrap().getValue(variable);
-            return Integers.checkedCast(number);
+            return Integers.checkedCast(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -204,7 +202,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public int[] getIntegerVector(final String variable) {
         try {
-            return (int[]) engine.unwrap().getValue(variable);
+            return Integers.checkedCastVector(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -213,7 +211,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public int[][] getIntegerMatrix(final String variable) {
         try {
-            return (int[][]) engine.unwrap().getValue(variable);
+            return Integers.checkedCastMatrix(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -222,8 +220,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public long getLong(final String variable) {
         try {
-            final Number value = (Number) engine.unwrap().getValue(variable);
-            return value.longValue();
+            return Longs.checkedCast(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -232,7 +229,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public long[] getLongVector(final String variable) {
         try {
-            return (long[]) engine.unwrap().getValue(variable);
+            return Longs.checkedCastVector(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -241,7 +238,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public long[][] getLongMatrix(final String variable) {
         try {
-            return (long[][]) engine.unwrap().getValue(variable);
+            return Longs.checkedCastMatrix(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -250,17 +247,7 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
     @Override
     public boolean getBoolean(final String variable) {
         try {
-            return (boolean) engine.unwrap().getValue(variable);
-        } catch (final JepException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<Boolean> getBooleanVectorAsList(final String variable) {
-        try {
-            return (List<Boolean>) engine.unwrap().getValue(variable);
+            return Booleans.checkedCast(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -268,15 +255,8 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
 
     @Override
     public boolean[] getBooleanVector(final String variable) {
-        final List<Boolean> value = getBooleanVectorAsList(variable);
-        return ArrayUtils.toPrimitive(value.toArray(new Boolean[value.size()]));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<List<Boolean>> getBooleanMatrixAsList(final String variable) {
         try {
-            return (List<List<Boolean>>) engine.unwrap().getValue(variable);
+            return Booleans.checkedCastVector(engine.unwrap().getValue(variable));
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -284,13 +264,11 @@ public class JepScriptTaskResultsPython implements IScriptTaskResultsPython {
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        final List<List<Boolean>> value = getBooleanMatrixAsList(variable);
-        final boolean[][] matrix = new boolean[value.size()][];
-        for (int i = 0; i < value.size(); i++) {
-            final List<Boolean> vector = value.get(i);
-            matrix[i] = ArrayUtils.toPrimitive(vector.toArray(new Boolean[vector.size()]));
+        try {
+            return Booleans.checkedCastMatrix(engine.unwrap().getValue(variable));
+        } catch (final JepException e) {
+            throw new RuntimeException(e);
         }
-        return matrix;
     }
 
 }
