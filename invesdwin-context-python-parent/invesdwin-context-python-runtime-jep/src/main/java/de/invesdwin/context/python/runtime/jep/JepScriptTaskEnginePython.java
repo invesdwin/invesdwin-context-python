@@ -29,7 +29,7 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
     private Jep jep;
     private final JepScriptTaskInputsPython inputs;
     private final JepScriptTaskResultsPython results;
-    private final File scriptFile;
+    private File scriptFile;
 
     public JepScriptTaskEnginePython(final Jep jep) {
         this.jep = jep;
@@ -70,6 +70,7 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
     public void close() {
         eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
         FileUtils.deleteQuietly(scriptFile);
+        scriptFile = null;
         jep = null;
     }
 
