@@ -26,6 +26,10 @@
 			<groupId>org.zeroturnaround</groupId>
 			<artifactId>zt-exec</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.py4j</groupId>
+			<artifactId>py4j</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
