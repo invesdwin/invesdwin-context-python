@@ -28,14 +28,14 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
 
     public static final PyScriptEngineObjectPool INSTANCE = new PyScriptEngineObjectPool();
 
-    private final WrappedExecutorService proxyCooldownMonitorExecutor = Executors
+    private final WrappedExecutorService timeoutMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
     private final List<PyScriptEngineWrapper> pyScriptEngineRotation = new ArrayList<PyScriptEngineWrapper>();
 
     private PyScriptEngineObjectPool() {
         super(PyScriptEnginePoolableObjectFactory.INSTANCE);
-        proxyCooldownMonitorExecutor.execute(new PyScriptEngineTimoutMonitor());
+        timeoutMonitorExecutor.execute(new PyScriptEngineTimoutMonitor());
     }
 
     @Override

@@ -28,14 +28,14 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
 
     public static final Py4jInterpreterObjectPool INSTANCE = new Py4jInterpreterObjectPool();
 
-    private final WrappedExecutorService proxyCooldownMonitorExecutor = Executors
+    private final WrappedExecutorService timeoutMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
     private final List<Py4jInterpreterWrapper> py4jInterpreterRotation = new ArrayList<Py4jInterpreterWrapper>();
 
     private Py4jInterpreterObjectPool() {
         super(Py4jInterpreterPoolableObjectFactory.INSTANCE);
-        proxyCooldownMonitorExecutor.execute(new Py4jInterpreterTimoutMonitor());
+        timeoutMonitorExecutor.execute(new Py4jInterpreterTimoutMonitor());
     }
 
     @Override
