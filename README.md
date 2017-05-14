@@ -37,6 +37,8 @@ You are free to choose which integration method you prefer by selecting the appr
 - to measure the performance impact of the different runtime solutions
 - to gain flexibility in various deployment scenarios
 
-## Recommended Editors
+For an example R script integration, have a look at the test cases in `invesdwin-context-r-runtime-contract` which are executed in each individual runtime module test suite.
 
-For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin.
+## Recommended Editor
+
+For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin. Run your scripts with `invesdwin-context-python-runtime-py4j` (add this module as a `test` scope dependency) during development to get python console output (you also need to add a dependecy to the type `test-jar` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency. You can also remote debug your scripts comfortable with PyDev inside Eclipse by following [this manual](http://www.pydev.org/manual_adv_remote_debugger.html). 
