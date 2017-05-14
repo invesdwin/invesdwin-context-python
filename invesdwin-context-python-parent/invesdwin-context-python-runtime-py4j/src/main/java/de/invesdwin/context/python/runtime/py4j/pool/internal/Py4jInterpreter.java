@@ -15,13 +15,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.zeroturnaround.exec.InvalidExitValueException;
 import org.zeroturnaround.exec.ProcessExecutor;
 import org.zeroturnaround.exec.StartedProcess;
-import org.zeroturnaround.exec.stream.slf4j.Slf4jStream;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
 import de.invesdwin.context.ContextProperties;
 import de.invesdwin.context.log.error.Err;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.py4j.Py4jProperties;
-import de.invesdwin.util.assertions.Assertions;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import de.invesdwin.util.time.fdate.FTimeUnit;
 import py4j.GatewayServer;
@@ -45,12 +45,12 @@ public class Py4jInterpreter implements IPy4jInterpreter {
     private final File scriptFile;
 
     public Py4jInterpreter() {
-        this.server = new GatewayServerBuilder()
+        final ReadyApplication readyApplication = new ReadyApplication();
+        this.server = new GatewayServerBuilder().entryPoint(readyApplication)
                 .connectTimeout(ContextProperties.DEFAULT_NETWORK_TIMEOUT.intValue(FTimeUnit.MILLISECONDS))
                 .javaPort(0)
                 .build();
         final AtomicBoolean serverStarted = new AtomicBoolean(false);
-        final AtomicBoolean connectionStarted = new AtomicBoolean(false);
         server.addListener(new GatewayServerListener() {
             @Override
             public void serverStopped() {}
@@ -75,9 +75,7 @@ public class Py4jInterpreter implements IPy4jInterpreter {
             public void connectionStopped(final Py4JServerConnection gatewayConnection) {}
 
             @Override
-            public void connectionStarted(final Py4JServerConnection gatewayConnection) {
-                connectionStarted.set(true);
-            }
+            public void connectionStarted(final Py4JServerConnection gatewayConnection) {}
 
             @Override
             public void connectionError(final Exception e) {
@@ -96,35 +94,39 @@ public class Py4jInterpreter implements IPy4jInterpreter {
         try (InputStream in = new ClassPathResource("Py4jInterpreter.py", Py4jInterpreter.class).getInputStream()) {
             final File folder = new File(ContextProperties.TEMP_DIRECTORY, Py4jInterpreter.class.getSimpleName());
             FileUtils.forceMkdir(folder);
-            this.scriptFile = new File(folder, UNIQUE_NAME_GENERATOR.get("script") + ".py");
+            this.scriptFile = new File(folder, UNIQUE_NAME_GENERATOR.get("Py4jInterpreter") + ".py");
             try (OutputStream out = new FileOutputStream(scriptFile)) {
                 IOUtils.copy(in, out);
             }
             this.process = new ProcessExecutor()
-                    .command(Py4jProperties.PYTHON_COMMAND, scriptFile.getAbsolutePath(),
-                            server.getAddress().getHostAddress(), String.valueOf(server.getListeningPort()))
+                    .commandSplit(Py4jProperties.PYTHON_COMMAND + " -u " + scriptFile.getAbsolutePath() + " "
+                            + server.getAddress().getHostAddress() + " " + String.valueOf(server.getListeningPort()))
                     .destroyOnExit()
                     .exitValueNormal()
-                    .redirectOutput(Slf4jStream.of(IScriptTaskRunnerPython.class).asDebug())
-                    .redirectError(Slf4jStream.of(IScriptTaskRunnerPython.class).asWarn())
+                    .redirectOutput(new Slf4jDebugOutputStream(IScriptTaskRunnerPython.LOG))
+                    .redirectError(new Slf4jWarnOutputStream(IScriptTaskRunnerPython.LOG))
                     .start();
         } catch (InvalidExitValueException | IOException e) {
             throw new RuntimeException(e);
         }
-        while (!connectionStarted.get()) {
+        while (!readyApplication.isReady()) {
             try {
-                FTimeUnit.MILLISECONDS.sleep(1);
+                FTimeUnit.MILLISECONDS.sleep(10);
             } catch (final InterruptedException e1) {
                 throw new RuntimeException(e1);
             }
         }
         this.delegate = (IPy4jInterpreter) server.getPythonServerEntryPoint(new Class[] { IPy4jInterpreter.class });
-        this.delegate.waitForReady();
     }
 
     @Override
-    public Object eval(final String expression) {
-        return delegate.eval(expression);
+    public Object get(final String variable) {
+        return delegate.get(variable);
+    }
+
+    @Override
+    public void eval(final String expression) {
+        delegate.eval(expression);
     }
 
     @Override
@@ -135,11 +137,7 @@ public class Py4jInterpreter implements IPy4jInterpreter {
     @Override
     public void close() {
         delegate.close();
-        try {
-            Assertions.checkEquals(process.getProcess().waitFor(), 0);
-        } catch (final InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        process.getProcess().destroy();
         server.shutdown();
         FileUtils.deleteQuietly(scriptFile);
     }
@@ -153,11 +151,6 @@ public class Py4jInterpreter implements IPy4jInterpreter {
     @Override
     public void cleanup() {
         delegate.cleanup();
-    }
-
-    @Override
-    public void waitForReady() {
-        delegate.waitForReady();
     }
 
 }

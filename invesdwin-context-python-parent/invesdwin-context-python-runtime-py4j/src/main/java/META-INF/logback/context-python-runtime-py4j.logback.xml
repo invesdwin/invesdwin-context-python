@@ -1,0 +1,7 @@
+<configuration>
+
+	<logger name="py4j" additivity="true" level="WARN">
+	</logger>
+
+
+</configuration>

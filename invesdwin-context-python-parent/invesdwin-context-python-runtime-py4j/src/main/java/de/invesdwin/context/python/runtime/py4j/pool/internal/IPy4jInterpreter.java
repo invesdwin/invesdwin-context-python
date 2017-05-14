@@ -4,7 +4,9 @@ import java.io.Closeable;
 
 public interface IPy4jInterpreter extends Closeable {
 
-    Object eval(final String expression);
+    Object get(final String variable);
+
+    void eval(String expression);
 
     void put(final String variable, final Object value);
 
@@ -12,7 +14,5 @@ public interface IPy4jInterpreter extends Closeable {
     void close();
 
     void cleanup();
-
-    void waitForReady();
 
 }
