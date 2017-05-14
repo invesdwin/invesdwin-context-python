@@ -1,5 +1,6 @@
 package de.invesdwin.context.python.runtime.py4j.pool.internal;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +31,7 @@ import py4j.GatewayServerListener;
 import py4j.Py4JServerConnection;
 
 @NotThreadSafe
-public class Py4jInterpreter implements IPy4jInterpreter {
+public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
 
     private static final UniqueNameGenerator UNIQUE_NAME_GENERATOR = new UniqueNameGenerator() {
         @Override
@@ -39,15 +40,16 @@ public class Py4jInterpreter implements IPy4jInterpreter {
         }
     };
 
-    private final GatewayServer server;
-    private final IPy4jInterpreter delegate;
-    private final StartedProcess process;
-    private final File scriptFile;
+    private GatewayServer server;
+    private IPy4jInterpreter delegate;
+    private StartedProcess process;
+    private File scriptFile;
 
     public Py4jInterpreter() {
         final ReadyApplication readyApplication = new ReadyApplication();
         this.server = new GatewayServerBuilder().entryPoint(readyApplication)
                 .connectTimeout(ContextProperties.DEFAULT_NETWORK_TIMEOUT.intValue(FTimeUnit.MILLISECONDS))
+                //                .readTimeout(ContextProperties.DEFAULT_NETWORK_TIMEOUT.intValue(FTimeUnit.MILLISECONDS))
                 .javaPort(0)
                 .build();
         final AtomicBoolean serverStarted = new AtomicBoolean(false);
@@ -135,11 +137,22 @@ public class Py4jInterpreter implements IPy4jInterpreter {
     }
 
     @Override
-    public void close() {
-        delegate.close();
-        process.getProcess().destroy();
-        server.shutdown();
-        FileUtils.deleteQuietly(scriptFile);
+    public synchronized void close() {
+        if (process != null) {
+            process.getProcess().destroy();
+            process = null;
+        }
+        if (server != null) {
+            server.shutdown();
+            server = null;
+        }
+
+        if (scriptFile != null) {
+            FileUtils.deleteQuietly(scriptFile);
+            scriptFile = null;
+        }
+
+        delegate = null;
     }
 
     @Override
