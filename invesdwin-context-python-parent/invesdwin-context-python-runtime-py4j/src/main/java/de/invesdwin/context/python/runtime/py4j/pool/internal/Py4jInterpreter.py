@@ -14,9 +14,6 @@ class Py4jInterpreter(object):
     def put(self, variable, value):
         globals()[variable] = value
         
-    def close(self):
-        sys.exit()
-        
     def cleanup(self):
         restoreContext()
         
