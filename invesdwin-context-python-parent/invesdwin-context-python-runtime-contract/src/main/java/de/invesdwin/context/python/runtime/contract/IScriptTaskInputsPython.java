@@ -9,4 +9,14 @@ public interface IScriptTaskInputsPython extends IScriptTaskInputs {
         getEngine().eval(variable + " = " + expression);
     }
 
+    @Override
+    default void putNull(final String variable) {
+        putExpression(variable, "None");
+    }
+
+    @Override
+    default void remove(final String variable) {
+        getEngine().eval("del " + variable);
+    }
+
 }
