@@ -1,11 +1,15 @@
 package de.invesdwin.context.python.runtime.jython.pool.internal;
 
+import java.io.OutputStreamWriter;
+
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
 
 import org.python.jsr223.PyScriptEngine;
 import org.python.jsr223.PyScriptEngineFactory;
 import org.springframework.beans.factory.FactoryBean;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
 import de.invesdwin.context.pool.IPoolableObjectFactory;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
@@ -23,6 +27,9 @@ public final class PyScriptEnginePoolableObjectFactory
     @Override
     public PyScriptEngine makeObject() {
         final PyScriptEngine engine = (PyScriptEngine) FACTORY.getScriptEngine();
+        engine.getContext().setWriter(new OutputStreamWriter(new Slf4jDebugOutputStream(IScriptTaskRunnerPython.LOG)));
+        engine.getContext()
+                .setErrorWriter(new OutputStreamWriter(new Slf4jWarnOutputStream(IScriptTaskRunnerPython.LOG)));
         return engine;
     }
 

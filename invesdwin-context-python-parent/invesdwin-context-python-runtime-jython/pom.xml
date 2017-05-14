@@ -26,6 +26,10 @@
 			<groupId>org.scijava</groupId>
 			<artifactId>jython-shaded</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.zeroturnaround</groupId>
+			<artifactId>zt-exec</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
