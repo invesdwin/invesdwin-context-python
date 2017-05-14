@@ -2,7 +2,7 @@ package de.invesdwin.context.python.runtime.jep;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsPython;
+import de.invesdwin.context.python.runtime.contract.IScriptTaskInputsPython;
 import jep.JepException;
 
 @NotThreadSafe

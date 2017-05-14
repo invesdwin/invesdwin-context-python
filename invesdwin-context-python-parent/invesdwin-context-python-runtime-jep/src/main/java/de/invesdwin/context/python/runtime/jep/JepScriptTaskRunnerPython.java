@@ -9,8 +9,8 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
-import de.invesdwin.context.r.runtime.contract.AScriptTaskPython;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
+import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
+import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.instrument.DynamicInstrumentationReflections;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Futures;

@@ -6,7 +6,6 @@ import javax.inject.Named;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.pool.IPoolableObjectFactory;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 
 @ThreadSafe
 @Named
@@ -37,7 +36,7 @@ public final class Py4jInterpreterPoolableObjectFactory
 
     @Override
     public void passivateObject(final Py4jInterpreter obj) throws Exception {
-        obj.eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
+        obj.cleanup();
     }
 
     @Override

@@ -2,7 +2,7 @@ package de.invesdwin.context.python.runtime.py4j;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskInputsPython;
+import de.invesdwin.context.python.runtime.contract.IScriptTaskInputsPython;
 
 @NotThreadSafe
 public class Py4jScriptTaskInputsPython implements IScriptTaskInputsPython {

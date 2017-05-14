@@ -1,9 +1,9 @@
-package de.invesdwin.context.r.runtime.contract.internal;
+package de.invesdwin.context.python.runtime.contract.internal;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.inject.Named;
 
-import de.invesdwin.context.r.runtime.contract.ProvidedScriptTaskRunnerPython;
+import de.invesdwin.context.python.runtime.contract.ProvidedScriptTaskRunnerPython;
 import de.invesdwin.context.test.ATest;
 import de.invesdwin.context.test.stub.StubSupport;
 

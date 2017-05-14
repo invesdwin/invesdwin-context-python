@@ -8,7 +8,7 @@ import org.python.jsr223.PyScriptEngineFactory;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.pool.IPoolableObjectFactory;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
+import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 
 @ThreadSafe
 @Named

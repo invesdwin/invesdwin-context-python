@@ -10,7 +10,7 @@ import org.apache.commons.io.FileUtils;
 
 import de.invesdwin.context.ContextProperties;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
-import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
+import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import jep.Jep;
 

@@ -2,7 +2,7 @@ package de.invesdwin.context.python.runtime.py4j;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
+import de.invesdwin.context.python.runtime.contract.IScriptTaskResultsPython;
 import de.invesdwin.util.lang.Strings;
 import de.invesdwin.util.math.Booleans;
 import de.invesdwin.util.math.Bytes;
