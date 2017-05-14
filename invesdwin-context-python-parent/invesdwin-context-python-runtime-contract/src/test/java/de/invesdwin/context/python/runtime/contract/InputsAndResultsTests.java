@@ -30,6 +30,7 @@ public class InputsAndResultsTests {
         new InputsAndResultsTestCharacter(runner).testCharacter();
         new InputsAndResultsTestString(runner).testString();
         new InputsAndResultsTestBoolean(runner).testBoolean();
+        new InputsAndResultsTestNull(runner).testNull();
     }
 
     public void testParallel() {

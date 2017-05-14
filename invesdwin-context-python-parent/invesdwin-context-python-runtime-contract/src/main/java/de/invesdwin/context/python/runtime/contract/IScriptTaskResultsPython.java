@@ -6,7 +6,7 @@ public interface IScriptTaskResultsPython extends IScriptTaskResults {
 
     @Override
     default boolean isDefined(final String variable) {
-        return getBoolean("'" + variable + "' in locals()");
+        return getBoolean("'" + variable + "' in locals() or '" + variable + "' in globals()");
     }
 
     @Override
