@@ -5,9 +5,8 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
-import com.github.rcaller.rstuff.RCaller;
-
-import de.invesdwin.context.python.runtime.py4j.pool.RCallerObjectPool;
+import de.invesdwin.context.python.runtime.py4j.pool.Py4jInterpreterObjectPool;
+import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreter;
 import de.invesdwin.context.r.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.r.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.error.Throwables;
@@ -17,9 +16,8 @@ import de.invesdwin.util.error.Throwables;
 public final class Py4jScriptTaskRunnerPython
         implements IScriptTaskRunnerPython, FactoryBean<Py4jScriptTaskRunnerPython> {
 
-    public static final Py4jScriptTaskRunnerPython INSTANCE = new Py4jScriptTaskRunnerPython();
-
     public static final String INTERNAL_RESULT_VARIABLE = Py4jScriptTaskRunnerPython.class.getSimpleName() + "_result";
+    public static final Py4jScriptTaskRunnerPython INSTANCE = new Py4jScriptTaskRunnerPython();
 
     /**
      * public for ServiceLoader support
@@ -29,35 +27,30 @@ public final class Py4jScriptTaskRunnerPython
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
-        final RCaller rcaller;
+        final Py4jInterpreter pyScriptEngine;
         try {
-            rcaller = RCallerObjectPool.INSTANCE.borrowObject();
+            pyScriptEngine = Py4jInterpreterObjectPool.INSTANCE.borrowObject();
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
         try {
             //inputs
-            rcaller.getRCode().clearOnline();
-            final Py4jScriptTaskInputsPython inputs = new Py4jScriptTaskInputsPython(rcaller);
-            scriptTask.populateInputs(inputs);
-            inputs.close();
+            final Py4jScriptTaskEnginePython engine = new Py4jScriptTaskEnginePython(pyScriptEngine);
+            scriptTask.populateInputs(engine.getInputs());
 
             //execute
-            rcaller.getRCode().addRCode(scriptTask.getScriptResourceAsString());
-            rcaller.getRCode().addRCode(INTERNAL_RESULT_VARIABLE + " <- c()");
-            rcaller.runAndReturnResultOnline(INTERNAL_RESULT_VARIABLE);
+            scriptTask.executeScript(engine);
 
             //results
-            final Py4jScriptTaskResultsPython results = new Py4jScriptTaskResultsPython(rcaller);
-            final T result = scriptTask.extractResults(results);
-            results.close();
+            final T result = scriptTask.extractResults(engine.getResults());
+            engine.close();
 
             //return
-            RCallerObjectPool.INSTANCE.returnObject(rcaller);
+            Py4jInterpreterObjectPool.INSTANCE.returnObject(pyScriptEngine);
             return result;
         } catch (final Throwable t) {
             try {
-                RCallerObjectPool.INSTANCE.invalidateObject(rcaller);
+                Py4jInterpreterObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
             } catch (final Exception e) {
                 throw new RuntimeException(e);
             }

@@ -2,193 +2,164 @@ package de.invesdwin.context.python.runtime.py4j;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import com.github.rcaller.rstuff.RCaller;
-
-import de.invesdwin.context.integration.script.IScriptTaskResults;
-import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.context.r.runtime.contract.IScriptTaskResultsPython;
+import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.math.Booleans;
+import de.invesdwin.util.math.Bytes;
+import de.invesdwin.util.math.Characters;
+import de.invesdwin.util.math.Doubles;
+import de.invesdwin.util.math.Floats;
+import de.invesdwin.util.math.Integers;
+import de.invesdwin.util.math.Longs;
+import de.invesdwin.util.math.Shorts;
 
 @NotThreadSafe
-public class Py4jScriptTaskResultsPython implements IScriptTaskResults {
-    private RCaller rcaller;
+public class Py4jScriptTaskResultsPython implements IScriptTaskResultsPython {
 
-    public Py4jScriptTaskResultsPython(final RCaller rcaller) {
-        this.rcaller = rcaller;
+    private final Py4jScriptTaskEnginePython engine;
+
+    public Py4jScriptTaskResultsPython(final Py4jScriptTaskEnginePython engine) {
+        this.engine = engine;
     }
 
     @Override
-    public RCaller getEngine() {
-        return rcaller;
+    public Py4jScriptTaskEnginePython getEngine() {
+        return engine;
     }
 
     @Override
-    public void close() {
-        rcaller = null;
+    public byte getByte(final String variable) {
+        return Bytes.checkedCast(engine.unwrap().eval(variable));
     }
 
-    private void requestVariable(final String variable) {
-        rcaller.runAndReturnResultOnline(variable);
+    @Override
+    public byte[] getByteVector(final String variable) {
+        return Bytes.checkedCastVector(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public byte[][] getByteMatrix(final String variable) {
+        return Bytes.checkedCastMatrix(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public char getCharacter(final String variable) {
+        return Characters.checkedCast(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public char[] getCharacterVector(final String variable) {
+        return Characters.checkedCastVector(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public char[][] getCharacterMatrix(final String variable) {
+        return Characters.checkedCastMatrix(engine.unwrap().eval(variable));
     }
 
     @Override
     public String getString(final String variable) {
-        requestVariable(variable);
-        final String[] array = replaceNaWithNull(rcaller.getParser().getAsStringArray(variable));
-        Assertions.checkEquals(array.length, 1);
-        return array[0];
-    }
-
-    private String[] replaceNaWithNull(final String[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if ("NA".equals(array[i])) {
-                array[i] = null;
-            }
-        }
-        return array;
+        return Strings.checkedCast(engine.unwrap().eval(variable));
     }
 
     @Override
     public String[] getStringVector(final String variable) {
-        requestVariable(variable);
-        return replaceNaWithNull(rcaller.getParser().getAsStringArray(variable));
+        return Strings.checkedCastVector(engine.unwrap().eval(variable));
     }
 
     @Override
     public String[][] getStringMatrix(final String variable) {
-        final String[] ct = getStringVector(variable);
-        if (ct == null) {
-            return null;
-        }
-        rcaller.getRCode().addRCode(Py4jScriptTaskRunnerPython.INTERNAL_RESULT_VARIABLE + " <- dim(" + variable + ")");
-        final int[] ds = getIntegerVector(Py4jScriptTaskRunnerPython.INTERNAL_RESULT_VARIABLE);
-        if ((ds == null) || (ds.length != 2)) {
-            return null;
-        }
-        final int m = ds[0];
-        final int n = ds[1];
-        final String[][] r = new String[m][n];
+        return Strings.checkedCastMatrix(engine.unwrap().eval(variable));
+    }
 
-        int i = 0;
-        int k = 0;
-        while (i < n) {
-            int j = 0;
-            while (j < m) {
-                r[(j++)][i] = ct[(k++)];
-            }
-            i++;
-        }
-        return r;
+    @Override
+    public float getFloat(final String variable) {
+        return Floats.checkedCast(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public float[] getFloatVector(final String variable) {
+        return Floats.checkedCastVector(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public float[][] getFloatMatrix(final String variable) {
+        return Floats.checkedCastMatrix(engine.unwrap().eval(variable));
     }
 
     @Override
     public double getDouble(final String variable) {
-        requestVariable(variable);
-        final double[] array = rcaller.getParser().getAsDoubleArray(variable);
-        Assertions.checkEquals(array.length, 1);
-        return array[0];
+        return Doubles.checkedCast(engine.unwrap().eval(variable));
     }
 
     @Override
     public double[] getDoubleVector(final String variable) {
-        requestVariable(variable);
-        return rcaller.getParser().getAsDoubleArray(variable);
+        return Doubles.checkedCastVector(engine.unwrap().eval(variable));
     }
 
     @Override
     public double[][] getDoubleMatrix(final String variable) {
-        //not using rcaller getDoubleMatrix since it transposes the matrix as a side effect...
-        final double[] ct = getDoubleVector(variable);
-        if (ct == null) {
-            return null;
-        }
-        final int[] ds = rcaller.getParser().getDimensions(variable);
-        if ((ds == null) || (ds.length != 2)) {
-            return null;
-        }
-        final int m = ds[0];
-        final int n = ds[1];
-        final double[][] r = new double[m][n];
+        return Doubles.checkedCastMatrix(engine.unwrap().eval(variable));
+    }
 
-        int i = 0;
-        int k = 0;
-        while (i < n) {
-            int j = 0;
-            while (j < m) {
-                r[(j++)][i] = ct[(k++)];
-            }
-            i++;
-        }
-        return r;
+    @Override
+    public short getShort(final String variable) {
+        return Shorts.checkedCast(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public short[] getShortVector(final String variable) {
+        return Shorts.checkedCastVector(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public short[][] getShortMatrix(final String variable) {
+        return Shorts.checkedCastMatrix(engine.unwrap().eval(variable));
     }
 
     @Override
     public int getInteger(final String variable) {
-        requestVariable(variable);
-        final int[] array = rcaller.getParser().getAsIntArray(variable);
-        Assertions.checkEquals(array.length, 1);
-        return array[0];
+        return Integers.checkedCast(engine.unwrap().eval(variable));
     }
 
     @Override
     public int[] getIntegerVector(final String variable) {
-        requestVariable(variable);
-        return rcaller.getParser().getAsIntArray(variable);
+        return Integers.checkedCastVector(engine.unwrap().eval(variable));
     }
 
     @Override
     public int[][] getIntegerMatrix(final String variable) {
-        final int[] ct = getIntegerVector(variable);
-        if (ct == null) {
-            return null;
-        }
-        final int[] ds = rcaller.getParser().getDimensions(variable);
-        if ((ds == null) || (ds.length != 2)) {
-            return null;
-        }
-        final int m = ds[0];
-        final int n = ds[1];
-        final int[][] r = new int[m][n];
+        return Integers.checkedCastMatrix(engine.unwrap().eval(variable));
+    }
 
-        int i = 0;
-        int k = 0;
-        while (i < n) {
-            int j = 0;
-            while (j < m) {
-                r[(j++)][i] = ct[(k++)];
-            }
-            i++;
-        }
-        return r;
+    @Override
+    public long getLong(final String variable) {
+        return Longs.checkedCast(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public long[] getLongVector(final String variable) {
+        return Longs.checkedCastVector(engine.unwrap().eval(variable));
+    }
+
+    @Override
+    public long[][] getLongMatrix(final String variable) {
+        return Longs.checkedCastMatrix(engine.unwrap().eval(variable));
     }
 
     @Override
     public boolean getBoolean(final String variable) {
-        requestVariable(variable);
-        final boolean[] array = rcaller.getParser().getAsLogicalArray(variable);
-        Assertions.checkEquals(array.length, 1);
-        return array[0];
+        return Booleans.checkedCast(engine.unwrap().eval(variable));
     }
 
     @Override
     public boolean[] getBooleanVector(final String variable) {
-        requestVariable(variable);
-        return rcaller.getParser().getAsLogicalArray(variable);
+        return Booleans.checkedCastVector(engine.unwrap().eval(variable));
     }
 
     @Override
     public boolean[][] getBooleanMatrix(final String variable) {
-        rcaller.getRCode().addRCode(Py4jScriptTaskRunnerPython.INTERNAL_RESULT_VARIABLE + " <- array(as.numeric(" + variable
-                + "), dim(" + variable + "))");
-        final double[][] matrix = getDoubleMatrix(Py4jScriptTaskRunnerPython.INTERNAL_RESULT_VARIABLE);
-        final boolean[][] booleanMatrix = new boolean[matrix.length][];
-        for (int i = 0; i < matrix.length; i++) {
-            final double[] vector = matrix[i];
-            final boolean[] booleanVector = new boolean[vector.length];
-            for (int j = 0; j < vector.length; j++) {
-                booleanVector[j] = vector[j] > 0;
-            }
-            booleanMatrix[i] = booleanVector;
-        }
-        return booleanMatrix;
+        return Booleans.checkedCastMatrix(engine.unwrap().eval(variable));
     }
 
 }
