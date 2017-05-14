@@ -8,6 +8,7 @@ import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.core.io.ClassPathResource;
 
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
@@ -131,7 +132,10 @@ public final class JepScriptTaskRunnerPython
             try {
                 this.jep = new Jep(new JepConfig().setSharedModules(JepProperties.getSharedModules())
                         .setInteractive(false)
-                        .setRedirectOutputStreams(true));
+                        .setRedirectOutputStreams(false));
+                final JepScriptTaskEnginePython engine = new JepScriptTaskEnginePython(jep);
+                engine.eval(new ClassPathResource("JepSetup.py", JepScriptTaskRunnerPython.class));
+                engine.close();
             } catch (final JepException e) {
                 throw new RuntimeException(
                         "Maybe you are mixing the python version with a different one for which jep was compiled for?",

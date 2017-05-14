@@ -1,12 +1,17 @@
 package de.invesdwin.context.python.runtime.jep;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.annotation.concurrent.ThreadSafe;
 
+import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
+
+import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.system.properties.SystemProperties;
 import de.invesdwin.util.concurrent.Executors;
 
@@ -15,6 +20,10 @@ public final class JepProperties {
 
     public static final int THREAD_POOL_COUNT;
     public static final File JEP_LIBRARY_PATH;
+
+    public static final PrintStream REDIRECTED_OUT = new PrintStream(new Slf4jDebugOutputStream(IScriptTaskRunnerPython.LOG));
+    public static final PrintStream REDIRECTED_ERR = new PrintStream(new Slf4jWarnOutputStream(IScriptTaskRunnerPython.LOG));
+
     private static final Set<String> SHARED_MODULES = Collections.synchronizedSet(new LinkedHashSet<String>());
 
     static {

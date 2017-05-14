@@ -10,7 +10,6 @@ import org.apache.commons.io.FileUtils;
 
 import de.invesdwin.context.ContextProperties;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
-import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import jep.Jep;
 
@@ -68,7 +67,7 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
 
     @Override
     public void close() {
-        eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
+        eval("restoreContext()");
         FileUtils.deleteQuietly(scriptFile);
         scriptFile = null;
         jep = null;
