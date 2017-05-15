@@ -57,10 +57,14 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputsPython {
 
     @Override
     public void putCharacterVector(final String variable, final char[] value) {
-        try {
-            engine.unwrap().set(variable, value);
-        } catch (final JepException e) {
-            throw new RuntimeException(e);
+        if (value == null) {
+            putNull(variable);
+        } else {
+            try {
+                engine.unwrap().set(variable, value);
+            } catch (final JepException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -249,7 +253,9 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputsPython {
     public void putBooleanVector(final String variable, final boolean[] value) {
         try {
             engine.unwrap().set(variable, value);
-            putExpression(variable, "[bool(x) for x in " + variable + "]");
+            if (value != null) {
+                putExpression(variable, "[bool(x) for x in " + variable + "]");
+            }
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
@@ -259,7 +265,9 @@ public class JepScriptTaskInputsPython implements IScriptTaskInputsPython {
     public void putBooleanMatrix(final String variable, final boolean[][] value) {
         try {
             engine.unwrap().set(variable, value);
-            putExpression(variable, "[[bool(y) for y in x] for x in " + variable + "]");
+            if (value != null) {
+                putExpression(variable, "[[bool(y) for y in x] for x in " + variable + "]");
+            }
         } catch (final JepException e) {
             throw new RuntimeException(e);
         }
