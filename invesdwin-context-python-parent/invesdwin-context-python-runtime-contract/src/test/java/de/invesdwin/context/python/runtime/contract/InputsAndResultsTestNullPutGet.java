@@ -19,7 +19,7 @@ public class InputsAndResultsTestNullPutGet {
         this.runner = runner;
     }
 
-    public void testNullGetSet() {
+    public void testNullPutGet() {
         new AScriptTaskPython<Void>() {
 
             @Override

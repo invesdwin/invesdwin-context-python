@@ -31,7 +31,7 @@ public class InputsAndResultsTests {
         new InputsAndResultsTestString(runner).testString();
         new InputsAndResultsTestBoolean(runner).testBoolean();
         new InputsAndResultsTestNull(runner).testNull();
-        new InputsAndResultsTestNullPutGet(runner).testNullGetSet();
+        new InputsAndResultsTestNullPutGet(runner).testNullPutGet();
     }
 
     public void testParallel() {
