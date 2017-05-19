@@ -37,7 +37,7 @@ You are free to choose which integration method you prefer by selecting the appr
 - to measure the performance impact of the different runtime solutions
 - to gain flexibility in various deployment scenarios
 
-For an example R script integration, have a look at the test cases in `invesdwin-context-python-runtime-contract` which are executed in each individual runtime module test suite.
+For an example python script integration, have a look at the test cases in `invesdwin-context-python-runtime-contract` which are executed in each individual runtime module test suite.
 
 ## Recommended Editor
 
