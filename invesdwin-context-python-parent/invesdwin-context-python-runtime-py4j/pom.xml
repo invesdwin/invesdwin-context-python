@@ -10,6 +10,10 @@
 	<artifactId>invesdwin-context-python-runtime-py4j</artifactId>
 	<packaging>jar</packaging>
 
+	<!-- sudo apt-get install python-pip python3-pip -->
+	<!-- sudo pip2 install py4j -->
+	<!-- sudo pip3 install py4j -->
+
 	<dependencies>
 		<dependency>
 			<groupId>de.invesdwin</groupId>

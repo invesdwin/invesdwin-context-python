@@ -12,7 +12,8 @@
 
 	<!-- sudo apt-get install python-pip python3-pip -->
 	<!-- sudo echo 'JAVA_HOME="/usr/lib/jvm/default-java/"' >> /etc/environment -->
-	<!-- sudo pip install jep -->
+	<!-- sudo pip2 install jep -->
+	<!-- sudo pip3 install jep -->
 
 	<dependencies>
 		<dependency>
