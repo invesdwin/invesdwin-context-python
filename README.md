@@ -54,7 +54,7 @@ final AScriptTaskPython<String> script = new AScriptTaskPython<String>() {
 	//execute this script inline:
 	engine.eval("world = \"Hello \" + hello + \"!\"");
 	//or run it from a file:
-	//engine.eval(new ClassPathResource(HelloWorldScript.class.getSimpleName() + ".py", getClass()));
+	//engine.eval(new ClassPathResource("HelloWorldScript.py", getClass()));
     }
 
     @Override
