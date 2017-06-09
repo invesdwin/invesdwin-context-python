@@ -66,7 +66,7 @@ final String result = script.run(); //optionally pass a specific runner as an ar
 Assertions.assertThat(result).isEqualTo("Hello World!");
 ```
 
-For more elaborate examples for the python script integration, have a look at the test cases in `invesdwin-context-python-runtime-contract` which are executed in each individual runtime module test suite.
+For more elaborate examples of the python script integration, have a look at the test cases in `invesdwin-context-python-runtime-contract` which are executed in each individual runtime module test suite.
 
 ## Recommended Editor
 
