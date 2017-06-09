@@ -71,13 +71,14 @@ For more elaborate examples of the python script integration, have a look at the
 ## Using PyPy
 
 [PyPy](https://pypy.org/) is a compatible and [often faster](http://speed.pypy.org/) implementation of python than CPython is. Just use the `invesdwin-context-python-runtime-py4j` module and set the system property `de.invesdwin.context.python.runtime.py4j.Py4jProperties.PYTHON_COMMAND=pypy`. Installation in ubuntu can be done as follows:
-```bash
+```shell
 sudo apt-get install pypy
 wget https://bootstrap.pypa.io/get-pip.py 
 sudo pypy get-pip.py
 rm get-pip.py
 sudo pypy -m pip install py4j
 ```
+Though as always you should measure the performance for your specific use case and scripts before deciding on a specific solution.
 
 ## Recommended Editor
 
