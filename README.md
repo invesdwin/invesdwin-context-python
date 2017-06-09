@@ -68,6 +68,17 @@ Assertions.assertThat(result).isEqualTo("Hello World!");
 
 For more elaborate examples of the python script integration, have a look at the test cases in `invesdwin-context-python-runtime-contract` which are executed in each individual runtime module test suite.
 
+## Using PyPy
+
+[PyPy](https://pypy.org/) is a compatible and [often faster](http://speed.pypy.org/) implementation of python than CPython is. Just use the `invesdwin-context-python-runtime-py4j` module and set the system property `de.invesdwin.context.python.runtime.py4j.Py4jProperties.PYTHON_COMMAND=pypy`. Installation in ubuntu can be done as follows:
+```bash
+sudo apt-get install pypy
+wget https://bootstrap.pypa.io/get-pip.py 
+sudo pypy get-pip.py
+rm get-pip.py
+sudo pypy -m pip install py4j
+```
+
 ## Recommended Editor
 
 For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin. If you want to run your scripts from your main application, you can do this easily with `invesdwin-context-python-runtime-py4j` (add this module as a `test` scope dependency) during development (you also need to add a dependecy to the type `test-jar` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency. You can also remote debug your scripts comfortably with PyDev inside Eclipse by following [this manual](http://www.pydev.org/manual_adv_remote_debugger.html). 
