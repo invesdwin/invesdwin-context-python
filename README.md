@@ -37,7 +37,36 @@ You are free to choose which integration method you prefer by selecting the appr
 - to measure the performance impact of the different runtime solutions
 - to gain flexibility in various deployment scenarios
 
-For an example python script integration, have a look at the test cases in `invesdwin-context-python-runtime-contract` which are executed in each individual runtime module test suite.
+## Example Code
+
+This is a minimal example of the famous Hello World as a script:
+
+```java
+final AScriptTaskPython<String> script = new AScriptTaskPython<String>() {
+
+    @Override
+    public void populateInputs(final IScriptTaskInputs inputs) {
+	inputs.putString("hello", "World");
+    }
+
+    @Override
+    public void executeScript(final IScriptTaskEngine engine) {
+	//execute this script inline:
+	engine.eval("world = \"Hello \" + hello + \"!\"");
+	//or run it from a file:
+	//engine.eval(new ClassPathResource(HelloWorldScript.class.getSimpleName() + ".py", getClass()));
+    }
+
+    @Override
+    public String extractResults(final IScriptTaskResults results) {
+	return results.getString("world");
+    }
+};
+final String result = script.run(); //optionally pass a specific runner as an argument here
+Assertions.assertThat(result).isEqualTo("Hello World!");
+```
+
+For more elaborate examples for the python script integration, have a look at the test cases in `invesdwin-context-python-runtime-contract` which are executed in each individual runtime module test suite.
 
 ## Recommended Editor
 
