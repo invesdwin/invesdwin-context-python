@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import de.invesdwin.context.python.runtime.contract.hello.HelloWorldScript;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Futures;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
@@ -19,6 +20,7 @@ public class InputsAndResultsTests {
     }
 
     public void test() {
+        new HelloWorldScript(runner).testHelloWorld();
         new InputsAndResultsTestByte(runner).testByte();
         new InputsAndResultsTestFloat(runner).testFloat();
         new InputsAndResultsTestDouble(runner).testDouble();
