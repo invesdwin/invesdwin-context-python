@@ -39,7 +39,7 @@ You are free to choose which integration method you prefer by selecting the appr
 
 ## Example Code
 
-This is a minimal example of the famous Hello World as a script:
+This is a minimal example of the famous `Hello World!` as a script:
 
 ```java
 final AScriptTaskPython<String> script = new AScriptTaskPython<String>() {
