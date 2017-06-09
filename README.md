@@ -78,7 +78,7 @@ sudo pypy get-pip.py
 rm get-pip.py
 sudo pypy -m pip install py4j
 ```
-Though as always you should measure the performance for your specific use case and scripts before deciding on a specific solution.
+Though as always you should measure the performance for your use cases and scripts before deciding on a specific solution.
 
 ## Recommended Editor
 
