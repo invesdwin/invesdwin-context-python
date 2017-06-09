@@ -76,7 +76,7 @@ For more elaborate examples of the python script integration, have a look at the
 de.invesdwin.context.python.runtime.py4j.Py4jProperties.PYTHON_COMMAND=pypy
 ```
 
-Installation in ubuntu can be done as follows:
+Installation on ubuntu can be done as follows:
 ```bash
 sudo apt-get install pypy
 wget https://bootstrap.pypa.io/get-pip.py 
