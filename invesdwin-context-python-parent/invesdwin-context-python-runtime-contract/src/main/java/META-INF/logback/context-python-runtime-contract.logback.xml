@@ -1,0 +1,7 @@
+<configuration>
+
+	<logger name="de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython" additivity="true" level="ERROR">
+	</logger>
+
+
+</configuration>
