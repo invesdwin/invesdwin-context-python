@@ -34,6 +34,8 @@ public class InputsAndResultsTests {
         new InputsAndResultsTestBoolean(runner).testBoolean();
         new InputsAndResultsTestNull(runner).testNull();
         new InputsAndResultsTestNullPutGet(runner).testNullPutGet();
+        new InputsAndResultsTestEmpty(runner).testEmpty();
+        new InputsAndResultsTestEmptyMatrixValue(runner).testEmptyMatrixValue();
     }
 
     public void testParallel() {
