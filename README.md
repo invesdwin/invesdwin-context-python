@@ -70,7 +70,7 @@ For more elaborate examples of the python script integration, have a look at the
 
 ## Using PyPy
 
-[PyPy](https://pypy.org/) is a compatible and [often faster](http://speed.pypy.org/) implementation of python than CPython is. Just use the `invesdwin-context-python-runtime-py4j` module and set the system property:
+[PyPy](https://pypy.org/) is a compliant and [often faster](http://speed.pypy.org/) implementation of python than CPython is. Just use the `invesdwin-context-python-runtime-py4j` module and set the system property:
 
 ```properties
 de.invesdwin.context.python.runtime.py4j.Py4jProperties.PYTHON_COMMAND=pypy
