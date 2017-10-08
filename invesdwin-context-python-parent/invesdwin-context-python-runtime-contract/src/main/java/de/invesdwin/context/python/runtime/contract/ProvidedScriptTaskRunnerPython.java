@@ -20,13 +20,14 @@ import de.invesdwin.util.lang.Strings;
  */
 @Immutable
 @Named
-public final class ProvidedScriptTaskRunnerPython implements IScriptTaskRunnerPython, FactoryBean<ProvidedScriptTaskRunnerPython> {
+public final class ProvidedScriptTaskRunnerPython
+        implements IScriptTaskRunnerPython, FactoryBean<ProvidedScriptTaskRunnerPython> {
 
     public static final String PROVIDED_INSTANCE_KEY = IScriptTaskRunnerPython.class.getName();
 
     public static final ProvidedScriptTaskRunnerPython INSTANCE = new ProvidedScriptTaskRunnerPython();
 
-    @GuardedBy("this.class")
+    @GuardedBy("ProvidedScriptTaskRunnerPython.class")
     private static IScriptTaskRunnerPython providedInstance;
 
     private ProvidedScriptTaskRunnerPython() {}
@@ -63,11 +64,11 @@ public final class ProvidedScriptTaskRunnerPython implements IScriptTaskRunnerPy
                     }
                     Strings.removeEnd(runnersStr, "|");
                     runnersStr.append(")");
-                    throw new IllegalStateException(
-                            "More than one service provider found for [" + PROVIDED_INSTANCE_KEY + "=" + runnersStr
-                                    + "] to choose from. Please remove unwanted ones from the classpath or choose a "
-                                    + "specific one by defining a system property for the preferred one. E.g. on the command line with -D"
-                                    + PROVIDED_INSTANCE_KEY + "=" + runners.keySet().iterator().next());
+                    throw new IllegalStateException("More than one service provider found for [" + PROVIDED_INSTANCE_KEY
+                            + "=" + runnersStr
+                            + "] to choose from. Please remove unwanted ones from the classpath or choose a "
+                            + "specific one by defining a system property for the preferred one. E.g. on the command line with -D"
+                            + PROVIDED_INSTANCE_KEY + "=" + runners.keySet().iterator().next());
                 }
                 setProvidedInstance(runners.values().iterator().next());
             }

@@ -51,7 +51,7 @@ public final class JepScriptTaskRunnerPython
         DynamicInstrumentationReflections.addPathToJavaLibraryPath(JepProperties.JEP_LIBRARY_PATH);
     }
 
-    @GuardedBy("this.class")
+    @GuardedBy("JepScriptTaskRunnerPython.class")
     private static WrappedExecutorService executor;
 
     /**
