@@ -27,7 +27,6 @@
 	</modules>
 
 	<properties>
-		<version.invesdwin-context-integration>${version.invesdwin-context}</version.invesdwin-context-integration>
 		<version.invesdwin-context-python>${version.invesdwin-context}</version.invesdwin-context-python>
 
 		<version.jython>2.7.0</version.jython>
@@ -37,14 +36,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>de.invesdwin</groupId>
-				<artifactId>invesdwin-context-integration-parent</artifactId>
-				<version>${version.invesdwin-context-integration}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-python-runtime-contract</artifactId>
