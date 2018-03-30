@@ -7,8 +7,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.python.runtime.contract.hello.HelloWorldScript;
 import de.invesdwin.util.concurrent.Executors;
-import de.invesdwin.util.concurrent.Futures;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
+import de.invesdwin.util.concurrent.future.Futures;
 
 @NotThreadSafe
 public class InputsAndResultsTests {
