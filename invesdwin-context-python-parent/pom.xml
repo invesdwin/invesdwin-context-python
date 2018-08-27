@@ -33,7 +33,7 @@
 
 		<version.jython>2.7.0</version.jython>
 		<version.jep>3.8.2</version.jep>
-		<version.py4j>0.10.4</version.py4j>
+		<version.py4j>0.10.7</version.py4j>
 	</properties>
 
 	<dependencyManagement>
