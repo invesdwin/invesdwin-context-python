@@ -155,7 +155,11 @@ public final class JepScriptTaskRunnerPython
 
         @Override
         public void close() {
-            jep.close();
+            try {
+                jep.close();
+            } catch (final JepException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

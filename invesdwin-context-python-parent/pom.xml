@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                              http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -31,7 +32,7 @@
 		<version.invesdwin-context-python>${version.invesdwin-context}</version.invesdwin-context-python>
 
 		<version.jython>2.7.0</version.jython>
-		<version.jep>3.6.3</version.jep>
+		<version.jep>3.8.2</version.jep>
 		<version.py4j>0.10.4</version.py4j>
 	</properties>
 
@@ -70,7 +71,7 @@
 				<version>${version.jython}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.github.mrj0</groupId>
+				<groupId>black.ninia</groupId>
 				<artifactId>jep</artifactId>
 				<version>${version.jep}</version>
 			</dependency>
@@ -107,7 +108,7 @@
 			<url>http://invesdwin.de/artifactory/invesdwin-oss-remote</url>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 	<scm>
 		<url>https://github.com/subes/invesdwin-context-python</url>
 		<connection>scm:git:https://github.com/subes/invesdwin-context-python.git</connection>
