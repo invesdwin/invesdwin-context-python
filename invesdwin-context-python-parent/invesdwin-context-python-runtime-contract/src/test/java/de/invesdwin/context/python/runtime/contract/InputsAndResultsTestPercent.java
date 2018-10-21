@@ -27,12 +27,12 @@ public class InputsAndResultsTestPercent {
 
     public void testPercent() {
         //putPercent
-        final Percent putPercent = new Percent(new Decimal("123.123"), PercentScale.RATE);
+        final Percent putPercent = new Percent(123.123D, PercentScale.RATE);
 
         //putPercentVector
         final Percent[] putPercentVector = new Percent[3];
         for (int i = 0; i < putPercentVector.length; i++) {
-            putPercentVector[i] = new Percent(new Decimal((i + 1) + "." + (i + 1)), PercentScale.RATE);
+            putPercentVector[i] = new Percent(new Decimal((i + 1) + "." + (i + 1)).doubleValue(), PercentScale.RATE);
         }
 
         //putPercentVectorAsList
@@ -43,7 +43,7 @@ public class InputsAndResultsTestPercent {
         for (int row = 0; row < putPercentMatrix.length; row++) {
             final Percent[] vector = new Percent[3];
             for (int col = 0; col < vector.length; col++) {
-                vector[col] = new Percent(new Decimal((row + 1) + "." + (col + 1)), PercentScale.RATE);
+                vector[col] = new Percent(new Decimal((row + 1) + "." + (col + 1)).doubleValue(), PercentScale.RATE);
             }
             putPercentMatrix[row] = vector;
         }
