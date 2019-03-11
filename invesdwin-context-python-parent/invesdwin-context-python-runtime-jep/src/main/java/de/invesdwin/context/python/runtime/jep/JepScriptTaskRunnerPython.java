@@ -17,6 +17,7 @@ import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.future.Futures;
 import de.invesdwin.util.error.Throwables;
+import de.invesdwin.util.lang.finalizer.AFinalizer;
 import io.netty.util.concurrent.FastThreadLocal;
 import jep.Jep;
 import jep.JepConfig;
@@ -126,14 +127,12 @@ public final class JepScriptTaskRunnerPython
     }
 
     private static class JepWrapper implements Closeable {
-        private final Jep jep;
+        private final JepWrapperFinalizer finalizer;
 
         JepWrapper() {
             try {
-                this.jep = new Jep(new JepConfig().setSharedModules(JepProperties.getSharedModules())
-                        .setInteractive(false)
-                        .setRedirectOutputStreams(false));
-                final JepScriptTaskEnginePython engine = new JepScriptTaskEnginePython(jep);
+                this.finalizer = new JepWrapperFinalizer();
+                final JepScriptTaskEnginePython engine = new JepScriptTaskEnginePython(finalizer.jep);
                 engine.eval(new ClassPathResource("JepSetup.py", JepScriptTaskRunnerPython.class));
                 engine.close();
             } catch (final JepException e) {
@@ -144,22 +143,38 @@ public final class JepScriptTaskRunnerPython
         }
 
         public Jep getJep() {
-            return jep;
-        }
-
-        @Override
-        protected void finalize() throws Throwable {
-            super.finalize();
-            close();
+            return finalizer.jep;
         }
 
         @Override
         public void close() {
-            try {
-                jep.close();
-            } catch (final JepException e) {
-                throw new RuntimeException(e);
+            finalizer.close();
+        }
+
+        private static final class JepWrapperFinalizer extends AFinalizer {
+
+            private final Jep jep;
+
+            private JepWrapperFinalizer() throws JepException {
+                this.jep = new Jep(new JepConfig().setSharedModules(JepProperties.getSharedModules())
+                        .setInteractive(false)
+                        .setRedirectOutputStreams(false));
             }
+
+            @Override
+            protected void clean() {
+                try {
+                    jep.close();
+                } catch (final JepException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public boolean isClosed() {
+                return false;
+            }
+
         }
     }
 
