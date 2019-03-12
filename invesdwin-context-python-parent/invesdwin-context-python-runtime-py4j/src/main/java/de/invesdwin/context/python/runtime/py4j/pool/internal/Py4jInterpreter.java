@@ -177,7 +177,7 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
 
         @Override
         public boolean isClosed() {
-            return delegate != null;
+            return delegate == null;
         }
 
     }
