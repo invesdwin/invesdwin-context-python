@@ -44,6 +44,7 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
 
     public Py4jInterpreter() {
         this.finalizer = new Py4jInterpreterFinalizer();
+        this.finalizer.register(this);
     }
 
     @Override

@@ -132,6 +132,7 @@ public final class JepScriptTaskRunnerPython
         JepWrapper() {
             try {
                 this.finalizer = new JepWrapperFinalizer();
+                this.finalizer.register(this);
                 final JepScriptTaskEnginePython engine = new JepScriptTaskEnginePython(finalizer.jep);
                 engine.eval(new ClassPathResource("JepSetup.py", JepScriptTaskRunnerPython.class));
                 engine.close();
@@ -153,7 +154,7 @@ public final class JepScriptTaskRunnerPython
 
         private static final class JepWrapperFinalizer extends AFinalizer {
 
-            private final Jep jep;
+            private Jep jep;
 
             private JepWrapperFinalizer() throws JepException {
                 this.jep = new Jep(new JepConfig().setSharedModules(JepProperties.getSharedModules())
@@ -165,6 +166,7 @@ public final class JepScriptTaskRunnerPython
             protected void clean() {
                 try {
                     jep.close();
+                    jep = null;
                 } catch (final JepException e) {
                     throw new RuntimeException(e);
                 }
@@ -172,7 +174,7 @@ public final class JepScriptTaskRunnerPython
 
             @Override
             public boolean isClosed() {
-                return false;
+                return jep == null;
             }
 
         }
