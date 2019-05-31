@@ -11,6 +11,21 @@
 	<artifactId>invesdwin-context-python-runtime-jep</artifactId>
 	<packaging>jar</packaging>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<!-- disabled, no automated testing atm -->
+						<exclude>**/*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<!-- sudo apt-get install python-pip python3-pip -->
 	<!-- sudo echo 'JAVA_HOME="/usr/lib/jvm/default-java/"' >> /etc/environment -->
 	<!-- sudo pip2 install jep -->
