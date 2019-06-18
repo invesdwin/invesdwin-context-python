@@ -114,6 +114,11 @@
 		<connection>scm:git:https://github.com/subes/invesdwin-context-python.git</connection>
 		<tag>HEAD</tag>
 	</scm>
+	
+	<ciManagement>
+		<system>jenkins</system>
+		<url>https://invesdwin.de/jenkins/job/dgr-deploy-invesdwin-context-python/</url>
+	</ciManagement>
 
 </project>
 
