@@ -173,7 +173,7 @@ public final class JepScriptTaskRunnerPython
             }
 
             @Override
-            public boolean isClosed() {
+            protected boolean isCleaned() {
                 return jep == null;
             }
 
