@@ -29,7 +29,8 @@
 	</modules>
 
 	<properties>
-		<version.invesdwin-context-python>${version.invesdwin-context}</version.invesdwin-context-python>
+		<version.invesdwin-context>1.0.0-SNAPSHOT</version.invesdwin-context>
+		<version.invesdwin-context-python>${project.version}</version.invesdwin-context-python>
 
 		<version.jython>2.7.0</version.jython>
 		<version.jep>3.8.2</version.jep>
