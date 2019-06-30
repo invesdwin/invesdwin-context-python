@@ -29,8 +29,8 @@
 	</modules>
 
 	<properties>
-		<version.invesdwin-context>1.0.0-SNAPSHOT</version.invesdwin-context>
-		<version.invesdwin-context-python>${project.version}</version.invesdwin-context-python>
+		<project.version.invesdwin-context>1.0.0-SNAPSHOT</project.version.invesdwin-context>
+		<project.version.invesdwin-context-python>${project.version}</project.version.invesdwin-context-python>
 
 		<version.jython>2.7.0</version.jython>
 		<version.jep>3.8.2</version.jep>
@@ -42,28 +42,28 @@
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-python-runtime-contract</artifactId>
-				<version>${version.invesdwin-context-python}</version>
+				<version>${project.version.invesdwin-context-python}</version>
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-python-runtime-contract</artifactId>
-				<version>${version.invesdwin-context-python}</version>
+				<version>${project.version.invesdwin-context-python}</version>
 				<type>test-jar</type>
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-python-runtime-py4j</artifactId>
-				<version>${version.invesdwin-context-python}</version>
+				<version>${project.version.invesdwin-context-python}</version>
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-python-runtime-jep</artifactId>
-				<version>${version.invesdwin-context-python}</version>
+				<version>${project.version.invesdwin-context-python}</version>
 			</dependency>
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-python-runtime-jython</artifactId>
-				<version>${version.invesdwin-context-python}</version>
+				<version>${project.version.invesdwin-context-python}</version>
 			</dependency>
 
 			<dependency>
