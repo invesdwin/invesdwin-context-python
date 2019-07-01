@@ -13,7 +13,7 @@ Dependency declaration:
 <dependency>
 	<groupId>de.invesdwin</groupId>
 	<artifactId>invesdwin-context-python-runtime-py4j</artifactId>
-	<version>1.0.0</version><!---version.invesdwin-context-python-parent-->
+	<version>1.0.0</version><!---project.version.invesdwin-context-python-parent-->
 </dependency>
 ```
 ## Runtime Integration Modules
