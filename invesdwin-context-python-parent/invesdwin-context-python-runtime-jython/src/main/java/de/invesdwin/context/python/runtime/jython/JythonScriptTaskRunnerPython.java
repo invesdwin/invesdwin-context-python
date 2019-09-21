@@ -28,12 +28,7 @@ public final class JythonScriptTaskRunnerPython
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
-        final PyScriptEngine pyScriptEngine;
-        try {
-            pyScriptEngine = PyScriptEngineObjectPool.INSTANCE.borrowObject();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+        final PyScriptEngine pyScriptEngine = PyScriptEngineObjectPool.INSTANCE.borrowObject();
         try {
             //inputs
             final JythonScriptTaskEnginePython engine = new JythonScriptTaskEnginePython(pyScriptEngine);
@@ -50,11 +45,7 @@ public final class JythonScriptTaskRunnerPython
             PyScriptEngineObjectPool.INSTANCE.returnObject(pyScriptEngine);
             return result;
         } catch (final Throwable t) {
-            try {
-                PyScriptEngineObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
-            } catch (final Exception e) {
-                throw new RuntimeException(e);
-            }
+            PyScriptEngineObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
             throw Throwables.propagate(t);
         }
     }

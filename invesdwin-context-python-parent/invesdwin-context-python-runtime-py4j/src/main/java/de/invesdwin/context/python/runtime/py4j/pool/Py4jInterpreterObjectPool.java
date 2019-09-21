@@ -39,7 +39,7 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
     }
 
     @Override
-    protected synchronized Py4jInterpreter internalBorrowObject() throws Exception {
+    protected synchronized Py4jInterpreter internalBorrowObject() {
         if (py4jInterpreterRotation.isEmpty()) {
             return factory.makeObject();
         }
@@ -57,7 +57,7 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
     }
 
     @Override
-    public synchronized Collection<Py4jInterpreter> internalClear() throws Exception {
+    public synchronized Collection<Py4jInterpreter> internalClear() {
         final Collection<Py4jInterpreter> removed = new ArrayList<Py4jInterpreter>();
         while (!py4jInterpreterRotation.isEmpty()) {
             removed.add(py4jInterpreterRotation.remove(0).getPy4jInterpreter());
@@ -66,24 +66,24 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
     }
 
     @Override
-    protected synchronized Py4jInterpreter internalAddObject() throws Exception {
+    protected synchronized Py4jInterpreter internalAddObject() {
         final Py4jInterpreter pooled = factory.makeObject();
         py4jInterpreterRotation.add(new Py4jInterpreterWrapper(factory.makeObject()));
         return pooled;
     }
 
     @Override
-    protected synchronized void internalReturnObject(final Py4jInterpreter obj) throws Exception {
+    protected synchronized void internalReturnObject(final Py4jInterpreter obj) {
         py4jInterpreterRotation.add(new Py4jInterpreterWrapper(obj));
     }
 
     @Override
-    protected void internalInvalidateObject(final Py4jInterpreter obj) throws Exception {
+    protected void internalInvalidateObject(final Py4jInterpreter obj) {
         //Nothing happens
     }
 
     @Override
-    protected synchronized void internalRemoveObject(final Py4jInterpreter obj) throws Exception {
+    protected synchronized void internalRemoveObject(final Py4jInterpreter obj) {
         py4jInterpreterRotation.remove(new Py4jInterpreterWrapper(obj));
     }
 
@@ -150,7 +150,7 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
     }
 
     @Override
-    public Py4jInterpreterObjectPool getObject() throws Exception {
+    public Py4jInterpreterObjectPool getObject() {
         return INSTANCE;
     }
 

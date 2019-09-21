@@ -22,7 +22,7 @@ public final class Py4jInterpreterPoolableObjectFactory
     }
 
     @Override
-    public void destroyObject(final Py4jInterpreter obj) throws Exception {
+    public void destroyObject(final Py4jInterpreter obj) {
         obj.close();
     }
 
@@ -32,15 +32,15 @@ public final class Py4jInterpreterPoolableObjectFactory
     }
 
     @Override
-    public void activateObject(final Py4jInterpreter obj) throws Exception {}
+    public void activateObject(final Py4jInterpreter obj) {}
 
     @Override
-    public void passivateObject(final Py4jInterpreter obj) throws Exception {
+    public void passivateObject(final Py4jInterpreter obj) {
         obj.cleanup();
     }
 
     @Override
-    public Py4jInterpreterPoolableObjectFactory getObject() throws Exception {
+    public Py4jInterpreterPoolableObjectFactory getObject() {
         return INSTANCE;
     }
 

@@ -39,7 +39,7 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
     }
 
     @Override
-    protected synchronized PyScriptEngine internalBorrowObject() throws Exception {
+    protected synchronized PyScriptEngine internalBorrowObject() {
         if (pyScriptEngineRotation.isEmpty()) {
             return factory.makeObject();
         }
@@ -57,7 +57,7 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
     }
 
     @Override
-    public synchronized Collection<PyScriptEngine> internalClear() throws Exception {
+    public synchronized Collection<PyScriptEngine> internalClear() {
         final Collection<PyScriptEngine> removed = new ArrayList<PyScriptEngine>();
         while (!pyScriptEngineRotation.isEmpty()) {
             removed.add(pyScriptEngineRotation.remove(0).getPyScriptEngine());
@@ -66,24 +66,24 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
     }
 
     @Override
-    protected synchronized PyScriptEngine internalAddObject() throws Exception {
+    protected synchronized PyScriptEngine internalAddObject() {
         final PyScriptEngine pooled = factory.makeObject();
         pyScriptEngineRotation.add(new PyScriptEngineWrapper(factory.makeObject()));
         return pooled;
     }
 
     @Override
-    protected synchronized void internalReturnObject(final PyScriptEngine obj) throws Exception {
+    protected synchronized void internalReturnObject(final PyScriptEngine obj) {
         pyScriptEngineRotation.add(new PyScriptEngineWrapper(obj));
     }
 
     @Override
-    protected void internalInvalidateObject(final PyScriptEngine obj) throws Exception {
+    protected void internalInvalidateObject(final PyScriptEngine obj) {
         //Nothing happens
     }
 
     @Override
-    protected synchronized void internalRemoveObject(final PyScriptEngine obj) throws Exception {
+    protected synchronized void internalRemoveObject(final PyScriptEngine obj) {
         pyScriptEngineRotation.remove(new PyScriptEngineWrapper(obj));
     }
 
@@ -150,7 +150,7 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
     }
 
     @Override
-    public PyScriptEngineObjectPool getObject() throws Exception {
+    public PyScriptEngineObjectPool getObject() {
         return INSTANCE;
     }
 

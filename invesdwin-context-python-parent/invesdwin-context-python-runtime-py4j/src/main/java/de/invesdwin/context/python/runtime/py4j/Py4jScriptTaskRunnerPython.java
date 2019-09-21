@@ -27,12 +27,7 @@ public final class Py4jScriptTaskRunnerPython
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
-        final Py4jInterpreter pyScriptEngine;
-        try {
-            pyScriptEngine = Py4jInterpreterObjectPool.INSTANCE.borrowObject();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+        final Py4jInterpreter pyScriptEngine = Py4jInterpreterObjectPool.INSTANCE.borrowObject();
         try {
             //inputs
             final Py4jScriptTaskEnginePython engine = new Py4jScriptTaskEnginePython(pyScriptEngine);
@@ -49,11 +44,7 @@ public final class Py4jScriptTaskRunnerPython
             Py4jInterpreterObjectPool.INSTANCE.returnObject(pyScriptEngine);
             return result;
         } catch (final Throwable t) {
-            try {
-                Py4jInterpreterObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
-            } catch (final Exception e) {
-                throw new RuntimeException(e);
-            }
+            Py4jInterpreterObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
             throw Throwables.propagate(t);
         }
     }

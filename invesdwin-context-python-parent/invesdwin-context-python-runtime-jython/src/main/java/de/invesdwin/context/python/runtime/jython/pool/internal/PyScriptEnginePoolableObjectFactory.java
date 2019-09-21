@@ -4,6 +4,7 @@ import java.io.OutputStreamWriter;
 
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
+import javax.script.ScriptException;
 
 import org.python.jsr223.PyScriptEngine;
 import org.python.jsr223.PyScriptEngineFactory;
@@ -34,7 +35,7 @@ public final class PyScriptEnginePoolableObjectFactory
     }
 
     @Override
-    public void destroyObject(final PyScriptEngine obj) throws Exception {
+    public void destroyObject(final PyScriptEngine obj) {
         obj.close();
     }
 
@@ -44,7 +45,7 @@ public final class PyScriptEnginePoolableObjectFactory
     }
 
     @Override
-    public void activateObject(final PyScriptEngine obj) throws Exception {}
+    public void activateObject(final PyScriptEngine obj) {}
 
     /**
      * https://github.com/mrj0/jep/wiki/Performance-Considerations
@@ -54,12 +55,16 @@ public final class PyScriptEnginePoolableObjectFactory
      * http://stackoverflow.com/questions/3543833/how-do-i-clear-all-variables-in-the-middle-of-a-python-script
      */
     @Override
-    public void passivateObject(final PyScriptEngine obj) throws Exception {
-        obj.eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
+    public void passivateObject(final PyScriptEngine obj) {
+        try {
+            obj.eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public PyScriptEnginePoolableObjectFactory getObject() throws Exception {
+    public PyScriptEnginePoolableObjectFactory getObject() {
         return INSTANCE;
     }
 
