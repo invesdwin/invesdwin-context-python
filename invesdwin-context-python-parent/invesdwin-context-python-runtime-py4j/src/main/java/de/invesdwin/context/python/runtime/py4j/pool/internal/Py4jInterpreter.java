@@ -181,6 +181,11 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
             return delegate == null;
         }
 
+        @Override
+        public boolean isThreadLocal() {
+            return false;
+        }
+
     }
 
 }

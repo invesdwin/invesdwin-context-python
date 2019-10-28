@@ -177,6 +177,11 @@ public final class JepScriptTaskRunnerPython
                 return jep == null;
             }
 
+            @Override
+            public boolean isThreadLocal() {
+                return false;
+            }
+
         }
     }
 
