@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.zeroturnaround.exec.InvalidExitValueException;
@@ -23,6 +22,7 @@ import de.invesdwin.context.ContextProperties;
 import de.invesdwin.context.log.error.Err;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.py4j.Py4jProperties;
+import de.invesdwin.util.lang.Files;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import de.invesdwin.util.lang.finalizer.AFinalizer;
 import de.invesdwin.util.time.fdate.FTimeUnit;
@@ -130,7 +130,7 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
 
             try (InputStream in = new ClassPathResource("Py4jInterpreter.py", Py4jInterpreter.class).getInputStream()) {
                 final File folder = new File(ContextProperties.TEMP_DIRECTORY, Py4jInterpreter.class.getSimpleName());
-                FileUtils.forceMkdir(folder);
+                Files.forceMkdir(folder);
                 this.scriptFile = new File(folder, UNIQUE_NAME_GENERATOR.get("Py4jInterpreter") + ".py");
                 try (OutputStream out = new FileOutputStream(scriptFile)) {
                     IOUtils.copy(in, out);
@@ -169,7 +169,7 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
             }
 
             if (scriptFile != null) {
-                FileUtils.deleteQuietly(scriptFile);
+                Files.deleteQuietly(scriptFile);
                 scriptFile = null;
             }
 

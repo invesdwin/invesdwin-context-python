@@ -6,10 +6,9 @@ import java.nio.charset.Charset;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.io.FileUtils;
-
 import de.invesdwin.context.ContextProperties;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
+import de.invesdwin.util.lang.Files;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import jep.Jep;
 
@@ -35,7 +34,7 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
         this.inputs = new JepScriptTaskInputsPython(this);
         this.results = new JepScriptTaskResultsPython(this);
         try {
-            FileUtils.forceMkdir(FOLDER);
+            Files.forceMkdir(FOLDER);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
@@ -48,7 +47,7 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public void eval(final String expression) {
         try {
-            FileUtils.writeStringToFile(scriptFile, expression, Charset.defaultCharset());
+            Files.writeStringToFile(scriptFile, expression, Charset.defaultCharset());
             jep.runScript(scriptFile.getAbsolutePath());
         } catch (final Exception e) {
             throw new RuntimeException(e);
@@ -68,7 +67,7 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public void close() {
         eval("restoreContext()");
-        FileUtils.deleteQuietly(scriptFile);
+        Files.deleteQuietly(scriptFile);
         scriptFile = null;
         jep = null;
     }
