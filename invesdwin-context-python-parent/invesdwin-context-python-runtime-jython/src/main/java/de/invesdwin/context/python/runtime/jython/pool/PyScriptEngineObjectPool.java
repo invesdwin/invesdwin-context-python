@@ -112,7 +112,7 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
         }
     }
 
-    private final class PyScriptEngineWrapper {
+    private static final class PyScriptEngineWrapper {
 
         private final PyScriptEngine pyScriptEngine;
         private final FDate timeoutStart;

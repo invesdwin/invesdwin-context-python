@@ -112,7 +112,7 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
         }
     }
 
-    private final class Py4jInterpreterWrapper {
+    private static final class Py4jInterpreterWrapper {
 
         private final Py4jInterpreter py4jInterpreter;
         private final FDate timeoutStart;
