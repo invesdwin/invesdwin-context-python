@@ -115,8 +115,8 @@
 	</pluginRepositories>
 
 	<scm>
-		<url>https://github.com/subes/invesdwin-context-python</url>
-		<connection>scm:git:https://github.com/subes/invesdwin-context-python.git</connection>
+		<url>https://github.com/invesdwin/invesdwin-context-python</url>
+		<connection>scm:git:https://github.com/invesdwin/invesdwin-context-python.git</connection>
 		<tag>HEAD</tag>
 	</scm>
 
