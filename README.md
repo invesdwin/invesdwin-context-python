@@ -121,13 +121,17 @@ public class PythonStrategy extends StrategySupport {
 
     @Override
     public void onInit() {
-        //        pythonEngine = Py4jScriptTaskEnginePython.newInstance();
-        //        pythonEngine = JythonScriptTaskEnginePython.newInstance();
-        pythonEngine = JepScriptTaskEnginePython.newInstance();
         tickCache = getBroker().getInstrumentRegistry()
                 .getInstrumentOrThrow(instrumentId)
                 .getDataSource()
                 .getTickCache();
+    }
+
+    @Override
+    public void onStart() {
+        //        pythonEngine = Py4jScriptTaskEnginePython.newInstance();
+        //        pythonEngine = JythonScriptTaskEnginePython.newInstance();
+        pythonEngine = JepScriptTaskEnginePython.newInstance();
         start = new Instant();
         lastLog = new Instant();
     }
@@ -185,10 +189,10 @@ public class PythonStrategyTest extends ATest {
 ```
 
 ### Results
-- Py4J: 29/ms python calls with 7371.21/s ticks processed
+- Py4J: 29.24/ms python calls with 7345.74/s ticks processed
 - Jython: 3351.88/s python calls with 859.63/s ticks processed
-- Jep: 
-- Java Only: 
+- Jep: 55.42/ms python calls with 13.62/ms ticks processed
+- Java Only: 1654.46/ms ticks processed
 
 ## More Programming Languages
 
