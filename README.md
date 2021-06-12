@@ -102,7 +102,7 @@ For working with python we recommend using [PyDev](http://www.pydev.org/) if you
 
 ## Benchmark
 
-Using python inside strategy backtests has the following overhead. We run a backtests with ticks for one month and call 4 times into python to calculate a spread:
+Using python inside strategy backtests (part of the closed source trading platform) has the following overhead. We run a backtests with ticks for one month and call four times into python to calculate a spread and compare it against the one calculated in java:
 
 ### Strategy Code
 ```java
@@ -194,6 +194,9 @@ public class PythonStrategyTest extends ATest {
 - Py4J (python3): 29.24/ms python calls with 7345.74/s ticks processed
 - Py4J (pypy): 28.93/ms python calls with 7283.06/s ticks processed
 - Jython: 3351.88/s python calls with 859.63/s ticks processed
+
+### Solution
+For faster backtests it might be better to reduce the calls to python to as little as possible. Export data from platform, precalculate data in python using some machine learning frameworks, then use an exported file from python with the results during the strategy backtest. This utilizes the full speed of both python and java. The steps can all be automated from the java side using this python integration. During live trading or visual backtests the communication overhead for a tigher integration should be acceptable as long as no high frequency trading is performed. Also the overhead could become acceptable on backtests on higher granular (e.g. daily) bars since there are a lot less data points to be processed or the decision interval for communicating with python is less frequent.
 
 ## More Programming Languages
 
