@@ -191,7 +191,8 @@ public class PythonStrategyTest extends ATest {
 ### Results
 - Java Only: 1654.46/ms ticks processed
 - Jep: 55.42/ms python calls with 13.62/ms ticks processed
-- Py4J: 29.24/ms python calls with 7345.74/s ticks processed
+- Py4J (python3): 29.24/ms python calls with 7345.74/s ticks processed
+- Py4J (pypy): 28.93/ms python calls with 7283.06/s ticks processed
 - Jython: 3351.88/s python calls with 859.63/s ticks processed
 
 ## More Programming Languages
