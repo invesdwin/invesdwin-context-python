@@ -3,6 +3,7 @@ package de.invesdwin.context.python.runtime.py4j;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
+import de.invesdwin.context.python.runtime.py4j.pool.Py4jInterpreterObjectPool;
 import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreter;
 
 @NotThreadSafe
@@ -41,6 +42,19 @@ public class Py4jScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public Py4jInterpreter unwrap() {
         return py4jInterpreter;
+    }
+
+    public static Py4jScriptTaskEnginePython newInstance() {
+        return new Py4jScriptTaskEnginePython(Py4jInterpreterObjectPool.INSTANCE.borrowObject()) {
+            @Override
+            public void close() {
+                final Py4jInterpreter interpreter = unwrap();
+                if (interpreter != null) {
+                    Py4jInterpreterObjectPool.INSTANCE.returnObject(interpreter);
+                }
+                super.close();
+            }
+        };
     }
 
 }

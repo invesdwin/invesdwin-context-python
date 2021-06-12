@@ -6,6 +6,7 @@ import javax.script.ScriptException;
 import org.python.jsr223.PyScriptEngine;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
+import de.invesdwin.context.python.runtime.jython.pool.PyScriptEngineObjectPool;
 
 @NotThreadSafe
 public class JythonScriptTaskEnginePython implements IScriptTaskEngine {
@@ -50,6 +51,19 @@ public class JythonScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public PyScriptEngine unwrap() {
         return pyScriptEngine;
+    }
+
+    public static JythonScriptTaskEnginePython newInstance() {
+        return new JythonScriptTaskEnginePython(PyScriptEngineObjectPool.INSTANCE.borrowObject()) {
+            @Override
+            public void close() {
+                final PyScriptEngine interpreter = unwrap();
+                if (interpreter != null) {
+                    PyScriptEngineObjectPool.INSTANCE.returnObject(interpreter);
+                }
+                super.close();
+            }
+        };
     }
 
 }
