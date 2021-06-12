@@ -100,6 +100,96 @@ The above configuration options for the invidiual runtimes can still be provided
 
 For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin. If you want to run your scripts from your main application, you can do this easily with `invesdwin-context-python-runtime-py4j` (add this module as a `test` scope dependency) during development (you also need to add a dependecy to the type `test-jar` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency. You can also remote debug your scripts comfortably with PyDev inside Eclipse by following [this manual](http://www.pydev.org/manual_adv_remote_debugger.html). 
 
+## Benchmark
+
+Using python inside strategy backtests has the following overhead. We run a backtests with ticks for one month and call 4 times into python to calculate a spread:
+
+### Strategy Code
+```java
+public class PythonStrategy extends StrategySupport {
+
+    private final String instrumentId;
+    private IScriptTaskEngine pythonEngine;
+    private ITickCache tickCache;
+    private int countPythonCalls = 0;
+    private Instant start;
+    private Instant lastLog;
+
+    public PythonStrategy(final String instrumentId) {
+        this.instrumentId = instrumentId;
+    }
+
+    @Override
+    public void onInit() {
+        //        pythonEngine = Py4jScriptTaskEnginePython.newInstance();
+        //        pythonEngine = JythonScriptTaskEnginePython.newInstance();
+        pythonEngine = JepScriptTaskEnginePython.newInstance();
+        tickCache = getBroker().getInstrumentRegistry()
+                .getInstrumentOrThrow(instrumentId)
+                .getDataSource()
+                .getTickCache();
+        start = new Instant();
+        lastLog = new Instant();
+    }
+
+    @Override
+    public void onTickTime() {
+        final ATick lastTick = tickCache.getLastTick(null);
+        pythonEngine.getInputs().putDouble("ask", lastTick.getAskAbsolute());
+        countPythonCalls++;
+        pythonEngine.getInputs().putDouble("bid", lastTick.getBidAbsolute());
+        countPythonCalls++;
+        pythonEngine.eval("spread = abs(ask-bid)");
+        countPythonCalls++;
+        final double pythonSpread = pythonEngine.getResults().getDouble("spread");
+        countPythonCalls++;
+        Assertions.checkEquals(lastTick.getSpreadAbsolute(), pythonSpread);
+        if (lastLog.isGreaterThan(Duration.ONE_SECOND)) {
+            //CHECKSTYLE:OFF
+            System.out.println("Python Calls: " + new ProcessedEventsRateString(countPythonCalls, start.toDuration()));
+            //CHECKSTYLE:ON
+            lastLog = new Instant();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        if (pythonEngine != null) {
+            pythonEngine.close();
+            pythonEngine = null;
+        }
+    }
+
+}
+```
+
+### Test Code
+```java
+public class PythonStrategyTest extends ATest {
+
+    @Inject
+    private HistoricalBacktestRunFactory historical;
+
+    @Test
+    public void test() {
+        final BacktestRunConfig config = new BacktestRunConfig();
+        config.withDataFeedConfig(DataFeedConfig.TICKS);
+        config.withTimeRange(new TimeRange(FDateBuilder.newDate(2010, 1), FDateBuilder.newDate(2010, 2)));
+        config.withProgressListener(new LoggingBacktestRunProgressListener("python"));
+        final FastStrategyTrigger trigger = new FastStrategyTrigger(new PythonStrategy("EURUSD"));
+        historical.run(config, trigger);
+        trigger.close();
+    }
+
+}
+```
+
+### Results
+- Py4J: 29/ms python calls with 7371.21/s ticks processed
+- Jython: 3351.88/s python calls with 859.63/s ticks processed
+- Jep: 
+- Java Only: 
+
 ## More Programming Languages
 
 Similar integration modules like this one also exist for the following other programming languages: 
