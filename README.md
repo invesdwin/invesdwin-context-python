@@ -102,7 +102,7 @@ For working with python we recommend using [PyDev](http://www.pydev.org/) if you
 
 ## Benchmark
 
-Using python inside strategy backtests (part of the closed source trading platform) has the following overhead. We run a backtest (using the historical engine which is the slowest from a processing speed but most efficient in memory usage) on ticks for one month and call four times into python to calculate a spread and compare it against the one calculated in java:
+Using python inside strategy backtests (part of the closed source trading platform) has the following overhead. We run a backtest (using the historical engine which is the slowest from a processing speed but most efficient in memory usage) on ticks for one month. Each tick we call four times into python to calculate a spread and compare it against the one calculated in java:
 
 ### Strategy Code
 ```java
