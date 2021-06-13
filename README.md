@@ -178,6 +178,7 @@ public class PythonStrategyTest extends ATest {
     public void test() {
         final BacktestRunConfig config = new BacktestRunConfig();
         config.withDataFeedConfig(DataFeedConfig.TICKS);
+	config.withSkipDataFeedPut();
         config.withTimeRange(new TimeRange(FDateBuilder.newDate(2010, 1), FDateBuilder.newDate(2010, 2)));
         config.withProgressListener(new LoggingBacktestRunProgressListener("python"));
         final FastStrategyTrigger trigger = new FastStrategyTrigger(new PythonStrategy("EURUSD"));
@@ -189,14 +190,14 @@ public class PythonStrategyTest extends ATest {
 ```
 
 ### Results
-- Java Only: 1654.46/ms ticks processed
-- Jep: 55.42/ms python calls with 13.62/ms ticks processed
-- Py4J-python3: 29.24/ms python calls with 7345.74/s ticks processed
-- Py4J-pypy: 28.93/ms python calls with 7283.06/s ticks processed
-- Jython: 3351.88/s python calls with 859.63/s ticks processed (starts with up to ~6000/s python calls but slows down the longer it runs)
+- Java Only: 2425.2/ms ticks processed
+- Jep: 56.25/ms python calls with 13.82/ms ticks processed
+- Py4J-python3: 29.63/ms python calls with 7463.35/s ticks processed
+- Py4J-pypy: 29.3/ms python calls with 7371.21/s ticks processed
+- Jython: 2050.49/s python calls with 511.63/s ticks processed (starts with up to ~5900/s python calls but slows down the longer it runs)
 
 ### Solution
-For faster backtests it might be better to reduce the calls to python to as little as possible. Export data from platform, precalculate data in python using some machine learning frameworks, then use an exported file from python with the results during the strategy backtest. This utilizes the full speed of both python and java. The steps can all be automated from the java side using this python integration. During live trading or visual backtests the communication overhead for a tigher integration should be acceptable as long as no high frequency trading is performed. Also the overhead could become acceptable on backtests on higher granular (e.g. daily) bars since there are a lot less data points to be processed or the decision interval for communicating with python is less frequent.
+For faster backtests it might be better to reduce the calls to python to as little as possible. Export data from platform, precalculate data in python using some machine learning frameworks, then use an exported file from python with the results during the strategy backtest. This utilizes the full speed of both python and java. The steps can all be automated from the java side using this python integration. During live trading or visual backtests the communication overhead for a tigther integration should be acceptable as long as no high frequency trading is performed. Also the overhead could become acceptable on backtests on higher granular (e.g. daily) bars since there are a lot less data points to be processed or the decision interval for communicating with python is less frequent.
 
 ## More Programming Languages
 
