@@ -5,6 +5,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.python.runtime.py4j.pool.Py4jInterpreterObjectPool;
 import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreter;
+import de.invesdwin.util.concurrent.lock.ILock;
+import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 
 @NotThreadSafe
 public class Py4jScriptTaskEnginePython implements IScriptTaskEngine {
@@ -44,13 +46,21 @@ public class Py4jScriptTaskEnginePython implements IScriptTaskEngine {
         return py4jInterpreter;
     }
 
+    /**
+     * Each instance has its own engine, so no shared locking required.
+     */
+    @Override
+    public ILock getSharedLock() {
+        return DisabledLock.INSTANCE;
+    }
+
     public static Py4jScriptTaskEnginePython newInstance() {
         return new Py4jScriptTaskEnginePython(Py4jInterpreterObjectPool.INSTANCE.borrowObject()) {
             @Override
             public void close() {
-                final Py4jInterpreter interpreter = unwrap();
-                if (interpreter != null) {
-                    Py4jInterpreterObjectPool.INSTANCE.returnObject(interpreter);
+                final Py4jInterpreter unwrap = unwrap();
+                if (unwrap != null) {
+                    Py4jInterpreterObjectPool.INSTANCE.returnObject(unwrap);
                 }
                 super.close();
             }

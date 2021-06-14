@@ -7,6 +7,8 @@ import org.python.jsr223.PyScriptEngine;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.python.runtime.jython.pool.PyScriptEngineObjectPool;
+import de.invesdwin.util.concurrent.lock.ILock;
+import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 
 @NotThreadSafe
 public class JythonScriptTaskEnginePython implements IScriptTaskEngine {
@@ -53,13 +55,21 @@ public class JythonScriptTaskEnginePython implements IScriptTaskEngine {
         return pyScriptEngine;
     }
 
+    /**
+     * Each instance has its own engine, so no shared locking required.
+     */
+    @Override
+    public ILock getSharedLock() {
+        return DisabledLock.INSTANCE;
+    }
+
     public static JythonScriptTaskEnginePython newInstance() {
         return new JythonScriptTaskEnginePython(PyScriptEngineObjectPool.INSTANCE.borrowObject()) {
             @Override
             public void close() {
-                final PyScriptEngine interpreter = unwrap();
-                if (interpreter != null) {
-                    PyScriptEngineObjectPool.INSTANCE.returnObject(interpreter);
+                final PyScriptEngine unwrap = unwrap();
+                if (unwrap != null) {
+                    PyScriptEngineObjectPool.INSTANCE.returnObject(unwrap);
                 }
                 super.close();
             }

@@ -9,6 +9,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import de.invesdwin.context.ContextProperties;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.python.runtime.jep.internal.JepWrapper;
+import de.invesdwin.util.concurrent.lock.ILock;
+import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 import de.invesdwin.util.lang.Files;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 import jep.Jep;
@@ -76,6 +78,15 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public Jep unwrap() {
         return jep;
+    }
+
+    /**
+     * Jep can only allows access within the same thread. Thus not lock needed. Though be careful about not trying to
+     * access the instance from other threads. This will lead to exceptions.
+     */
+    @Override
+    public ILock getSharedLock() {
+        return DisabledLock.INSTANCE;
     }
 
     public static JepScriptTaskEnginePython newInstance() {
