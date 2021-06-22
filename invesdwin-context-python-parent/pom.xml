@@ -8,7 +8,7 @@
 		<relativePath />
 	</parent>
 	<artifactId>invesdwin-context-python-parent</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -117,7 +117,7 @@
 	<scm>
 		<url>https://github.com/invesdwin/invesdwin-context-python</url>
 		<connection>scm:git:https://github.com/invesdwin/invesdwin-context-python.git</connection>
-		<tag>HEAD</tag>
+		<tag>invesdwin-context-python-parent-1.0.3</tag>
 	</scm>
 
 	<ciManagement>
