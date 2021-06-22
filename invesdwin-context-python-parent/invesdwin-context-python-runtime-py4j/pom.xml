@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>de.invesdwin</groupId>
 		<artifactId>invesdwin-context-python-parent</artifactId>
-		<version>1.0.3</version>
+		<version>1.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>invesdwin-context-python-runtime-py4j</artifactId>
 	<packaging>jar</packaging>
