@@ -5,7 +5,7 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
-import de.invesdwin.context.pool.IPoolableObjectFactory;
+import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
 
 @ThreadSafe
 @Named

@@ -12,8 +12,8 @@ import org.springframework.beans.factory.FactoryBean;
 import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
 import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
-import de.invesdwin.context.pool.IPoolableObjectFactory;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
+import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
 
 @ThreadSafe
 @Named
