@@ -2,7 +2,7 @@ package de.invesdwin.context.python.runtime.jython.pool;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.concurrent.GuardedBy;
@@ -13,7 +13,9 @@ import org.python.jsr223.PyScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.python.runtime.jython.pool.internal.PyScriptEnginePoolableObjectFactory;
-import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.iterable.ICloseableIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
@@ -31,7 +33,7 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
     private final WrappedExecutorService timeoutMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
-    private final List<PyScriptEngineWrapper> pyScriptEngineRotation = new ArrayList<PyScriptEngineWrapper>();
+    private final NodeBufferingIterator<PyScriptEngineWrapper> pyScriptEngineRotation = new NodeBufferingIterator<PyScriptEngineWrapper>();
 
     private PyScriptEngineObjectPool() {
         super(PyScriptEnginePoolableObjectFactory.INSTANCE);
@@ -43,7 +45,7 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
         if (pyScriptEngineRotation.isEmpty()) {
             return factory.makeObject();
         }
-        final PyScriptEngineWrapper pyScriptEngine = pyScriptEngineRotation.remove(0);
+        final PyScriptEngineWrapper pyScriptEngine = pyScriptEngineRotation.next();
         if (pyScriptEngine != null) {
             return pyScriptEngine.getPyScriptEngine();
         } else {
@@ -60,7 +62,7 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
     public synchronized Collection<PyScriptEngine> internalClear() {
         final Collection<PyScriptEngine> removed = new ArrayList<PyScriptEngine>();
         while (!pyScriptEngineRotation.isEmpty()) {
-            removed.add(pyScriptEngineRotation.remove(0).getPyScriptEngine());
+            removed.add(pyScriptEngineRotation.next().getPyScriptEngine());
         }
         return removed;
     }
@@ -96,12 +98,17 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
                     TimeUnit.MILLISECONDS.sleep(100);
                     synchronized (PyScriptEngineObjectPool.this) {
                         if (!pyScriptEngineRotation.isEmpty()) {
-                            final List<PyScriptEngineWrapper> copy = new ArrayList<PyScriptEngineWrapper>(
-                                    pyScriptEngineRotation);
-                            for (final PyScriptEngineWrapper pyScriptEngine : copy) {
-                                if (pyScriptEngine.isTimeoutExceeded()) {
-                                    Assertions.assertThat(pyScriptEngineRotation.remove(pyScriptEngine)).isTrue();
+                            final ICloseableIterator<PyScriptEngineWrapper> iterator = pyScriptEngineRotation
+                                    .iterator();
+                            try {
+                                while (true) {
+                                    final PyScriptEngineWrapper pyScriptEngine = iterator.next();
+                                    if (pyScriptEngine.isTimeoutExceeded()) {
+                                        iterator.remove();
+                                    }
                                 }
+                            } catch (final NoSuchElementException e) {
+                                //end reached
                             }
                         }
                     }
@@ -112,10 +119,11 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
         }
     }
 
-    private static final class PyScriptEngineWrapper {
+    private static final class PyScriptEngineWrapper implements INode<PyScriptEngineWrapper> {
 
         private final PyScriptEngine pyScriptEngine;
         private final FDate timeoutStart;
+        private PyScriptEngineWrapper next;
 
         PyScriptEngineWrapper(final PyScriptEngine rCaller) {
             this.pyScriptEngine = rCaller;
@@ -145,6 +153,16 @@ public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
             } else {
                 return false;
             }
+        }
+
+        @Override
+        public PyScriptEngineWrapper getNext() {
+            return next;
+        }
+
+        @Override
+        public void setNext(final PyScriptEngineWrapper next) {
+            this.next = next;
         }
 
     }

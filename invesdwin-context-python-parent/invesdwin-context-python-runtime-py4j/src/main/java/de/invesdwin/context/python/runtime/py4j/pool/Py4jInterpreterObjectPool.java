@@ -2,7 +2,7 @@ package de.invesdwin.context.python.runtime.py4j.pool;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.concurrent.GuardedBy;
@@ -13,7 +13,9 @@ import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreter;
 import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreterPoolableObjectFactory;
-import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.iterable.ICloseableIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator;
+import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
@@ -31,7 +33,7 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
     private final WrappedExecutorService timeoutMonitorExecutor = Executors
             .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
     @GuardedBy("this")
-    private final List<Py4jInterpreterWrapper> py4jInterpreterRotation = new ArrayList<Py4jInterpreterWrapper>();
+    private final NodeBufferingIterator<Py4jInterpreterWrapper> py4jInterpreterRotation = new NodeBufferingIterator<Py4jInterpreterWrapper>();
 
     private Py4jInterpreterObjectPool() {
         super(Py4jInterpreterPoolableObjectFactory.INSTANCE);
@@ -43,7 +45,7 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
         if (py4jInterpreterRotation.isEmpty()) {
             return factory.makeObject();
         }
-        final Py4jInterpreterWrapper py4jInterpreter = py4jInterpreterRotation.remove(0);
+        final Py4jInterpreterWrapper py4jInterpreter = py4jInterpreterRotation.next();
         if (py4jInterpreter != null) {
             return py4jInterpreter.getPy4jInterpreter();
         } else {
@@ -60,7 +62,7 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
     public synchronized Collection<Py4jInterpreter> internalClear() {
         final Collection<Py4jInterpreter> removed = new ArrayList<Py4jInterpreter>();
         while (!py4jInterpreterRotation.isEmpty()) {
-            removed.add(py4jInterpreterRotation.remove(0).getPy4jInterpreter());
+            removed.add(py4jInterpreterRotation.next().getPy4jInterpreter());
         }
         return removed;
     }
@@ -96,12 +98,17 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
                     TimeUnit.MILLISECONDS.sleep(100);
                     synchronized (Py4jInterpreterObjectPool.this) {
                         if (!py4jInterpreterRotation.isEmpty()) {
-                            final List<Py4jInterpreterWrapper> copy = new ArrayList<Py4jInterpreterWrapper>(
-                                    py4jInterpreterRotation);
-                            for (final Py4jInterpreterWrapper py4jInterpreter : copy) {
-                                if (py4jInterpreter.isTimeoutExceeded()) {
-                                    Assertions.assertThat(py4jInterpreterRotation.remove(py4jInterpreter)).isTrue();
+                            final ICloseableIterator<Py4jInterpreterWrapper> iterator = py4jInterpreterRotation
+                                    .iterator();
+                            try {
+                                while (true) {
+                                    final Py4jInterpreterWrapper py4jInterpreter = iterator.next();
+                                    if (py4jInterpreter.isTimeoutExceeded()) {
+                                        iterator.remove();
+                                    }
                                 }
+                            } catch (final NoSuchElementException e) {
+                                //end reached
                             }
                         }
                     }
@@ -112,10 +119,11 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
         }
     }
 
-    private static final class Py4jInterpreterWrapper {
+    private static final class Py4jInterpreterWrapper implements INode<Py4jInterpreterWrapper> {
 
         private final Py4jInterpreter py4jInterpreter;
         private final FDate timeoutStart;
+        private Py4jInterpreterWrapper next;
 
         Py4jInterpreterWrapper(final Py4jInterpreter py4jInterpreter) {
             this.py4jInterpreter = py4jInterpreter;
@@ -145,6 +153,16 @@ public final class Py4jInterpreterObjectPool extends AObjectPool<Py4jInterpreter
             } else {
                 return false;
             }
+        }
+
+        @Override
+        public Py4jInterpreterWrapper getNext() {
+            return next;
+        }
+
+        @Override
+        public void setNext(final Py4jInterpreterWrapper next) {
+            this.next = next;
         }
 
     }
