@@ -23,7 +23,8 @@ public final class JythonScriptTaskRunnerPython
     /**
      * public for ServiceLoader support
      */
-    public JythonScriptTaskRunnerPython() {}
+    public JythonScriptTaskRunnerPython() {
+    }
 
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
@@ -45,7 +46,7 @@ public final class JythonScriptTaskRunnerPython
             PyScriptEngineObjectPool.INSTANCE.returnObject(pyScriptEngine);
             return result;
         } catch (final Throwable t) {
-            PyScriptEngineObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
+            PyScriptEngineObjectPool.INSTANCE.destroyObject(pyScriptEngine);
             throw Throwables.propagate(t);
         }
     }

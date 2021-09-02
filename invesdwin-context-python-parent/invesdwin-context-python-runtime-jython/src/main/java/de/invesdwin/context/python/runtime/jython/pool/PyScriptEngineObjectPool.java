@@ -1,170 +1,62 @@
 package de.invesdwin.context.python.runtime.jython.pool;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
+import java.io.OutputStreamWriter;
 
-import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Named;
+import javax.script.ScriptException;
 
 import org.python.jsr223.PyScriptEngine;
+import org.python.jsr223.PyScriptEngineFactory;
 import org.springframework.beans.factory.FactoryBean;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
-import de.invesdwin.context.python.runtime.jython.pool.internal.PyScriptEnginePoolableObjectFactory;
-import de.invesdwin.util.collections.iterable.ICloseableIterator;
-import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator;
-import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode;
-import de.invesdwin.util.concurrent.Executors;
-import de.invesdwin.util.concurrent.Threads;
-import de.invesdwin.util.concurrent.WrappedExecutorService;
-import de.invesdwin.util.concurrent.pool.commons.ACommonsObjectPool;
-import de.invesdwin.util.time.date.FDate;
+import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
+import de.invesdwin.util.concurrent.pool.timeout.ATimeoutObjectPool;
+import de.invesdwin.util.time.date.FTimeUnit;
 import de.invesdwin.util.time.duration.Duration;
 
 @ThreadSafe
 @Named
-public final class PyScriptEngineObjectPool extends ACommonsObjectPool<PyScriptEngine>
+public final class PyScriptEngineObjectPool extends ATimeoutObjectPool<PyScriptEngine>
         implements FactoryBean<PyScriptEngineObjectPool> {
 
     public static final PyScriptEngineObjectPool INSTANCE = new PyScriptEngineObjectPool();
-
-    private final WrappedExecutorService timeoutMonitorExecutor = Executors
-            .newFixedCallerRunsThreadPool(getClass().getSimpleName() + "_timeout", 1);
-    @GuardedBy("this")
-    private final NodeBufferingIterator<PyScriptEngineWrapper> pyScriptEngineRotation = new NodeBufferingIterator<PyScriptEngineWrapper>();
+    private static final PyScriptEngineFactory FACTORY = new PyScriptEngineFactory();
 
     private PyScriptEngineObjectPool() {
-        super(PyScriptEnginePoolableObjectFactory.INSTANCE);
-        timeoutMonitorExecutor.execute(new PyScriptEngineTimoutMonitor());
+        super(Duration.ONE_MINUTE, new Duration(10, FTimeUnit.SECONDS));
     }
 
     @Override
-    protected synchronized PyScriptEngine internalBorrowObject() {
-        if (pyScriptEngineRotation.isEmpty()) {
-            return factory.makeObject();
-        }
-        final PyScriptEngineWrapper pyScriptEngine = pyScriptEngineRotation.next();
-        if (pyScriptEngine != null) {
-            return pyScriptEngine.getPyScriptEngine();
-        } else {
-            return factory.makeObject();
-        }
+    public void destroyObject(final PyScriptEngine obj) {
+        obj.close();
     }
 
     @Override
-    public synchronized int getNumIdle() {
-        return pyScriptEngineRotation.size();
+    protected PyScriptEngine newObject() {
+        final PyScriptEngine engine = (PyScriptEngine) FACTORY.getScriptEngine();
+        engine.getContext().setWriter(new OutputStreamWriter(new Slf4jDebugOutputStream(IScriptTaskRunnerPython.LOG)));
+        engine.getContext()
+                .setErrorWriter(new OutputStreamWriter(new Slf4jWarnOutputStream(IScriptTaskRunnerPython.LOG)));
+        return engine;
     }
 
+    /**
+     * https://github.com/mrj0/jep/wiki/Performance-Considerations
+     * 
+     * https://github.com/spyder-ide/spyder/issues/2563
+     * 
+     * http://stackoverflow.com/questions/3543833/how-do-i-clear-all-variables-in-the-middle-of-a-python-script
+     */
     @Override
-    public synchronized Collection<PyScriptEngine> internalClear() {
-        final Collection<PyScriptEngine> removed = new ArrayList<PyScriptEngine>();
-        while (!pyScriptEngineRotation.isEmpty()) {
-            removed.add(pyScriptEngineRotation.next().getPyScriptEngine());
+    protected void passivateObject(final PyScriptEngine obj) {
+        try {
+            obj.eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
+        } catch (final ScriptException e) {
+            throw new RuntimeException(e);
         }
-        return removed;
-    }
-
-    @Override
-    protected synchronized PyScriptEngine internalAddObject() {
-        final PyScriptEngine pooled = factory.makeObject();
-        pyScriptEngineRotation.add(new PyScriptEngineWrapper(factory.makeObject()));
-        return pooled;
-    }
-
-    @Override
-    protected synchronized void internalReturnObject(final PyScriptEngine obj) {
-        pyScriptEngineRotation.add(new PyScriptEngineWrapper(obj));
-    }
-
-    @Override
-    protected void internalInvalidateObject(final PyScriptEngine obj) {
-        //Nothing happens
-    }
-
-    @Override
-    protected synchronized void internalRemoveObject(final PyScriptEngine obj) {
-        pyScriptEngineRotation.remove(new PyScriptEngineWrapper(obj));
-    }
-
-    private class PyScriptEngineTimoutMonitor implements Runnable {
-        @Override
-        public void run() {
-            try {
-                while (true) {
-                    Threads.throwIfInterrupted();
-                    TimeUnit.MILLISECONDS.sleep(100);
-                    synchronized (PyScriptEngineObjectPool.this) {
-                        if (!pyScriptEngineRotation.isEmpty()) {
-                            final ICloseableIterator<PyScriptEngineWrapper> iterator = pyScriptEngineRotation
-                                    .iterator();
-                            try {
-                                while (true) {
-                                    final PyScriptEngineWrapper pyScriptEngine = iterator.next();
-                                    if (pyScriptEngine.isTimeoutExceeded()) {
-                                        iterator.remove();
-                                    }
-                                }
-                            } catch (final NoSuchElementException e) {
-                                //end reached
-                            }
-                        }
-                    }
-                }
-            } catch (final InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
-    private static final class PyScriptEngineWrapper implements INode<PyScriptEngineWrapper> {
-
-        private final PyScriptEngine pyScriptEngine;
-        private final FDate timeoutStart;
-        private PyScriptEngineWrapper next;
-
-        PyScriptEngineWrapper(final PyScriptEngine rCaller) {
-            this.pyScriptEngine = rCaller;
-            this.timeoutStart = new FDate();
-        }
-
-        public PyScriptEngine getPyScriptEngine() {
-            return pyScriptEngine;
-        }
-
-        public boolean isTimeoutExceeded() {
-            return new Duration(timeoutStart, new FDate()).isGreaterThan(Duration.ONE_MINUTE);
-        }
-
-        @Override
-        public int hashCode() {
-            return pyScriptEngine.hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            if (obj instanceof PyScriptEngineWrapper) {
-                final PyScriptEngineWrapper cObj = (PyScriptEngineWrapper) obj;
-                return pyScriptEngine.equals(cObj.getPyScriptEngine());
-            } else if (obj instanceof PyScriptEngine) {
-                return pyScriptEngine.equals(obj);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public PyScriptEngineWrapper getNext() {
-            return next;
-        }
-
-        @Override
-        public void setNext(final PyScriptEngineWrapper next) {
-            this.next = next;
-        }
-
     }
 
     @Override

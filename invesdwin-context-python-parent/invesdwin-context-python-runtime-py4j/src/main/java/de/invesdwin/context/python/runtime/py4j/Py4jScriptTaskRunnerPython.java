@@ -22,7 +22,8 @@ public final class Py4jScriptTaskRunnerPython
     /**
      * public for ServiceLoader support
      */
-    public Py4jScriptTaskRunnerPython() {}
+    public Py4jScriptTaskRunnerPython() {
+    }
 
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
@@ -44,7 +45,7 @@ public final class Py4jScriptTaskRunnerPython
             Py4jInterpreterObjectPool.INSTANCE.returnObject(pyScriptEngine);
             return result;
         } catch (final Throwable t) {
-            Py4jInterpreterObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
+            Py4jInterpreterObjectPool.INSTANCE.destroyObject(pyScriptEngine);
             throw Throwables.propagate(t);
         }
     }
