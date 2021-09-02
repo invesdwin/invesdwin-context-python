@@ -13,12 +13,12 @@ import org.zeroturnaround.exec.stream.slf4j.Slf4jDebugOutputStream;
 import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
-import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
+import de.invesdwin.util.concurrent.pool.commons.ICommonsPoolableObjectFactory;
 
 @ThreadSafe
 @Named
 public final class PyScriptEnginePoolableObjectFactory
-        implements IPoolableObjectFactory<PyScriptEngine>, FactoryBean<PyScriptEnginePoolableObjectFactory> {
+        implements ICommonsPoolableObjectFactory<PyScriptEngine>, FactoryBean<PyScriptEnginePoolableObjectFactory> {
 
     public static final PyScriptEnginePoolableObjectFactory INSTANCE = new PyScriptEnginePoolableObjectFactory();
     private static final PyScriptEngineFactory FACTORY = new PyScriptEngineFactory();

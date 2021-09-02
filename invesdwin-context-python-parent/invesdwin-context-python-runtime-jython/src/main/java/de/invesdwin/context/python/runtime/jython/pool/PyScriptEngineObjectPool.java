@@ -19,13 +19,13 @@ import de.invesdwin.util.collections.iterable.buffer.NodeBufferingIterator.INode
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.Threads;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
-import de.invesdwin.util.concurrent.pool.AObjectPool;
+import de.invesdwin.util.concurrent.pool.commons.ACommonsObjectPool;
 import de.invesdwin.util.time.date.FDate;
 import de.invesdwin.util.time.duration.Duration;
 
 @ThreadSafe
 @Named
-public final class PyScriptEngineObjectPool extends AObjectPool<PyScriptEngine>
+public final class PyScriptEngineObjectPool extends ACommonsObjectPool<PyScriptEngine>
         implements FactoryBean<PyScriptEngineObjectPool> {
 
     public static final PyScriptEngineObjectPool INSTANCE = new PyScriptEngineObjectPool();

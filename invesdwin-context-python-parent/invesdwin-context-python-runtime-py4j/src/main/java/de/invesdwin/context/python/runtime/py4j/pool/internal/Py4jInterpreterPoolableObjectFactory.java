@@ -5,12 +5,12 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
-import de.invesdwin.util.concurrent.pool.IPoolableObjectFactory;
+import de.invesdwin.util.concurrent.pool.commons.ICommonsPoolableObjectFactory;
 
 @ThreadSafe
 @Named
 public final class Py4jInterpreterPoolableObjectFactory
-        implements IPoolableObjectFactory<Py4jInterpreter>, FactoryBean<Py4jInterpreterPoolableObjectFactory> {
+        implements ICommonsPoolableObjectFactory<Py4jInterpreter>, FactoryBean<Py4jInterpreterPoolableObjectFactory> {
 
     public static final Py4jInterpreterPoolableObjectFactory INSTANCE = new Py4jInterpreterPoolableObjectFactory();
 
