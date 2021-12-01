@@ -44,10 +44,6 @@
 			<groupId>black.ninia</groupId>
 			<artifactId>jep</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.zeroturnaround</groupId>
-			<artifactId>zt-exec</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
