@@ -1,5 +1,5 @@
 # invesdwin-context-python
-Integrate python functionality with these modules for the [invesdwin-context](https://github.com/subes/invesdwin-context) module system. 
+Integrate python functionality with these modules for the [invesdwin-context](https://github.com/invesdwin/invesdwin-context) module system. 
 
 ## Maven
 
@@ -88,17 +88,17 @@ Though as always you should measure the performance for your use cases and scrip
 
 ## Avoiding Bootstrap
 
-If you want to use this project without the overhead of having to initialize a [invesdwin-context](https://github.com/subes/invesdwin-context) bootstrap with its spring-context and module configuration, you can disable the bootstrap with the following code before using any scripts:
+If you want to use this project without the overhead of having to initialize a [invesdwin-context](https://github.com/invesdwin/invesdwin-context) bootstrap with its spring-context and module configuration, you can disable the bootstrap with the following code before using any scripts:
 
 ```java
 de.invesdwin.context.PlatformInitializerProperties.setAllowed(false);
 ```
 
-The above configuration options for the invidiual runtimes can still be provided by setting system properties before calling any script. An example for all of this can be found at: [ScriptingWithoutBootstrapMain.java](https://github.com/subes/invesdwin-context/blob/master/tests/otherproject-noparent-bom-test/src/main/java/com/otherproject/scripting/ScriptingWithoutBootstrapMain.java)
+The above configuration options for the invidiual runtimes can still be provided by setting system properties before calling any script. An example for all of this can be found at: [ScriptingWithoutBootstrapMain.java](https://github.com/invesdwin/invesdwin-context/blob/master/tests/otherproject-noparent-bom-test/src/main/java/com/otherproject/scripting/ScriptingWithoutBootstrapMain.java)
 
 ## Recommended Editor
 
-For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin. If you want to run your scripts from your main application, you can do this easily with `invesdwin-context-python-runtime-py4j` (add this module as a `test` scope dependency) during development (you also need to add a dependecy to the type `test-jar` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency. You can also remote debug your scripts comfortably with PyDev inside Eclipse by following [this manual](http://www.pydev.org/manual_adv_remote_debugger.html). 
+For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin. If you want to run your scripts from your main application, you can do this easily with `invesdwin-context-python-runtime-py4j` (add this module as a `test` scope dependency) during development (you also need to add a dependecy to the type `test-jar` of `invesdwin-context-python-runtime-contract` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency. You can also remote debug your scripts comfortably with PyDev inside Eclipse by following [this manual](http://www.pydev.org/manual_adv_remote_debugger.html). 
 
 ## Benchmark
 
@@ -204,9 +204,11 @@ For faster backtests it might be better to reduce the calls to python to as litt
 Similar integration modules like this one also exist for the following other programming languages: 
 
 - **R Modules**: Scripting with R
-	- https://github.com/subes/invesdwin-context-r 
+	- https://github.com/invesdwin/invesdwin-context-r 
 - **Matlab/Octave/Scilab Modules**: Scripting with Matlab, Octave and Scilab
-	- https://github.com/subes/invesdwin-context-matlab
+	- https://github.com/invesdwin/invesdwin-context-matlab
+- **Julia Modules**: Scripting with Julia
+	- https://github.com/invesdwin/invesdwin-context-julia
 
 
 ## Support
