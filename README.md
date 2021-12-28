@@ -25,7 +25,7 @@ de.invesdwin.context.python.runtime.jep.JepProperties.THREAD_POOL_COUNT=${de.inv
 # specify where the libjep.so resides on your computer (which you might normally add to java.library.path manually)
 de.invesdwin.context.python.runtime.jep.JepProperties.JEP_LIBRARY_PATH=/usr/local/lib/python3.6/dist-packages/jep/
 ```
-- **invesdwin-context-python-runtime-libpythonclj**: This library integrates [libpython-clj](https://github.com/clj-python/libpython-clj/issues/191). It is similar to jep without requiring any additional installations in python. It supports only CPython 3.x and does not provide sandboxed interpreters. It has better handling of the global interpreter lock (GIL) and might be faster than Jep. The following system properties can be used for configuring this module:
+- **invesdwin-context-python-runtime-libpythonclj**: This library integrates [libpython-clj](https://github.com/clj-python/libpython-clj/issues/191). It is similar to jep though without requiring any additional installations in python. It only supports CPython 3.x and does not provide sandboxed interpreters. The following system properties can be used for configuring this module:
 ```properties
 # you can switch to a different python installation by defining an absolute path here
 de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljProperties.PYTHON_COMMAND=python3
@@ -197,9 +197,10 @@ public class PythonStrategyTest extends ATest {
 
 ### Results
 - **Java Only**: 2425.2/ms ticks processed
-- **Jep**: 56.25/ms python calls with 13.82/ms ticks processed
+- **Jep**: 231.16/ms python calls with 13.82/ms ticks processed
 - **Py4J-python3**: 29.63/ms python calls with 7463.35/s ticks processed
 - **Py4J-pypy**: 29.3/ms python calls with 7371.21/s ticks processed
+- **libpython-clj**: 7260.7/s python calls with 1572.46/s ticks processed
 - **Jython**: 2050.49/s python calls with 511.63/s ticks processed (starts with up to ~5900/s python calls but slows down the longer it runs)
 
 ### Solution
