@@ -49,7 +49,8 @@ public final class PythonEngine {
 
     public Object get(final String variable) {
         IScriptTaskRunnerPython.LOG.debug("get %s", variable);
-        return globals.get(variable);
+        libpython_clj2.java_api.runString("__ans__ = " + variable);
+        return globals.get("__ans__");
     }
 
     public void set(final String variable, final Object value) {
