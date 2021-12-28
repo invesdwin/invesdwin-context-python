@@ -80,8 +80,8 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.scijava</groupId>
-				<artifactId>jython-shaded</artifactId>
+				<groupId>org.python</groupId>
+				<artifactId>jython-slim</artifactId>
 				<version>${version.jython}</version>
 			</dependency>
 			<dependency>
