@@ -1,30 +1,16 @@
 package de.invesdwin.context.python.runtime.jep;
 
-import java.io.File;
-import java.io.IOException;
-
 import javax.annotation.concurrent.NotThreadSafe;
 
-import de.invesdwin.context.ContextProperties;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.python.runtime.jep.internal.JepWrapper;
+import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
-import de.invesdwin.util.lang.Files;
-import de.invesdwin.util.lang.UniqueNameGenerator;
 import jep.Jep;
 
 @NotThreadSafe
 public class JepScriptTaskEnginePython implements IScriptTaskEngine {
-
-    private static final UniqueNameGenerator UNIQUE_NAME_GENERATOR = new UniqueNameGenerator() {
-        @Override
-        protected long getInitialValue() {
-            return 1;
-        }
-    };
-    private static final File FOLDER = new File(ContextProperties.TEMP_DIRECTORY,
-            JepScriptTaskEnginePython.class.getSimpleName());
 
     private Jep jep;
     private final JepScriptTaskInputsPython inputs;
@@ -34,20 +20,11 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
         this.jep = jep;
         this.inputs = new JepScriptTaskInputsPython(this);
         this.results = new JepScriptTaskResultsPython(this);
-        try {
-            Files.forceMkdir(FOLDER);
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void eval(final String expression) {
-        try {
-            jep.exec(expression);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+        jep.exec(expression);
     }
 
     @Override
@@ -78,6 +55,11 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public ILock getSharedLock() {
         return DisabledLock.INSTANCE;
+    }
+
+    @Override
+    public WrappedExecutorService getSharedExecutor() {
+        return JepScriptTaskRunnerPython.getExecutor();
     }
 
     public static JepScriptTaskEnginePython newInstance() {

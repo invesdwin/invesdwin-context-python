@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 import de.invesdwin.context.python.runtime.contract.InputsAndResultsTests;
-import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskRunnerPython;
 import de.invesdwin.context.test.ATest;
 
 @NotThreadSafe

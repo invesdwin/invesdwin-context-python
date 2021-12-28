@@ -7,6 +7,7 @@ import org.python.jsr223.PyScriptEngine;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.python.runtime.jython.pool.PyScriptEngineObjectPool;
+import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 
@@ -61,6 +62,11 @@ public class JythonScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public ILock getSharedLock() {
         return DisabledLock.INSTANCE;
+    }
+
+    @Override
+    public WrappedExecutorService getSharedExecutor() {
+        return null;
     }
 
     public static JythonScriptTaskEnginePython newInstance() {

@@ -5,6 +5,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.python.runtime.py4j.pool.Py4jInterpreterObjectPool;
 import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreter;
+import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 
@@ -52,6 +53,11 @@ public class Py4jScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public ILock getSharedLock() {
         return DisabledLock.INSTANCE;
+    }
+
+    @Override
+    public WrappedExecutorService getSharedExecutor() {
+        return null;
     }
 
     public static Py4jScriptTaskEnginePython newInstance() {

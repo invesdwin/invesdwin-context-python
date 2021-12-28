@@ -25,4 +25,15 @@ public final class PythonEngine {
         return lock;
     }
 
+    public void exec(final String expression) {
+        libpython_clj2.java_api.runString(expression);
+    }
+
+    public Object getValue(final String variable) {
+        return null;
+    }
+
+    public void set(final String variable, final Object value) {
+    }
+
 }
