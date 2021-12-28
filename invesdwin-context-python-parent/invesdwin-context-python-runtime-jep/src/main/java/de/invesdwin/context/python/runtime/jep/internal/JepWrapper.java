@@ -15,6 +15,7 @@ import io.netty.util.concurrent.FastThreadLocal;
 import jep.Jep;
 import jep.JepConfig;
 import jep.JepException;
+import jep.SubInterpreter;
 
 @NotThreadSafe
 public final class JepWrapper implements Closeable {
@@ -61,12 +62,10 @@ public final class JepWrapper implements Closeable {
 
     private static final class JepWrapperFinalizer extends AFinalizer {
 
-        private Jep jep;
+        private SubInterpreter jep;
 
         private JepWrapperFinalizer() throws JepException {
-            this.jep = new Jep(new JepConfig().setSharedModules(JepProperties.getSharedModules())
-                    .setInteractive(false)
-                    .setRedirectOutputStreams(false));
+            this.jep = new SubInterpreter(new JepConfig().setSharedModules(JepProperties.getSharedModules()));
         }
 
         @Override

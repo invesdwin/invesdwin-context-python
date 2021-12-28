@@ -10,12 +10,11 @@ import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
-import de.invesdwin.context.python.runtime.libpythonclj.internal.LibpythoncljWrapper;
+import de.invesdwin.context.python.runtime.libpythonclj.internal.PythonEngine;
 import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.future.Futures;
 import de.invesdwin.util.error.Throwables;
-import jep.Jep;
 
 /**
  * We have to always use the same thread for accessing the jep instance, thus run the tasks in an executor.
@@ -45,7 +44,7 @@ public final class LibpythoncljScriptTaskRunnerPython
             @Override
             public T call() throws Exception {
                 //get session
-                final Jep jep = LibpythoncljWrapper.get().getJep();
+                final Jep jep = PythonEngine.get().getJep();
                 try {
                     //inputs
                     final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(jep);

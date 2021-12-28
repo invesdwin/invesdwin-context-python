@@ -2,7 +2,6 @@ package de.invesdwin.context.python.runtime.jep;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
@@ -30,7 +29,6 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
     private Jep jep;
     private final JepScriptTaskInputsPython inputs;
     private final JepScriptTaskResultsPython results;
-    private File scriptFile;
 
     public JepScriptTaskEnginePython(final Jep jep) {
         this.jep = jep;
@@ -41,17 +39,12 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
-        this.scriptFile = new File(FOLDER, UNIQUE_NAME_GENERATOR.get("script") + ".py");
     }
 
-    /**
-     * https://github.com/mrj0/jep/issues/55
-     */
     @Override
     public void eval(final String expression) {
         try {
-            Files.writeStringToFile(scriptFile, expression, Charset.defaultCharset());
-            jep.runScript(scriptFile.getAbsolutePath());
+            jep.exec(expression);
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -70,8 +63,6 @@ public class JepScriptTaskEnginePython implements IScriptTaskEngine {
     @Override
     public void close() {
         eval("restoreContext()");
-        Files.deleteQuietly(scriptFile);
-        scriptFile = null;
         jep = null;
     }
 

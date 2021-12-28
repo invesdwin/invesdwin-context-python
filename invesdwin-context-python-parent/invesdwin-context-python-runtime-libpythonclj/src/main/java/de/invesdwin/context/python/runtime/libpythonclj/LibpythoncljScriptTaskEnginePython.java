@@ -8,12 +8,11 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.ContextProperties;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
-import de.invesdwin.context.python.runtime.libpythonclj.internal.LibpythoncljWrapper;
+import de.invesdwin.context.python.runtime.libpythonclj.internal.PythonEngine;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 import de.invesdwin.util.lang.Files;
 import de.invesdwin.util.lang.UniqueNameGenerator;
-import jep.Jep;
 
 @NotThreadSafe
 public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
@@ -27,13 +26,12 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
     private static final File FOLDER = new File(ContextProperties.TEMP_DIRECTORY,
             LibpythoncljScriptTaskEnginePython.class.getSimpleName());
 
-    private Jep jep;
+    private PythonEngine pythonEngine;
     private final LibpythoncljScriptTaskInputsPython inputs;
     private final LibpythoncljScriptTaskResultsPython results;
-    private File scriptFile;
 
-    public LibpythoncljScriptTaskEnginePython(final Jep jep) {
-        this.jep = jep;
+    public LibpythoncljScriptTaskEnginePython(final PythonEngine pythonEngine) {
+        this.pythonEngine = pythonEngine;
         this.inputs = new LibpythoncljScriptTaskInputsPython(this);
         this.results = new LibpythoncljScriptTaskResultsPython(this);
         try {
@@ -41,7 +39,6 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
-        this.scriptFile = new File(FOLDER, UNIQUE_NAME_GENERATOR.get("script") + ".py");
     }
 
     /**
@@ -51,7 +48,7 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
     public void eval(final String expression) {
         try {
             Files.writeStringToFile(scriptFile, expression, Charset.defaultCharset());
-            jep.runScript(scriptFile.getAbsolutePath());
+            pythonEngine.runScript(scriptFile.getAbsolutePath());
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -69,15 +66,17 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
 
     @Override
     public void close() {
-        eval("restoreContext()");
-        Files.deleteQuietly(scriptFile);
-        scriptFile = null;
-        jep = null;
+        if (pythonEngine != null) {
+            eval("restoreContext()");
+            Files.deleteQuietly(scriptFile);
+            scriptFile = null;
+            pythonEngine = null;
+        }
     }
 
     @Override
-    public Jep unwrap() {
-        return jep;
+    public PythonEngine unwrap() {
+        return pythonEngine;
     }
 
     /**
@@ -86,11 +85,15 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
      */
     @Override
     public ILock getSharedLock() {
-        return DisabledLock.INSTANCE;
+        if (pythonEngine == null) {
+            return DisabledLock.INSTANCE;
+        } else {
+            return pythonEngine.getLock();
+        }
     }
 
     public static LibpythoncljScriptTaskEnginePython newInstance() {
-        return new LibpythoncljScriptTaskEnginePython(LibpythoncljWrapper.get().getJep());
+        return new LibpythoncljScriptTaskEnginePython(PythonEngine.INSTANCE);
     }
 
 }
