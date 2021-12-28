@@ -10,6 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljProperties;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskEnginePython;
+import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.concurrent.lock.IReentrantLock;
 import de.invesdwin.util.concurrent.lock.Locks;
 
@@ -38,8 +39,8 @@ public final class PythonEngine {
         return (Map<Object, Object>) mainModule.get("globals");
     }
 
-    public IReentrantLock getLock() {
-        return lock;
+    public ILock getLock() {
+        return GilLock.INSTANCE.getThreadLocalLock();
     }
 
     public void exec(final String expression) {
