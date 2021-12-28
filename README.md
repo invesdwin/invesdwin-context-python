@@ -136,7 +136,8 @@ public class PythonStrategy extends StrategySupport {
     public void onStart() {
         //        pythonEngine = Py4jScriptTaskEnginePython.newInstance();
         //        pythonEngine = JythonScriptTaskEnginePython.newInstance();
-        pythonEngine = JepScriptTaskEnginePython.newInstance();
+        //        pythonEngine = JepScriptTaskEnginePython.newInstance();
+	pythonEngine = LibpythoncljScriptTaskEnginePython.newInstance();
         start = new Instant();
         lastLog = new Instant();
     }
