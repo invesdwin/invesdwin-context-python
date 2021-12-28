@@ -7,7 +7,8 @@ import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
-import de.invesdwin.context.python.runtime.libpythonclj.internal.PythonEngineWrapper;
+import de.invesdwin.context.python.runtime.libpythonclj.internal.IPythonEngineWrapper;
+import de.invesdwin.context.python.runtime.libpythonclj.internal.InitializingPythonEngineWrapper;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.error.Throwables;
 
@@ -33,7 +34,7 @@ public final class LibpythoncljScriptTaskRunnerPython
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
-        final PythonEngineWrapper pythonEngine = PythonEngineWrapper.INSTANCE;
+        final IPythonEngineWrapper pythonEngine = InitializingPythonEngineWrapper.getInstance();
         //inputs
         final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(pythonEngine);
         final ILock lock = engine.getSharedLock();
