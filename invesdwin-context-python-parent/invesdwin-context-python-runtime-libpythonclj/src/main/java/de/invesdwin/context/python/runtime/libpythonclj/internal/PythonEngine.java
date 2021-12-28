@@ -7,6 +7,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.springframework.core.io.ClassPathResource;
 
+import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljProperties;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskEnginePython;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskRunnerPython;
@@ -43,14 +44,17 @@ public final class PythonEngine {
     }
 
     public void exec(final String expression) {
+        IScriptTaskRunnerPython.LOG.debug("exec %s", expression);
         libpython_clj2.java_api.runString(expression);
     }
 
-    public Object getValue(final String variable) {
+    public Object get(final String variable) {
+        IScriptTaskRunnerPython.LOG.debug("get %s", variable);
         return globals.get(variable);
     }
 
     public void set(final String variable, final Object value) {
+        IScriptTaskRunnerPython.LOG.debug("set %s = %s", variable, value);
         globals.put(variable, value);
     }
 

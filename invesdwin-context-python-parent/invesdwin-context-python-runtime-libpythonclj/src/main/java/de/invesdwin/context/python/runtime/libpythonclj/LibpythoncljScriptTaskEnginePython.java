@@ -21,9 +21,6 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
         this.results = new LibpythoncljScriptTaskResultsPython(this);
     }
 
-    /**
-     * https://github.com/mrj0/jep/issues/55
-     */
     @Override
     public void eval(final String expression) {
         try {
