@@ -7,13 +7,13 @@ import de.invesdwin.util.concurrent.lock.ILock;
 @NotThreadSafe
 public final class InitializingPythonEngineWrapper implements IPythonEngineWrapper {
 
-    private static final InitializingPythonEngineWrapper INSTANCE = new InitializingPythonEngineWrapper();
+    public static final InitializingPythonEngineWrapper INSTANCE = new InitializingPythonEngineWrapper();
     private boolean initialized = false;
 
     private InitializingPythonEngineWrapper() {
     }
 
-    private void maybeInit() {
+    public void maybeInit() {
         if (initialized) {
             return;
         }
@@ -51,11 +51,8 @@ public final class InitializingPythonEngineWrapper implements IPythonEngineWrapp
     }
 
     public static IPythonEngineWrapper getInstance() {
-        if (INSTANCE.initialized) {
-            return UncheckedPythonEngineWrapper.INSTANCE;
-        } else {
-            return INSTANCE;
-        }
+        INSTANCE.maybeInit();
+        return UncheckedPythonEngineWrapper.INSTANCE;
     }
 
 }
