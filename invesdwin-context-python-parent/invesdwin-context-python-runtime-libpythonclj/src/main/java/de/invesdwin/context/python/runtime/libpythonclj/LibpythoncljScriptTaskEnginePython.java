@@ -3,7 +3,7 @@ package de.invesdwin.context.python.runtime.libpythonclj;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
-import de.invesdwin.context.python.runtime.libpythonclj.internal.PythonEngine;
+import de.invesdwin.context.python.runtime.libpythonclj.internal.PythonEngineWrapper;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
@@ -11,11 +11,11 @@ import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 @NotThreadSafe
 public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
 
-    private PythonEngine pythonEngine;
+    private PythonEngineWrapper pythonEngine;
     private final LibpythoncljScriptTaskInputsPython inputs;
     private final LibpythoncljScriptTaskResultsPython results;
 
-    public LibpythoncljScriptTaskEnginePython(final PythonEngine pythonEngine) {
+    public LibpythoncljScriptTaskEnginePython(final PythonEngineWrapper pythonEngine) {
         this.pythonEngine = pythonEngine;
         this.inputs = new LibpythoncljScriptTaskInputsPython(this);
         this.results = new LibpythoncljScriptTaskResultsPython(this);
@@ -49,7 +49,7 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
     }
 
     @Override
-    public PythonEngine unwrap() {
+    public PythonEngineWrapper unwrap() {
         return pythonEngine;
     }
 
@@ -68,7 +68,7 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
     }
 
     public static LibpythoncljScriptTaskEnginePython newInstance() {
-        return new LibpythoncljScriptTaskEnginePython(PythonEngine.INSTANCE);
+        return new LibpythoncljScriptTaskEnginePython(PythonEngineWrapper.INSTANCE);
     }
 
 }
