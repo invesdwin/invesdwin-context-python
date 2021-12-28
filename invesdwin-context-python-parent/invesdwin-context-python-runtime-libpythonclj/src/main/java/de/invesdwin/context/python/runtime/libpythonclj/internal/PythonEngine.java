@@ -19,6 +19,7 @@ public final class PythonEngine {
     public static final PythonEngine INSTANCE = new PythonEngine();
 
     private final IReentrantLock lock;
+    private final Map<Object, Object> globals;
 
     private PythonEngine() {
         this.lock = Locks.newReentrantLock(PythonEngine.class.getSimpleName() + "_lock");
@@ -28,6 +29,13 @@ public final class PythonEngine {
         final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(this);
         engine.eval(new ClassPathResource("LibpythoncljSetup.py", LibpythoncljScriptTaskRunnerPython.class));
         engine.close();
+        this.globals = getGlobals();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<Object, Object> getGlobals() {
+        final Map<?, ?> mainModule = libpython_clj2.java_api.runString("");
+        return (Map<Object, Object>) mainModule.get("globals");
     }
 
     public IReentrantLock getLock() {
@@ -35,17 +43,15 @@ public final class PythonEngine {
     }
 
     public void exec(final String expression) {
-        final Map<?, ?> map = libpython_clj2.java_api.runString(expression);
-        final Object globals = map.get("globals");
-        System.out.println(globals);
+        libpython_clj2.java_api.runString(expression);
     }
 
     public Object getValue(final String variable) {
-        return libpython_clj2.java_api.getItem("globals", variable);
+        return globals.get(variable);
     }
 
     public void set(final String variable, final Object value) {
-        libpython_clj2.java_api.setItem("globals", variable, value);
+        globals.put(variable, value);
     }
 
 }
