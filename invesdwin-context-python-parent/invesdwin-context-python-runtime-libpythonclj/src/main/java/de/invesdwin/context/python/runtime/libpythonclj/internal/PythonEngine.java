@@ -11,19 +11,15 @@ import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljProperties;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskEnginePython;
 import de.invesdwin.util.concurrent.lock.ILock;
-import de.invesdwin.util.concurrent.lock.IReentrantLock;
-import de.invesdwin.util.concurrent.lock.Locks;
 
 @NotThreadSafe
 public final class PythonEngine {
 
     public static final PythonEngine INSTANCE = new PythonEngine();
 
-    private final IReentrantLock lock;
     private final Map<Object, Object> globals;
 
     private PythonEngine() {
-        this.lock = Locks.newReentrantLock(PythonEngine.class.getSimpleName() + "_lock");
         final Map<String, Object> initParams = new HashMap<>();
         initParams.put("python-executable", LibpythoncljProperties.PYTHON_COMMAND);
         libpython_clj2.java_api.initialize(initParams);
