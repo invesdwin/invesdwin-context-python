@@ -19,7 +19,6 @@ public final class PythonEngine {
     public static final PythonEngine INSTANCE = new PythonEngine();
 
     private final IReentrantLock lock;
-    private Object globals;
 
     private PythonEngine() {
         this.lock = Locks.newReentrantLock(PythonEngine.class.getSimpleName() + "_lock");
@@ -37,7 +36,8 @@ public final class PythonEngine {
 
     public void exec(final String expression) {
         final Map<?, ?> map = libpython_clj2.java_api.runString(expression);
-        globals = map.get("globals");
+        final Object globals = map.get("globals");
+        System.out.println(globals);
     }
 
     public Object getValue(final String variable) {
