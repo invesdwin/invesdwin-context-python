@@ -41,11 +41,11 @@ public final class PythonEngine {
     }
 
     public Object getValue(final String variable) {
-        return libpython_clj2.java_api.getItem(globals, variable);
+        return libpython_clj2.java_api.getItem("globals", variable);
     }
 
     public void set(final String variable, final Object value) {
-        libpython_clj2.java_api.setItem(globals, variable, value);
+        libpython_clj2.java_api.setItem("globals", variable, value);
     }
 
 }
