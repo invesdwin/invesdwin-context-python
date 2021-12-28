@@ -90,7 +90,8 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
             final AtomicBoolean serverStarted = new AtomicBoolean(false);
             server.addListener(new GatewayServerListener() {
                 @Override
-                public void serverStopped() {}
+                public void serverStopped() {
+                }
 
                 @Override
                 public void serverStarted() {
@@ -98,10 +99,12 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
                 }
 
                 @Override
-                public void serverPreShutdown() {}
+                public void serverPreShutdown() {
+                }
 
                 @Override
-                public void serverPostShutdown() {}
+                public void serverPostShutdown() {
+                }
 
                 @Override
                 public void serverError(final Exception e) {
@@ -109,10 +112,12 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
                 }
 
                 @Override
-                public void connectionStopped(final Py4JServerConnection gatewayConnection) {}
+                public void connectionStopped(final Py4JServerConnection gatewayConnection) {
+                }
 
                 @Override
-                public void connectionStarted(final Py4JServerConnection gatewayConnection) {}
+                public void connectionStarted(final Py4JServerConnection gatewayConnection) {
+                }
 
                 @Override
                 public void connectionError(final Exception e) {
@@ -128,7 +133,8 @@ public class Py4jInterpreter implements IPy4jInterpreter, Closeable {
                 }
             }
 
-            try (InputStream in = new ClassPathResource("Py4jInterpreter.py", Py4jInterpreter.class).getInputStream()) {
+            try (InputStream in = new ClassPathResource(Py4jInterpreter.class.getSimpleName() + ".py",
+                    Py4jInterpreter.class).getInputStream()) {
                 final File folder = new File(ContextProperties.TEMP_DIRECTORY, Py4jInterpreter.class.getSimpleName());
                 Files.forceMkdir(folder);
                 this.scriptFile = new File(folder, UNIQUE_NAME_GENERATOR.get("Py4jInterpreter") + ".py");

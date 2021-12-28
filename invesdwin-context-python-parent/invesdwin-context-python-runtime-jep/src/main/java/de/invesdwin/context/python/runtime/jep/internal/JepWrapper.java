@@ -8,7 +8,6 @@ import org.springframework.core.io.ClassPathResource;
 
 import de.invesdwin.context.python.runtime.jep.JepProperties;
 import de.invesdwin.context.python.runtime.jep.JepScriptTaskEnginePython;
-import de.invesdwin.context.python.runtime.jep.JepScriptTaskRunnerPython;
 import de.invesdwin.instrument.DynamicInstrumentationReflections;
 import de.invesdwin.util.lang.finalizer.AFinalizer;
 import io.netty.util.concurrent.FastThreadLocal;
@@ -43,7 +42,7 @@ public final class JepWrapper implements Closeable {
             this.finalizer = new JepWrapperFinalizer();
             this.finalizer.register(this);
             final JepScriptTaskEnginePython engine = new JepScriptTaskEnginePython(finalizer.jep);
-            engine.eval(new ClassPathResource("JepSetup.py", JepScriptTaskRunnerPython.class));
+            engine.eval(new ClassPathResource(JepWrapper.class.getSimpleName() + ".py", JepWrapper.class));
             engine.close();
         } catch (final JepException e) {
             throw new RuntimeException(

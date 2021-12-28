@@ -10,7 +10,6 @@ import org.springframework.core.io.ClassPathResource;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljProperties;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskEnginePython;
-import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskRunnerPython;
 import de.invesdwin.util.concurrent.lock.IReentrantLock;
 import de.invesdwin.util.concurrent.lock.Locks;
 
@@ -28,7 +27,7 @@ public final class PythonEngine {
         initParams.put("python-executable", LibpythoncljProperties.PYTHON_COMMAND);
         libpython_clj2.java_api.initialize(initParams);
         final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(this);
-        engine.eval(new ClassPathResource("LibpythoncljSetup.py", LibpythoncljScriptTaskRunnerPython.class));
+        engine.eval(new ClassPathResource(PythonEngine.class.getSimpleName() + ".py", PythonEngine.class));
         engine.close();
         this.globals = getGlobals();
     }
