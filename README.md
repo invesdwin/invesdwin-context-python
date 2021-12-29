@@ -200,7 +200,7 @@ public class PythonStrategyTest extends ATest {
 - **Jep**: 231.16/ms python calls with 13.82/ms ticks processed
 - **Py4J-python3**: 29.63/ms python calls with 7463.35/s ticks processed
 - **Py4J-pypy**: 29.3/ms python calls with 7371.21/s ticks processed
-- **libpython-clj**: 7260.7/s python calls with 1572.46/s ticks processed
+- **libpython-clj**: 7260.7/s python calls with 1572.46/s ticks processed ([Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1002323597) is a pattern to make this faster)
 - **Jython**: 2050.49/s python calls with 511.63/s ticks processed (starts with up to ~5900/s python calls but slows down the longer it runs)
 
 ### Solution
