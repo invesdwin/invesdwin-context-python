@@ -39,8 +39,8 @@ de.invesdwin.context.python.runtime.py4j.Py4jProperties.PYTHON_COMMAND=python
 
 You are free to choose which integration method you prefer by selecting the appropriate runtime module as a dependency for your application. The `invesdwin-context-python-runtime-contract` module defines interfaces for integrating your python scripts in a way that works with all of the above runtime modules. So you have the benefit of being able to write your python scripts once and easily test against different runtimes in order to: 
 - verify that different python versions and runtimes produce the same results
-- to measure the performance impact of the different runtime solutions
-- to gain flexibility in various deployment scenarios
+- measure the performance impact of the different runtime solutions
+- gain flexibility in various deployment scenarios
 
 ## Example Code
 
