@@ -33,7 +33,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
 
         final String fastCallableName = "__fastCallable__";
         final Map<?, ?> mainModule = libpython_clj2.java_api
-                .runString("def " + fastCallableName + "(script):\n\texec(script)");
+                .runString("def " + fastCallableName + "(script):\n\texec(script, globals(), globals())");
         this.globals = (Map<Object, Object>) mainModule.get("globals");
         this.fastCallable = libpython_clj2.java_api.makeFastcallable(globals.get(fastCallableName));
 
