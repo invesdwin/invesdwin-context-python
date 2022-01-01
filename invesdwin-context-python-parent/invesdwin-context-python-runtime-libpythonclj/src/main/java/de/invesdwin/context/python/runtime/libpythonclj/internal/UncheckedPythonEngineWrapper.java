@@ -93,11 +93,11 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         final StringBuilder sb = new StringBuilder("def ");
         sb.append(FUNCTIONS_NAMES.get("fastCallable"));
         sb.append("():");
-        //        final String[] lines = Strings.splitPreserveAllTokens(Strings.normalizeNewlines(key), "\n");
-        //        for (int i = 0; i < lines.length; i++) {
-        //            sb.append("\n\t");
-        //            sb.append(lines[i]);
-        //        }
+        final String[] lines = Strings.splitPreserveAllTokens(Strings.normalizeNewlines(key), "\n");
+        for (int i = 0; i < lines.length; i++) {
+            sb.append("\n\t");
+            sb.append(lines[i]);
+        }
         sb.append("\n\treturn 1");
         return libpython_clj2.java_api.makeFastcallable(sb.toString());
     }
