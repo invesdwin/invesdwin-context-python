@@ -41,7 +41,6 @@ def saveContext():
     __saved_context__.update(sys.modules[__name__].__dict__)
 
 def restoreContext():
-	println('blaaaa')
     names = list(sys.modules[__name__].__dict__.keys())
     for n in names:
         if n not in __saved_context__:
