@@ -19,7 +19,6 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
 
     private Map<Object, Object> globals;
     private AutoCloseable fastCallable;
-    private Object fastCallableContext;
 
     private UncheckedPythonEngineWrapper() {
     }
@@ -34,7 +33,6 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         final Map<?, ?> mainModule = libpython_clj2.java_api.runString(fastCallableName + " = exec");
         this.globals = (Map<Object, Object>) mainModule.get("globals");
         this.fastCallable = libpython_clj2.java_api.makeFastcallable(globals.get(fastCallableName));
-        this.fastCallableContext = libpython_clj2.java_api.allocateFastcallContext();
 
         final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(this);
         engine.eval(new ClassPathResource(UncheckedPythonEngineWrapper.class.getSimpleName() + ".py",
@@ -58,7 +56,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
             libpython_clj2.java_api.runString(expression);
         } else {
             globals.put("__script__", expression);
-            libpython_clj2.java_api.fastcall(fastCallableContext, fastCallable, "__script__");
+            libpython_clj2.java_api.call(fastCallable, "__script__");
         }
     }
 
