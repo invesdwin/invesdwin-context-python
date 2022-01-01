@@ -16,7 +16,6 @@ import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljProperties;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskEnginePython;
 import de.invesdwin.util.concurrent.lock.ILock;
-import de.invesdwin.util.lang.Strings;
 import de.invesdwin.util.lang.UniqueNameGenerator;
 
 @NotThreadSafe
@@ -57,7 +56,10 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     @Override
     public void exec(final String expression) {
         IScriptTaskRunnerPython.LOG.debug("exec %s", expression);
+        fastEval(expression);
+    }
 
+    private void fastEval(final String expression) {
         if (expression.length() > 100) {
             libpython_clj2.java_api.runString(expression);
         } else {
@@ -69,7 +71,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     @Override
     public Object get(final String variable) {
         IScriptTaskRunnerPython.LOG.debug("get %s", variable);
-        libpython_clj2.java_api.runString("__ans__ = " + variable);
+        fastEval("__ans__ = " + variable);
         return globals.get("__ans__");
     }
 
@@ -91,11 +93,11 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         final StringBuilder sb = new StringBuilder("def ");
         sb.append(FUNCTIONS_NAMES.get("fastCallable"));
         sb.append("():");
-        final String[] lines = Strings.splitPreserveAllTokens(Strings.normalizeNewlines(key), "\n");
-        for (int i = 0; i < lines.length; i++) {
-            sb.append("\n\t");
-            sb.append(lines[i]);
-        }
+        //        final String[] lines = Strings.splitPreserveAllTokens(Strings.normalizeNewlines(key), "\n");
+        //        for (int i = 0; i < lines.length; i++) {
+        //            sb.append("\n\t");
+        //            sb.append(lines[i]);
+        //        }
         sb.append("\n\treturn 1");
         return libpython_clj2.java_api.makeFastcallable(sb.toString());
     }
