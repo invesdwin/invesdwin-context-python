@@ -33,14 +33,21 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     }
 
     public void init() {
-        final Map<String, Object> initParams = new HashMap<>();
-        initParams.put("python-executable", LibpythoncljProperties.PYTHON_COMMAND);
-        libpython_clj2.java_api.initialize(initParams);
+        synchronized (UncheckedPythonEngineWrapper.class) {
+            final Map<String, Object> initParams = new HashMap<>();
+            initParams.put("python-executable", LibpythoncljProperties.PYTHON_COMMAND);
+            libpython_clj2.java_api.initialize(initParams);
 
-        final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(this);
-        engine.eval(new ClassPathResource(UncheckedPythonEngineWrapper.class.getSimpleName() + ".py",
-                UncheckedPythonEngineWrapper.class));
-        engine.close();
+            gilLock.lock();
+            try {
+                final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(this);
+                engine.eval(new ClassPathResource(UncheckedPythonEngineWrapper.class.getSimpleName() + ".py",
+                        UncheckedPythonEngineWrapper.class));
+                engine.close();
+            } finally {
+                gilLock.unlock();
+            }
+        }
     }
 
     @Override
@@ -80,6 +87,8 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         gilLock.lock();
         try {
             libpython_clj2.java_api.setGlobal(variable, value);
+        } catch (final Throwable t) {
+            throw new RuntimeException("Variable=" + variable + " Value=" + value, t);
         } finally {
             gilLock.unlock();
         }
