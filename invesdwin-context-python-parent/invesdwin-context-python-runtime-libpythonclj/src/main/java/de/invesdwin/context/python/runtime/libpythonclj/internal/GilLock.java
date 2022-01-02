@@ -49,7 +49,7 @@ public final class GilLock extends ASimpleLock {
 
     private static class ThreadLocalGilLock extends ASimpleLock {
         private final MutableInt lockedCount = new MutableInt();
-        private int key;
+        private long key;
 
         @Override
         public String getName() {

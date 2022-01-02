@@ -18,7 +18,6 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     public static final UncheckedPythonEngineWrapper INSTANCE = new UncheckedPythonEngineWrapper();
 
     private Map<Object, Object> globals;
-    private AutoCloseable fastCallable;
 
     private UncheckedPythonEngineWrapper() {
     }
@@ -29,10 +28,8 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         initParams.put("python-executable", LibpythoncljProperties.PYTHON_COMMAND);
         libpython_clj2.java_api.initialize(initParams);
 
-        final String fastCallableName = "__fastCallable__";
-        final Map<?, ?> mainModule = libpython_clj2.java_api.runString(fastCallableName + " = exec");
+        final Map<?, ?> mainModule = (Map<?, ?>) libpython_clj2.java_api.runStringAsInput("");
         this.globals = (Map<Object, Object>) mainModule.get("globals");
-        this.fastCallable = libpython_clj2.java_api.makeFastcallable(globals.get(fastCallableName));
 
         final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(this);
         engine.eval(new ClassPathResource(UncheckedPythonEngineWrapper.class.getSimpleName() + ".py",
@@ -48,29 +45,24 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     @Override
     public void exec(final String expression) {
         IScriptTaskRunnerPython.LOG.debug("exec %s", expression);
-        fastEval(expression);
+        eval(expression);
     }
 
-    private void fastEval(final String expression) {
-        if (expression.length() > 100) {
-            libpython_clj2.java_api.runString(expression);
-        } else {
-            globals.put("__script__", expression);
-            libpython_clj2.java_api.call(fastCallable, "__script__");
-        }
+    private void eval(final String expression) {
+        libpython_clj2.java_api.runStringAsInput(expression);
     }
 
     @Override
     public Object get(final String variable) {
         IScriptTaskRunnerPython.LOG.debug("get %s", variable);
-        fastEval("__ans__ = " + variable);
-        return globals.get("__ans__");
+        eval("__ans__ = " + variable);
+        return libpython_clj2.java_api.getGlobal(globals, "__ans__");
     }
 
     @Override
     public void set(final String variable, final Object value) {
         IScriptTaskRunnerPython.LOG.debug("set %s = %s", variable, value);
-        globals.put(variable, value);
+        libpython_clj2.java_api.setGlobal(globals, variable, value);
     }
 
 }
