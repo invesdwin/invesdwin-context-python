@@ -55,6 +55,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     @Override
     public Object get(final String variable) {
         IScriptTaskRunnerPython.LOG.debug("get %s", variable);
+        //System.out.println("TODO: replace with eval, since it now returns an object?");
         eval("__ans__ = " + variable);
         return libpython_clj2.java_api.getGlobal(globals, "__ans__");
     }
