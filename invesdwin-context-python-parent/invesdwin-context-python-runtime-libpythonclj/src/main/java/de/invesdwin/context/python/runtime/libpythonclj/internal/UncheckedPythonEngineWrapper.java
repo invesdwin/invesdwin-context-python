@@ -46,7 +46,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         final ILock lock = getLock();
         lock.lock();
         try {
-            libpython_clj2.java_api.runStringAsInput(expression);
+            libpython_clj2.java_api.runStringAsFile(expression);
         } finally {
             lock.unlock();
         }
