@@ -20,7 +20,6 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     private UncheckedPythonEngineWrapper() {
     }
 
-    @SuppressWarnings("unchecked")
     public void init() {
         final Map<String, Object> initParams = new HashMap<>();
         initParams.put("python-executable", LibpythoncljProperties.PYTHON_COMMAND);
