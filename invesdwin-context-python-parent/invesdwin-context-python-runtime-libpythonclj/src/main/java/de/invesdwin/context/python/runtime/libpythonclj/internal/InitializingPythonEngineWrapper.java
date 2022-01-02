@@ -7,21 +7,22 @@ import de.invesdwin.util.concurrent.lock.ILock;
 @NotThreadSafe
 public final class InitializingPythonEngineWrapper implements IPythonEngineWrapper {
 
-    public static final InitializingPythonEngineWrapper INSTANCE = new InitializingPythonEngineWrapper();
-    private boolean initialized = false;
+    private static boolean initialized = false;
+    private final IPythonEngineWrapper delegate;
 
-    private InitializingPythonEngineWrapper() {
+    public InitializingPythonEngineWrapper() {
+        this.delegate = InitializingPythonEngineWrapper.getInstance();
     }
 
-    public void maybeInit() {
+    public static void maybeInit() {
         if (initialized) {
             return;
         }
-        synchronized (this) {
+        synchronized (InitializingPythonEngineWrapper.class) {
             if (initialized) {
                 return;
             }
-            UncheckedPythonEngineWrapper.INSTANCE.init();
+            UncheckedPythonEngineWrapper.getInstance().init();
             initialized = true;
         }
     }
@@ -29,30 +30,30 @@ public final class InitializingPythonEngineWrapper implements IPythonEngineWrapp
     @Override
     public ILock getLock() {
         maybeInit();
-        return UncheckedPythonEngineWrapper.INSTANCE.getLock();
+        return delegate.getLock();
     }
 
     @Override
     public void exec(final String expression) {
         maybeInit();
-        UncheckedPythonEngineWrapper.INSTANCE.exec(expression);
+        delegate.exec(expression);
     }
 
     @Override
     public Object get(final String variable) {
         maybeInit();
-        return UncheckedPythonEngineWrapper.INSTANCE.get(variable);
+        return delegate.get(variable);
     }
 
     @Override
     public void set(final String variable, final Object value) {
         maybeInit();
-        UncheckedPythonEngineWrapper.INSTANCE.set(variable, value);
+        delegate.set(variable, value);
     }
 
     public static IPythonEngineWrapper getInstance() {
-        INSTANCE.maybeInit();
-        return UncheckedPythonEngineWrapper.INSTANCE;
+        InitializingPythonEngineWrapper.maybeInit();
+        return UncheckedPythonEngineWrapper.getInstance();
     }
 
 }

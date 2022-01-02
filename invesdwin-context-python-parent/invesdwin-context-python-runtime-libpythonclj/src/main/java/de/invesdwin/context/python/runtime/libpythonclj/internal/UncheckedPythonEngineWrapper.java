@@ -11,11 +11,23 @@ import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljProperties;
 import de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljScriptTaskEnginePython;
 import de.invesdwin.util.concurrent.lock.ILock;
+import io.netty.util.concurrent.FastThreadLocal;
 
+/**
+ * WARNING: Don't share instances of this class between threads, or else deadlocks or jvm crashes might occur due to GIL
+ * lock mismanagement.
+ */
 @NotThreadSafe
 public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper {
 
-    public static final UncheckedPythonEngineWrapper INSTANCE = new UncheckedPythonEngineWrapper();
+    private static final FastThreadLocal<UncheckedPythonEngineWrapper> INSTANCE = new FastThreadLocal<UncheckedPythonEngineWrapper>() {
+        @Override
+        protected UncheckedPythonEngineWrapper initialValue() throws Exception {
+            return new UncheckedPythonEngineWrapper();
+        }
+    };
+
+    private final GilLock gilLock = new GilLock();;
 
     private UncheckedPythonEngineWrapper() {
     }
@@ -33,7 +45,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
 
     @Override
     public ILock getLock() {
-        return GilLock.INSTANCE.getThreadLocalLock();
+        return gilLock;
     }
 
     @Override
@@ -74,6 +86,10 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         } finally {
             lock.unlock();
         }
+    }
+
+    public static UncheckedPythonEngineWrapper getInstance() {
+        return UncheckedPythonEngineWrapper.INSTANCE.get();
     }
 
 }

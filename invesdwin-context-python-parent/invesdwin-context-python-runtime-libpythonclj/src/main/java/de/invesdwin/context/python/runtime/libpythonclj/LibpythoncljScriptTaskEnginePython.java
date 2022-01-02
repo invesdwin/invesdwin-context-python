@@ -68,6 +68,10 @@ public class LibpythoncljScriptTaskEnginePython implements IScriptTaskEngine {
         return null;
     }
 
+    /**
+     * WARNING: Don't share instances of this class between threads, or else deadlocks or jvm crashes might occur due to
+     * GIL lock mismanagement.
+     */
     public static LibpythoncljScriptTaskEnginePython newInstance() {
         return new LibpythoncljScriptTaskEnginePython(InitializingPythonEngineWrapper.getInstance());
     }
