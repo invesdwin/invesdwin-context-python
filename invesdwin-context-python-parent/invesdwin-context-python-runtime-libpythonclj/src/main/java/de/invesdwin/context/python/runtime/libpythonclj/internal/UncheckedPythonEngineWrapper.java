@@ -82,7 +82,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         final ILock lock = getLock();
         lock.lock();
         try {
-            libpython_clj2.java_api.setGlobal(null, variable, value);
+            libpython_clj2.java_api.setGlobal(variable, value);
         } finally {
             lock.unlock();
         }
