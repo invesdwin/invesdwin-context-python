@@ -17,8 +17,6 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
 
     public static final UncheckedPythonEngineWrapper INSTANCE = new UncheckedPythonEngineWrapper();
 
-    private Map<Object, Object> globals;
-
     private UncheckedPythonEngineWrapper() {
     }
 
@@ -27,9 +25,6 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         final Map<String, Object> initParams = new HashMap<>();
         initParams.put("python-executable", LibpythoncljProperties.PYTHON_COMMAND);
         libpython_clj2.java_api.initialize(initParams);
-
-        final Map<?, ?> mainModule = (Map<?, ?>) libpython_clj2.java_api.runStringAsInput("");
-        this.globals = (Map<Object, Object>) mainModule.get("globals");
 
         final LibpythoncljScriptTaskEnginePython engine = new LibpythoncljScriptTaskEnginePython(this);
         engine.eval(new ClassPathResource(UncheckedPythonEngineWrapper.class.getSimpleName() + ".py",
@@ -55,15 +50,16 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     @Override
     public Object get(final String variable) {
         IScriptTaskRunnerPython.LOG.debug("get %s", variable);
+        return libpython_clj2.java_api.runStringAsInput(variable);
         //System.out.println("TODO: replace with eval, since it now returns an object?");
-        eval("__ans__ = " + variable);
-        return libpython_clj2.java_api.getGlobal(globals, "__ans__");
+        //        eval("__ans__ = " + variable);
+        //        return libpython_clj2.java_api.getGlobal(null, "__ans__");
     }
 
     @Override
     public void set(final String variable, final Object value) {
         IScriptTaskRunnerPython.LOG.debug("set %s = %s", variable, value);
-        libpython_clj2.java_api.setGlobal(globals, variable, value);
+        libpython_clj2.java_api.setGlobal(null, variable, value);
     }
 
 }
