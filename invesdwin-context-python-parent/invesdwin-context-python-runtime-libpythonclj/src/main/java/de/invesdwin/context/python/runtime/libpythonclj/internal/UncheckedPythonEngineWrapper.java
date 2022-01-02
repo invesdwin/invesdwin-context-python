@@ -75,11 +75,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         IScriptTaskRunnerPython.LOG.debug("get %s", variable);
         gilLock.lock();
         try {
-            //does not work due to pointer being returned
-            //            return libpython_clj2.java_api.runStringAsInput(variable);
-            //workaround works
-            libpython_clj2.java_api.runStringAsFile("__ans__ = " + variable);
-            return libpython_clj2.java_api.getGlobal("__ans__");
+            return libpython_clj2.java_api.runStringAsInput(variable);
         } finally {
             gilLock.unlock();
         }
