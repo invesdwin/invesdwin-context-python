@@ -8,6 +8,10 @@ import de.invesdwin.util.concurrent.lock.ASimpleLock;
 import de.invesdwin.util.concurrent.lock.IReentrantLock;
 import de.invesdwin.util.concurrent.lock.Locks;
 
+/**
+ * WARNING: Don't share instances of this class between threads, or else deadlocks or jvm crashes might occur due to GIL
+ * lock mismanagement.
+ */
 @NotThreadSafe
 public final class GilLock extends ASimpleLock {
 
