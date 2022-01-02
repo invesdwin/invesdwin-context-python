@@ -55,36 +55,33 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     }
 
     private void eval(final String expression) {
-        final ILock lock = getLock();
-        lock.lock();
+        gilLock.lock();
         try {
             libpython_clj2.java_api.runStringAsFile(expression);
         } finally {
-            lock.unlock();
+            gilLock.unlock();
         }
     }
 
     @Override
     public Object get(final String variable) {
         IScriptTaskRunnerPython.LOG.debug("get %s", variable);
-        final ILock lock = getLock();
-        lock.lock();
+        gilLock.lock();
         try {
             return libpython_clj2.java_api.runStringAsInput(variable);
         } finally {
-            lock.unlock();
+            gilLock.unlock();
         }
     }
 
     @Override
     public void set(final String variable, final Object value) {
         IScriptTaskRunnerPython.LOG.debug("set %s = %s", variable, value);
-        final ILock lock = getLock();
-        lock.lock();
+        gilLock.lock();
         try {
             libpython_clj2.java_api.setGlobal(variable, value);
         } finally {
-            lock.unlock();
+            gilLock.unlock();
         }
     }
 
