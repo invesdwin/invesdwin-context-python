@@ -200,7 +200,7 @@ public class PythonStrategyTest extends ATest {
 - **libpython-clj**: 404.95/ms python calls with 94.73/ms ticks processed
   - [Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1003828913) how to keep the GIL locked during the backtest to speed up python calls
     -  614.23/ms python calls with 139.61/ms
-  - [Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1003827880) a pattern reuse precompiled functions to reduce python calls per tick
+  - [Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1003827880) a pattern to reuse precompiled functions to reduce python calls per tick
     - 333.32/ms python calls with 271.22/ms	
 - **Jep**: 215.42/ms python calls with 52.96/ms ticks processed
 - **Py4J-python3**: 29.63/ms python calls with 7463.35/s ticks processed
