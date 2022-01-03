@@ -202,7 +202,7 @@ public class PythonStrategyTest extends ATest {
     -  614.23/ms python calls with 139.61/ms
   - [Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1003827880) a pattern reuse precompiled functions to reduce python calls per tick
     - 333.32/ms python calls with 271.22/ms	
-- **Jep**: 231.16/ms python calls with 13.82/ms ticks processed
+- **Jep**: 215.42/ms python calls with 52.96/ms ticks processed
 - **Py4J-python3**: 29.63/ms python calls with 7463.35/s ticks processed
 - **Py4J-pypy**: 29.3/ms python calls with 7371.21/s ticks processed
 - **Jython**: 2050.49/s python calls with 511.63/s ticks processed (starts with up to ~5900/s python calls but slows down the longer it runs)
