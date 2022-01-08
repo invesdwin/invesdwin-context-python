@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>de.invesdwin</groupId>
+		<artifactId>invesdwin-context-python-parent</artifactId>
+		<version>1.0.4-SNAPSHOT</version>
+	</parent>
+	<artifactId>invesdwin-context-python-runtime-python4j</artifactId>
+	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<!-- disabled, no automated testing atm -->
+						<exclude>**/*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-python-runtime-contract</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-python-runtime-contract</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nd4j</groupId>
+			<artifactId>python4j-numpy</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nd4j</groupId>
+			<artifactId>python4j-core</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

@@ -27,6 +27,7 @@
 		<module>invesdwin-context-python-runtime-jep</module>
 		<module>invesdwin-context-python-runtime-py4j</module>
 		<module>invesdwin-context-python-runtime-libpythonclj</module>
+		<module>invesdwin-context-python-runtime-python4j</module>
 	</modules>
 
 	<properties>
@@ -37,6 +38,7 @@
 		<version.jep>4.0.0</version.jep>
 		<version.py4j>0.10.9.3</version.py4j>
 		<version.libpython-clj>2.014</version.libpython-clj>
+		<version.python4j>1.0.0-M1.1</version.python4j>
 	</properties>
 
 	<dependencyManagement>
@@ -78,6 +80,11 @@
 				<artifactId>invesdwin-context-python-runtime-libpythonclj</artifactId>
 				<version>${project.version.invesdwin-context-python}</version>
 			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-python-runtime-python4j</artifactId>
+				<version>${project.version.invesdwin-context-python}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.python</groupId>
@@ -98,6 +105,16 @@
 				<groupId>clj-python</groupId>
 				<artifactId>libpython-clj</artifactId>
 				<version>${version.libpython-clj}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nd4j</groupId>
+				<artifactId>python4j-numpy</artifactId>
+				<version>${version.python4j}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nd4j</groupId>
+				<artifactId>python4j-core</artifactId>
+				<version>${version.python4j}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
