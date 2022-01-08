@@ -3,6 +3,7 @@ package de.invesdwin.context.python.runtime.python4j.internal;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.bytedeco.cpython.PyObject;
+import org.nd4j.python4j.PythonException;
 import org.nd4j.python4j.PythonExecutioner;
 import org.nd4j.python4j.PythonObject;
 import org.nd4j.python4j.PythonType;
@@ -39,14 +40,14 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     }
 
     public PythonObject newNone() {
-        PythonExecutioner.simpleExec(ANS_EQUALS + "None");
+        evalUnchecked(ANS_EQUALS + "None");
         return getAns();
     }
 
     public void init() {
         synchronized (UncheckedPythonEngineWrapper.class) {
             Assertions.checkNotNull(PythonExecutioner.class);
-            if (globals != null) {
+            if (UncheckedPythonEngineWrapper.globals != null) {
                 return;
             }
             gilLock.lock();
@@ -57,8 +58,8 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
                 engine.close();
 
                 final PyObject main = org.bytedeco.cpython.global.python.PyImport_ImportModule("__main__");
-                this.globals = org.bytedeco.cpython.global.python.PyModule_GetDict(main);
-                this.globalsAns = org.bytedeco.cpython.global.python.PyUnicode_FromString(ANS);
+                UncheckedPythonEngineWrapper.globals = org.bytedeco.cpython.global.python.PyModule_GetDict(main);
+                UncheckedPythonEngineWrapper.globalsAns = org.bytedeco.cpython.global.python.PyUnicode_FromString(ANS);
                 //we keep the refs eternally
                 //org.bytedeco.cpython.global.python.Py_DecRef(main);
                 //org.bytedeco.cpython.global.python.Py_DecRef(globals);
@@ -83,9 +84,16 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
     private void eval(final String expression) {
         gilLock.lock();
         try {
-            PythonExecutioner.simpleExec(expression);
+            evalUnchecked(expression);
         } finally {
             gilLock.unlock();
+        }
+    }
+
+    private void evalUnchecked(final String expression) {
+        final int result = org.bytedeco.cpython.global.python.PyRun_SimpleString(expression);
+        if (result != 0) {
+            throw new PythonException("Execution failed, unable to retrieve python exception.");
         }
     }
 
@@ -98,11 +106,8 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         IScriptTaskRunnerPython.LOG.debug("get %s", variable);
         gilLock.lock();
         try {
-            PythonExecutioner.simpleExec(ANS_EQUALS + variable);
+            evalUnchecked(ANS_EQUALS + variable);
             final PythonObject ans = getAns();
-            if (ans.isNone()) {
-                return null;
-            }
             final PythonType<Object> type = ModifiedPythonTypes.getPythonTypeForPythonObject(ans);
             return type.toJava(ans);
         } finally {
@@ -116,7 +121,7 @@ public final class UncheckedPythonEngineWrapper implements IPythonEngineWrapper 
         gilLock.lock();
         try {
             if (value == null) {
-                PythonExecutioner.simpleExec(variable + " = None");
+                evalUnchecked(variable + " = None");
             } else {
                 final PythonObject converted = ModifiedPythonTypes.convert(value);
                 org.bytedeco.cpython.global.python.PyDict_SetItemString(globals, variable,

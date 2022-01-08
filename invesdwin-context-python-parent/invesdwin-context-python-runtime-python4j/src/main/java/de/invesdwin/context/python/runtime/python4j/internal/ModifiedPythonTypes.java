@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
@@ -408,6 +410,8 @@ public final class ModifiedPythonTypes {
     private static final List<PythonType> COLLECTION_TYPES = Arrays.<PythonType> asList(LIST, DICT);
     private static final List<PythonType> EXTERNAL_TYPES = newExternalTypes();
     private static final List<PythonType> TYPES = newTypes();
+    private static final ConcurrentMap<Class<?>, PythonType> JAVACLASS_TYPE = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, PythonType> PYTHONNAME_TYPE = new ConcurrentHashMap<>();
 
     private ModifiedPythonTypes() {
     }
@@ -445,9 +449,41 @@ public final class ModifiedPythonTypes {
     }
 
     public static PythonType getPythonTypeForJavaObject(final Object javaObject) {
-        for (final PythonType pt : get()) {
-            if (pt.accepts(javaObject)) {
-                return pt;
+        if (javaObject == null) {
+            return NONE;
+        }
+
+        final Class<?> type = javaObject.getClass();
+        final PythonType cachedType = JAVACLASS_TYPE.get(type);
+        if (cachedType != null) {
+            return cachedType;
+        }
+
+        final PythonType newType = newPythonTypeForJavaObject(javaObject);
+        JAVACLASS_TYPE.put(type, newType);
+        return newType;
+    }
+
+    private static PythonType newPythonTypeForJavaObject(final Object javaObject) {
+        if (STR.accepts(javaObject)) {
+            return STR;
+        } else if (INT.accepts(javaObject)) {
+            return INT;
+        } else if (FLOAT.accepts(javaObject)) {
+            return FLOAT;
+        } else if (BOOL.accepts(javaObject)) {
+            return BOOL;
+        } else if (BYTES.accepts(javaObject)) {
+            return BYTES;
+        } else if (LIST.accepts(javaObject)) {
+            return LIST;
+        } else if (DICT.accepts(javaObject)) {
+            return DICT;
+        }
+        for (int i = 0; i < EXTERNAL_TYPES.size(); i++) {
+            final PythonType type = EXTERNAL_TYPES.get(i);
+            if (type.accepts(javaObject)) {
+                return type;
             }
         }
         throw new PythonException("Unable to find python type for java type: " + javaObject.getClass());
@@ -458,25 +494,37 @@ public final class ModifiedPythonTypes {
         try {
             final String pyTypeStr = ModifiedPythonTypes.STR.toJava(new PythonObject(pyType, false));
 
-            for (final PythonType pt : get()) {
-                final String pyTypeStr2 = "<class '" + pt.getName() + "'>";
-                if (pyTypeStr.equals(pyTypeStr2)) {
-                    return pt;
-                } else {
-                    try (PythonGC gc = PythonGC.watch()) {
-                        final PythonObject pyType2 = pt.pythonType();
-                        if (pyType2 != null && Python.isinstance(pythonObject, pyType2)) {
-                            return pt;
-                        }
-                    }
-
-                }
+            final PythonType cachedType = PYTHONNAME_TYPE.get(pyTypeStr);
+            if (cachedType != null) {
+                return cachedType;
             }
-            throw new PythonException("Unable to find converter for python object of type " + pyTypeStr);
+
+            final PythonType newType = newPythonTypeForPythonObject(pythonObject, pyTypeStr);
+            PYTHONNAME_TYPE.put(pyTypeStr, newType);
+            return newType;
         } finally {
             Py_DecRef(pyType);
         }
 
+    }
+
+    private static <T> PythonType<T> newPythonTypeForPythonObject(final PythonObject pythonObject,
+            final String pyTypeStr) {
+        for (final PythonType pt : get()) {
+            final String pyTypeStr2 = "<class '" + pt.getName() + "'>";
+            if (pyTypeStr.equals(pyTypeStr2)) {
+                return pt;
+            } else {
+                try (PythonGC gc = PythonGC.watch()) {
+                    final PythonObject pyType2 = pt.pythonType();
+                    if (pyType2 != null && Python.isinstance(pythonObject, pyType2)) {
+                        return pt;
+                    }
+                }
+
+            }
+        }
+        throw new PythonException("Unable to find converter for python object of type " + pyTypeStr);
     }
 
     public static PythonObject convert(final Object javaObject) {
