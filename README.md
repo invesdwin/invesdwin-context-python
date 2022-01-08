@@ -197,11 +197,16 @@ public class PythonStrategyTest extends ATest {
 
 ### Results
 - **Java Only**: 3716.28/ms ticks processed
-- **Jep**: 231.16/ms python calls with 13.82/ms ticks processed
+- **libpython-clj**: 404.95/ms python calls with 94.73/ms ticks processed
+  - [Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1003828913) how to keep the GIL locked during the backtest to speed up python calls
+    -  614.23/ms python calls with 139.61/ms ticks processed
+  - [Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1003827880) a pattern to reuse precompiled functions to reduce python calls per tick
+    - 333.32/ms python calls with 271.22/ms ticks processed
+- **Jep**: 215.42/ms python calls with 52.96/ms ticks processed
 - **Py4J-python3**: 29.63/ms python calls with 7463.35/s ticks processed
 - **Py4J-pypy**: 29.3/ms python calls with 7371.21/s ticks processed
-- **libpython-clj**: 7260.7/s python calls with 1572.46/s ticks processed ([Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1002323597) is a pattern to make this faster)
-- **Jython**: 2050.49/s python calls with 511.63/s ticks processed (starts with up to ~5900/s python calls but slows down the longer it runs)
+- **Jython**: 2050.49/s python calls with 511.63/s ticks processed 
+  - starts with up to ~5900/s python calls but slows down the longer it runs
 
 ### Solution
 For faster backtests it might be better to reduce the calls to python to as little as possible. Export data from platform, precalculate data in python using some machine learning frameworks, then use an exported file from python with the results during the strategy backtest. This utilizes the full speed of both python and java. The steps can all be automated from the java side using this python integration. During live trading or visual backtests the communication overhead for a tigther integration should be acceptable as long as no high frequency trading is performed. Also the overhead could become acceptable on backtests on higher granular (e.g. daily) bars since there are a lot less data points to be processed or the decision interval for communicating with python is less frequent.
