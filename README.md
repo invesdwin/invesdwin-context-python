@@ -30,6 +30,7 @@ de.invesdwin.context.python.runtime.jep.JepProperties.JEP_LIBRARY_PATH=/usr/loca
 # you can switch to a different python installation by defining an absolute path here
 de.invesdwin.context.python.runtime.libpythonclj.LibpythoncljProperties.PYTHON_COMMAND=python3
 ```
+- **invesdwin-context-python-runtime-python4j**: This library integrates [python4j](https://deeplearning4j.konduit.ai/python4j/tutorials/quickstart). It uses an embedded CPython distribution via [JavaCPP](https://github.com/bytedeco/javacpp-presets/tree/master/cpython). It only supports CPython 3.x and does not provide sandboxed interpreters.
 - **invesdwin-context-python-runtime-py4j**: This runtime launches python via the command line and communicates with the process via [Py4J](https://www.py4j.org/) over a socket. It is considered the most robust solution since it does not pollute the JVM process by creating separate processes for python. Also multithreaded performance does not suffer from the [Global Interpreter Lock](https://wiki.python.org/moin/GlobalInterpreterLock) as [it is the case for Jep](https://github.com/mrj0/jep/wiki/Jep-and-the-GIL), since each task is executed in a different process. The python processes are reused in a pooled fashion for performance reasons. Each python process will have its own java side Py4J gateway server and they will communicate over automatically discovered ports on your system. For security reasons the communication is currently restricted to localhost, but it could be easily extended to be [secured via TLS](https://www.py4j.org/advanced_topics.html#tls) and allowing communication over multiple computers (just make a feature request or provide your own implementation as a pull request). To install Py4J on your operating system, just execute `pip install py4j` or `pip3 install py4j`. Currently the module provides the following system properties:
 ```properties
 # you can switch to "python3" here for example or provide a different command entirely (e.g. "pypy")
@@ -134,10 +135,11 @@ public class PythonStrategy extends StrategySupport {
 
     @Override
     public void onStart() {
-        //        pythonEngine = Py4jScriptTaskEnginePython.newInstance();
+        pythonEngine = Py4jScriptTaskEnginePython.newInstance();
         //        pythonEngine = JythonScriptTaskEnginePython.newInstance();
         //        pythonEngine = JepScriptTaskEnginePython.newInstance();
-	pythonEngine = LibpythoncljScriptTaskEnginePython.newInstance();
+	//        pythonEngine = LibpythoncljScriptTaskEnginePython.newInstance();
+	//        pythonEngine = Python4jScriptTaskEnginePython.newInstance();
         start = new Instant();
         lastLog = new Instant();
     }
@@ -203,6 +205,9 @@ public class PythonStrategyTest extends ATest {
   - [Here](https://github.com/clj-python/libpython-clj/issues/191#issuecomment-1003827880) a pattern to reuse precompiled functions to reduce python calls per tick
     - 333.32/ms python calls with 271.22/ms ticks processed
 - **Jep**: 215.42/ms python calls with 52.96/ms ticks processed
+- **Python4J**: 100.78/ms python calls with 24.12/ms ticks processed
+  - when keeping the GIL locked during the backtest
+    - 112.86/ms python calls with 26.74/ms ticks processed
 - **Py4J-python3**: 29.63/ms python calls with 7463.35/s ticks processed
 - **Py4J-pypy**: 29.3/ms python calls with 7371.21/s ticks processed
 - **Jython**: 2050.49/s python calls with 511.63/s ticks processed 
