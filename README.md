@@ -206,7 +206,7 @@ public class PythonStrategyTest extends ATest {
     - 333.32/ms python calls with 271.22/ms ticks processed
 - **Jep**: 215.42/ms python calls with 52.96/ms ticks processed
 - **Python4J**: 100.78/ms python calls with 24.12/ms ticks processed
-  - when keeping the GIL locked during the backtest
+  - when keeping the GIL locked during the backtest to speed up python calls
     - 112.86/ms python calls with 26.74/ms ticks processed
 - **Py4J-python3**: 29.63/ms python calls with 7463.35/s ticks processed
 - **Py4J-pypy**: 29.3/ms python calls with 7371.21/s ticks processed
