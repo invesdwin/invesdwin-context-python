@@ -110,6 +110,6 @@ if(getStringMatrixAsListWithNullType is not unicode):
 if(getStringMatrixAsListWithNull[0][0] is not None):
 	raise Exception("getStringMatrixAsListWithNull[0][0] not None!")
 if(getStringMatrixAsListWithNull[1][1] is not None):
-	raise Exception("getStringMatrixAsListWithNull[2][2] not None!")
+	raise Exception("getStringMatrixAsListWithNull[1][1] not None!")
 if(getStringMatrixAsListWithNull[2][2] is not None):
-	raise Exception("getStringMatrixAsListWithNull[3][3] not naNone!")
+	raise Exception("getStringMatrixAsListWithNull[2][2] not None!")
