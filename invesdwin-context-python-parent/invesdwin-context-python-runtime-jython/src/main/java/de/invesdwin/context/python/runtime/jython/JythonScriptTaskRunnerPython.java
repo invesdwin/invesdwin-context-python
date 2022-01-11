@@ -46,7 +46,7 @@ public final class JythonScriptTaskRunnerPython
             PyScriptEngineObjectPool.INSTANCE.returnObject(pyScriptEngine);
             return result;
         } catch (final Throwable t) {
-            PyScriptEngineObjectPool.INSTANCE.destroyObject(pyScriptEngine);
+            PyScriptEngineObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
             throw Throwables.propagate(t);
         }
     }

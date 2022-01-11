@@ -30,7 +30,7 @@ public final class PyScriptEngineObjectPool extends ATimeoutObjectPool<PyScriptE
     }
 
     @Override
-    public void destroyObject(final PyScriptEngine obj) {
+    public void invalidateObject(final PyScriptEngine obj) {
         obj.close();
     }
 

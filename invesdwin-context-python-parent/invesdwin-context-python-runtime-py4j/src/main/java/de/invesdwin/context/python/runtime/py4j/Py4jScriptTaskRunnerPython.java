@@ -45,7 +45,7 @@ public final class Py4jScriptTaskRunnerPython
             Py4jInterpreterObjectPool.INSTANCE.returnObject(pyScriptEngine);
             return result;
         } catch (final Throwable t) {
-            Py4jInterpreterObjectPool.INSTANCE.destroyObject(pyScriptEngine);
+            Py4jInterpreterObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
             throw Throwables.propagate(t);
         }
     }
