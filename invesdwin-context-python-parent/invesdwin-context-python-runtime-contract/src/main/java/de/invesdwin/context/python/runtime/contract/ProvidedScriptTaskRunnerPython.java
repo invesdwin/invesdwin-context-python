@@ -27,7 +27,7 @@ public final class ProvidedScriptTaskRunnerPython
 
     public static final ProvidedScriptTaskRunnerPython INSTANCE = new ProvidedScriptTaskRunnerPython();
 
-    @GuardedBy("ProvidedScriptTaskRunnerPython.class")
+    @GuardedBy("this.class")
     private static IScriptTaskRunnerPython providedInstance;
 
     private ProvidedScriptTaskRunnerPython() {}
