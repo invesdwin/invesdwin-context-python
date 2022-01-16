@@ -226,6 +226,8 @@ Similar integration modules like this one also exist for the following other pro
 	- https://github.com/invesdwin/invesdwin-context-matlab
 - **Julia Modules**: Scripting with Julia
 	- https://github.com/invesdwin/invesdwin-context-julia
+- **JVM Languages Modules**: Scripting with JVM Languages
+	- https://github.com/invesdwin/invesdwin-context#scripting-modules-for-jvm-languages
 
 
 ## Support
