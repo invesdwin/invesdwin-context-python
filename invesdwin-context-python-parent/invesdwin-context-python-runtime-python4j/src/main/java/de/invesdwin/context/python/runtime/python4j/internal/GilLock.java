@@ -12,6 +12,8 @@ import de.invesdwin.util.concurrent.lock.Locks;
 /**
  * WARNING: Don't share instances of this class between threads, or else deadlocks or jvm crashes might occur due to GIL
  * lock mismanagement.
+ * 
+ * TODO: migrate to upstream as soon as possible: https://github.com/eclipse/deeplearning4j/issues/9595
  */
 @NotThreadSafe
 public final class GilLock extends ASimpleLock {
