@@ -90,6 +90,16 @@
 				<groupId>org.python</groupId>
 				<artifactId>jython-slim</artifactId>
 				<version>${version.jython}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.bouncycastle</groupId>
+						<artifactId>bcpkix-jdk15on</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.bouncycastle</groupId>
+						<artifactId>bcprov-jdk15on</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>black.ninia</groupId>
