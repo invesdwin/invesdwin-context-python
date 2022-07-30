@@ -22,8 +22,8 @@ public final class Py4jInterpreterObjectPool extends ATimeoutObjectPool<Py4jInte
     }
 
     @Override
-    public void invalidateObject(final Py4jInterpreter obj) {
-        obj.close();
+    public void invalidateObject(final Py4jInterpreter element) {
+        element.close();
     }
 
     @Override
@@ -32,8 +32,8 @@ public final class Py4jInterpreterObjectPool extends ATimeoutObjectPool<Py4jInte
     }
 
     @Override
-    protected void passivateObject(final Py4jInterpreter obj) {
-        obj.cleanup();
+    protected void passivateObject(final Py4jInterpreter element) {
+        element.cleanup();
     }
 
     @Override

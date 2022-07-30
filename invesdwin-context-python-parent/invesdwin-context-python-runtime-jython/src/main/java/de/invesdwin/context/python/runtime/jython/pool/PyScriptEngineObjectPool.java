@@ -30,8 +30,8 @@ public final class PyScriptEngineObjectPool extends ATimeoutObjectPool<PyScriptE
     }
 
     @Override
-    public void invalidateObject(final PyScriptEngine obj) {
-        obj.close();
+    public void invalidateObject(final PyScriptEngine element) {
+        element.close();
     }
 
     @Override
@@ -51,9 +51,9 @@ public final class PyScriptEngineObjectPool extends ATimeoutObjectPool<PyScriptE
      * http://stackoverflow.com/questions/3543833/how-do-i-clear-all-variables-in-the-middle-of-a-python-script
      */
     @Override
-    protected void passivateObject(final PyScriptEngine obj) {
+    protected void passivateObject(final PyScriptEngine element) {
         try {
-            obj.eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
+            element.eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }
