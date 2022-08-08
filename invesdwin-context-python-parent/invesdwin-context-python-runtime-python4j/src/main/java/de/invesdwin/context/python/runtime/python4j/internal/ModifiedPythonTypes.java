@@ -29,7 +29,6 @@ import static org.bytedeco.cpython.global.python.Py_DecRef;
 import static org.bytedeco.cpython.global.python.Py_IncRef;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +46,8 @@ import org.nd4j.python4j.PythonGC;
 import org.nd4j.python4j.PythonGIL;
 import org.nd4j.python4j.PythonObject;
 import org.nd4j.python4j.PythonType;
+
+import de.invesdwin.util.collections.Arrays;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 @NotThreadSafe

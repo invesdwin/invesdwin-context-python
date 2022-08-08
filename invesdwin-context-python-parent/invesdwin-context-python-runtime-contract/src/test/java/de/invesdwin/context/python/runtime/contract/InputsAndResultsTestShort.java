@@ -1,18 +1,17 @@
 package de.invesdwin.context.python.runtime.contract;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.Arrays;
 
 @NotThreadSafe
 public class InputsAndResultsTestShort {
@@ -34,7 +33,7 @@ public class InputsAndResultsTestShort {
         }
 
         //putShortVectorAsList
-        final List<Short> putShortVectorAsList = Arrays.asList(ArrayUtils.toObject(putShortVector));
+        final List<Short> putShortVectorAsList = Arrays.asList(Arrays.toObject(putShortVector));
 
         //putShortMatrix
         final short[][] putShortMatrix = new short[4][];
@@ -49,7 +48,7 @@ public class InputsAndResultsTestShort {
         //putShortMatrixAsList
         final List<List<Short>> putShortMatrixAsList = new ArrayList<List<Short>>(putShortMatrix.length);
         for (final short[] vector : putShortMatrix) {
-            putShortMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
+            putShortMatrixAsList.add(Arrays.asList(Arrays.toObject(vector)));
         }
 
         new AScriptTaskPython<Void>() {

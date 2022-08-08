@@ -1,18 +1,17 @@
 package de.invesdwin.context.python.runtime.contract;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.Arrays;
 
 @NotThreadSafe
 public class InputsAndResultsTestBoolean {
@@ -34,7 +33,7 @@ public class InputsAndResultsTestBoolean {
         }
 
         //putBooleanVectorAsList
-        final List<Boolean> putBooleanVectorAsList = Arrays.asList(ArrayUtils.toObject(putBooleanVector));
+        final List<Boolean> putBooleanVectorAsList = Arrays.asList(Arrays.toObject(putBooleanVector));
 
         //putBooleanMatrix
         final boolean[][] putBooleanMatrix = new boolean[4][];
@@ -49,7 +48,7 @@ public class InputsAndResultsTestBoolean {
         //putBooleanMatrixAsList
         final List<List<Boolean>> putBooleanMatrixAsList = new ArrayList<List<Boolean>>(putBooleanMatrix.length);
         for (final boolean[] vector : putBooleanMatrix) {
-            putBooleanMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
+            putBooleanMatrixAsList.add(Arrays.asList(Arrays.toObject(vector)));
         }
 
         new AScriptTaskPython<Void>() {

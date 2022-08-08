@@ -1,18 +1,17 @@
 package de.invesdwin.context.python.runtime.contract;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.Arrays;
 
 @NotThreadSafe
 public class InputsAndResultsTestByte {
@@ -34,7 +33,7 @@ public class InputsAndResultsTestByte {
         }
 
         //putByteVectorAsList
-        final List<Byte> putByteVectorAsList = Arrays.asList(ArrayUtils.toObject(putByteVector));
+        final List<Byte> putByteVectorAsList = Arrays.asList(Arrays.toObject(putByteVector));
 
         //putByteMatrix
         final byte[][] putByteMatrix = new byte[4][];
@@ -49,7 +48,7 @@ public class InputsAndResultsTestByte {
         //putByteMatrixAsList
         final List<List<Byte>> putByteMatrixAsList = new ArrayList<List<Byte>>(putByteMatrix.length);
         for (final byte[] vector : putByteMatrix) {
-            putByteMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
+            putByteMatrixAsList.add(Arrays.asList(Arrays.toObject(vector)));
         }
 
         new AScriptTaskPython<Void>() {

@@ -2,7 +2,6 @@ package de.invesdwin.context.python.runtime.jep;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -13,6 +12,7 @@ import org.zeroturnaround.exec.stream.slf4j.Slf4jWarnOutputStream;
 
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.system.properties.SystemProperties;
+import de.invesdwin.util.collections.Collections;
 import de.invesdwin.util.concurrent.Executors;
 
 @ThreadSafe
@@ -21,8 +21,10 @@ public final class JepProperties {
     public static final int THREAD_POOL_COUNT;
     public static final File JEP_LIBRARY_PATH;
 
-    public static final PrintStream REDIRECTED_OUT = new PrintStream(new Slf4jDebugOutputStream(IScriptTaskRunnerPython.LOG));
-    public static final PrintStream REDIRECTED_ERR = new PrintStream(new Slf4jWarnOutputStream(IScriptTaskRunnerPython.LOG));
+    public static final PrintStream REDIRECTED_OUT = new PrintStream(
+            new Slf4jDebugOutputStream(IScriptTaskRunnerPython.LOG));
+    public static final PrintStream REDIRECTED_ERR = new PrintStream(
+            new Slf4jWarnOutputStream(IScriptTaskRunnerPython.LOG));
 
     private static final Set<String> SHARED_MODULES = Collections.synchronizedSet(new LinkedHashSet<String>());
 
@@ -42,7 +44,8 @@ public final class JepProperties {
         }
     }
 
-    private JepProperties() {}
+    private JepProperties() {
+    }
 
     public static Set<String> getSharedModules() {
         return Collections.unmodifiableSet(SHARED_MODULES);

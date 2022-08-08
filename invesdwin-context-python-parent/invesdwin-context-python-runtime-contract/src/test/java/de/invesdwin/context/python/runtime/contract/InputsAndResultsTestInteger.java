@@ -1,18 +1,17 @@
 package de.invesdwin.context.python.runtime.contract;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
 
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.collections.Arrays;
 
 @NotThreadSafe
 public class InputsAndResultsTestInteger {
@@ -34,7 +33,7 @@ public class InputsAndResultsTestInteger {
         }
 
         //putIntegerVectorAsList
-        final List<Integer> putIntegerVectorAsList = Arrays.asList(ArrayUtils.toObject(putIntegerVector));
+        final List<Integer> putIntegerVectorAsList = Arrays.asList(Arrays.toObject(putIntegerVector));
 
         //putIntegerMatrix
         final int[][] putIntegerMatrix = new int[4][];
@@ -49,7 +48,7 @@ public class InputsAndResultsTestInteger {
         //putIntegerMatrixAsList
         final List<List<Integer>> putIntegerMatrixAsList = new ArrayList<List<Integer>>(putIntegerMatrix.length);
         for (final int[] vector : putIntegerMatrix) {
-            putIntegerMatrixAsList.add(Arrays.asList(ArrayUtils.toObject(vector)));
+            putIntegerMatrixAsList.add(Arrays.asList(Arrays.toObject(vector)));
         }
 
         new AScriptTaskPython<Void>() {
