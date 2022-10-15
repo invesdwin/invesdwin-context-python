@@ -4,7 +4,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.script.ScriptException;
 
 import de.invesdwin.context.python.runtime.contract.IScriptTaskResultsPython;
-import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.lang.string.Strings;
 import de.invesdwin.util.math.Booleans;
 import de.invesdwin.util.math.Bytes;
 import de.invesdwin.util.math.Characters;

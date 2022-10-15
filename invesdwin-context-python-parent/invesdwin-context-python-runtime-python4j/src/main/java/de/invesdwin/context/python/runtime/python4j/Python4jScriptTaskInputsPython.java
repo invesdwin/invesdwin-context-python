@@ -3,7 +3,7 @@ package de.invesdwin.context.python.runtime.python4j;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.python.runtime.contract.IScriptTaskInputsPython;
-import de.invesdwin.util.lang.Strings;
+import de.invesdwin.util.lang.string.Strings;
 import de.invesdwin.util.math.Integers;
 
 @NotThreadSafe
