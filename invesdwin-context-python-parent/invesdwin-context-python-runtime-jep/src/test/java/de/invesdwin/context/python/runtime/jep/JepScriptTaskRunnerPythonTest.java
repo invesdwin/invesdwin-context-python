@@ -1,7 +1,7 @@
 package de.invesdwin.context.python.runtime.jep;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.Test;
 

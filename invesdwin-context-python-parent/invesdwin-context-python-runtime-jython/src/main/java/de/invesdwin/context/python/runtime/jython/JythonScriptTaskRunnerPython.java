@@ -1,7 +1,7 @@
 package de.invesdwin.context.python.runtime.jython;
 
 import javax.annotation.concurrent.Immutable;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.python.jsr223.PyScriptEngine;
 import org.springframework.beans.factory.FactoryBean;

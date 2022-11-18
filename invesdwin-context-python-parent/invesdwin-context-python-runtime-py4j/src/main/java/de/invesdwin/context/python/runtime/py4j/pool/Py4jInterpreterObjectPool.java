@@ -1,7 +1,7 @@
 package de.invesdwin.context.python.runtime.py4j.pool;
 
 import javax.annotation.concurrent.ThreadSafe;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 

@@ -3,7 +3,7 @@ package de.invesdwin.context.python.runtime.jython.pool;
 import java.io.OutputStreamWriter;
 
 import javax.annotation.concurrent.ThreadSafe;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import javax.script.ScriptException;
 
 import org.python.jsr223.PyScriptEngine;

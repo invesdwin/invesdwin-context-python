@@ -1,7 +1,7 @@
 package de.invesdwin.context.python.runtime.contract.internal;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import de.invesdwin.context.python.runtime.contract.ProvidedScriptTaskRunnerPython;
 import de.invesdwin.context.test.ATest;
