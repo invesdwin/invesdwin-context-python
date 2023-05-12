@@ -1,7 +1,6 @@
 package de.invesdwin.context.python.runtime.py4j.pool;
 
 import javax.annotation.concurrent.ThreadSafe;
-import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
@@ -9,6 +8,7 @@ import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreter;
 import de.invesdwin.util.concurrent.pool.timeout.ATimeoutObjectPool;
 import de.invesdwin.util.time.date.FTimeUnit;
 import de.invesdwin.util.time.duration.Duration;
+import jakarta.inject.Named;
 
 @ThreadSafe
 @Named
@@ -32,8 +32,9 @@ public final class Py4jInterpreterObjectPool extends ATimeoutObjectPool<Py4jInte
     }
 
     @Override
-    protected void passivateObject(final Py4jInterpreter element) {
+    protected boolean passivateObject(final Py4jInterpreter element) {
         element.cleanup();
+        return true;
     }
 
     @Override

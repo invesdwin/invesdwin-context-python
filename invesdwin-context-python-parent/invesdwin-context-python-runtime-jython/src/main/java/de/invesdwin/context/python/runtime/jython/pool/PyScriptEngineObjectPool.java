@@ -3,7 +3,6 @@ package de.invesdwin.context.python.runtime.jython.pool;
 import java.io.OutputStreamWriter;
 
 import javax.annotation.concurrent.ThreadSafe;
-import jakarta.inject.Named;
 import javax.script.ScriptException;
 
 import org.python.jsr223.PyScriptEngine;
@@ -16,6 +15,7 @@ import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.concurrent.pool.timeout.ATimeoutObjectPool;
 import de.invesdwin.util.time.date.FTimeUnit;
 import de.invesdwin.util.time.duration.Duration;
+import jakarta.inject.Named;
 
 @ThreadSafe
 @Named
@@ -51,9 +51,10 @@ public final class PyScriptEngineObjectPool extends ATimeoutObjectPool<PyScriptE
      * http://stackoverflow.com/questions/3543833/how-do-i-clear-all-variables-in-the-middle-of-a-python-script
      */
     @Override
-    protected void passivateObject(final PyScriptEngine element) {
+    protected boolean passivateObject(final PyScriptEngine element) {
         try {
             element.eval(IScriptTaskRunnerPython.CLEANUP_SCRIPT);
+            return true;
         } catch (final ScriptException e) {
             throw new RuntimeException(e);
         }
