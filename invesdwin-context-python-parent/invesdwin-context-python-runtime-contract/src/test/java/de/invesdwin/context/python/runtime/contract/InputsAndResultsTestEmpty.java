@@ -31,9 +31,7 @@ public class InputsAndResultsTestEmpty {
         this.runner = runner;
     }
 
-    //CHECKSTYLE:OFF NCSS
     public void testEmpty() {
-        //CHECKSTYLE:ON
         final boolean[] putBooleanVector = new boolean[0];
         final List<Boolean> putBooleanVectorAsList = Booleans.asListVector(putBooleanVector);
         final boolean[][] putBooleanMatrix = new boolean[0][];

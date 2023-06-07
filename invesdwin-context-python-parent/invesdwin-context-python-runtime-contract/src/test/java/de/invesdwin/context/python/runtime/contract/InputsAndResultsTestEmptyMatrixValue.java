@@ -31,9 +31,7 @@ public class InputsAndResultsTestEmptyMatrixValue {
         this.runner = runner;
     }
 
-    //CHECKSTYLE:OFF NCSS
     public void testEmptyMatrixValue() {
-        //CHECKSTYLE:ON
         final boolean[][] putBooleanMatrix = new boolean[2][];
         for (int i = 0; i < putBooleanMatrix.length; i++) {
             putBooleanMatrix[i] = new boolean[0];
