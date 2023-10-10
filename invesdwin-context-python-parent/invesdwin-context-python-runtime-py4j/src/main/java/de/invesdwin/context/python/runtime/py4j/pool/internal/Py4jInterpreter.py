@@ -1,7 +1,7 @@
 import time 
 import sys
 import logging
-from py4j.java_gateway import (JavaGateway, CallbackServerParameters, GatewayParameters)
+from py4j.java_gateway import (JavaGateway, CallbackServerParameters, GatewayParameters, java_import)
 
 class Py4jInterpreter(object):
 
