@@ -34,28 +34,32 @@ public class CallJavaTest {
         final String uuid = UUIDs.newPseudoRandomUUID();
         final String secret = "secret123";
         UUID_SECRET.put(uuid, secret);
-        new AScriptTaskPython<Void>() {
+        try {
+            new AScriptTaskPython<Void>() {
 
-            @Override
-            public void populateInputs(final IScriptTaskInputs inputs) {
-                inputs.putString("putUuid", uuid);
-            }
+                @Override
+                public void populateInputs(final IScriptTaskInputs inputs) {
+                    inputs.putString("putUuid", uuid);
+                }
 
-            @Override
-            public void executeScript(final IScriptTaskEngine engine) {
-                engine.eval(new ClassPathResource(CallJavaTest.class.getSimpleName() + ".py", CallJavaTest.class));
-            }
+                @Override
+                public void executeScript(final IScriptTaskEngine engine) {
+                    engine.eval(new ClassPathResource(CallJavaTest.class.getSimpleName() + ".py", CallJavaTest.class));
+                }
 
-            @Override
-            public Void extractResults(final IScriptTaskResults results) {
-                final String getSecret = results.getString("getSecret");
-                Assertions.assertThat(getSecret).isEqualTo(secret);
+                @Override
+                public Void extractResults(final IScriptTaskResults results) {
+                    final String getSecret = results.getString("getSecret");
+                    Assertions.assertThat(getSecret).isEqualTo(secret);
 
-                final String getSecretImport = results.getString("getSecretImport");
-                Assertions.assertThat(getSecretImport).isEqualTo(secret);
-                return null;
-            }
-        }.run(runner);
+                    final String getSecretImport = results.getString("getSecretImport");
+                    Assertions.assertThat(getSecretImport).isEqualTo(secret);
+                    return null;
+                }
+            }.run(runner);
+        } finally {
+            UUID_SECRET.remove(uuid);
+        }
     }
 
 }
