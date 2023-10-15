@@ -26,6 +26,7 @@
 		<module>invesdwin-context-python-runtime-py4j</module>
 		<module>invesdwin-context-python-runtime-libpythonclj</module>
 		<module>invesdwin-context-python-runtime-python4j</module>
+		<module>invesdwin-context-python-runtime-japyb</module>
 	</modules>
 
 	<properties>
@@ -81,6 +82,11 @@
 			<dependency>
 				<groupId>de.invesdwin</groupId>
 				<artifactId>invesdwin-context-python-runtime-python4j</artifactId>
+				<version>${project.version.invesdwin-context-python}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.invesdwin</groupId>
+				<artifactId>invesdwin-context-python-runtime-japyb</artifactId>
 				<version>${project.version.invesdwin-context-python}</version>
 			</dependency>
 
