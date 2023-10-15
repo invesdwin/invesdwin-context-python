@@ -12,6 +12,7 @@ public abstract class AScriptTaskPython<V> extends AScriptTask<V, IScriptTaskRun
         return runner.run(this);
     }
 
+    @Override
     public V run() {
         return run(ProvidedScriptTaskRunnerPython.INSTANCE);
     }
