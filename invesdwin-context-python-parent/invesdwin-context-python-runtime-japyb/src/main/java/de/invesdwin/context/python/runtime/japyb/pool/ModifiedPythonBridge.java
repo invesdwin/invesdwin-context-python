@@ -36,14 +36,14 @@ public class ModifiedPythonBridge {
     private static final char NEW_LINE = '\n';
     private static final String TERMINATOR_RAW = "__##@@##__";
     private static final String TERMINATOR = "\"" + TERMINATOR_RAW + "\"";
-    private static final String TERMINATOR_SUFFIX = ";\nprint(" + TERMINATOR + ")";
+    private static final String TERMINATOR_SUFFIX = "\nprint(" + TERMINATOR + ")";
     private static final byte[] TERMINATOR_SUFFIX_BYTES = TERMINATOR_SUFFIX.getBytes();
 
-    private static final String[] PYTHON_ARGS = { "-i", "-c", "import json\n" //
+    private static final String[] PYTHON_ARGS = { "-u", "-i", "-c", "import json;from array import *;" //
             + "print(" + TERMINATOR + ")" };
 
-    private final ProcessBuilder jbuilder;
-    private Process julia = null;
+    private final ProcessBuilder pbuilder;
+    private Process python = null;
     private InputStream inp = null;
     private ModifiedPythonErrorConsoleWatcher errWatcher = null;
     private OutputStream out = null;
@@ -64,7 +64,7 @@ public class ModifiedPythonBridge {
         final List<String> j = new ArrayList<String>();
         j.add(JapybProperties.PYTHON_COMMAND);
         j.addAll(Arrays.asList(PYTHON_ARGS));
-        jbuilder = new ProcessBuilder(j);
+        pbuilder = new ProcessBuilder(j);
         this.mapper = MarshallerJsonJackson.getInstance().getJsonMapper(false);
     }
 
@@ -79,7 +79,7 @@ public class ModifiedPythonBridge {
      * Checks if Python process is already running.
      */
     public boolean isOpen() {
-        return julia != null;
+        return python != null;
     }
 
     public ModifiedPythonErrorConsoleWatcher getErrWatcher() {
@@ -96,11 +96,11 @@ public class ModifiedPythonBridge {
         if (isOpen()) {
             return;
         }
-        julia = jbuilder.start();
-        inp = julia.getInputStream();
-        errWatcher = new ModifiedPythonErrorConsoleWatcher(julia);
+        python = pbuilder.start();
+        inp = python.getInputStream();
+        errWatcher = new ModifiedPythonErrorConsoleWatcher(python);
         errWatcher.startWatching();
-        out = julia.getOutputStream();
+        out = python.getOutputStream();
         while (true) {
             final String s = readline();
             if (s == null) {
@@ -122,8 +122,8 @@ public class ModifiedPythonBridge {
         if (!isOpen()) {
             return;
         }
-        julia.destroy();
-        julia = null;
+        python.destroy();
+        python = null;
         Closeables.closeQuietly(inp);
         inp = null;
         Closeables.closeQuietly(errWatcher);
@@ -145,7 +145,9 @@ public class ModifiedPythonBridge {
         try {
             flush();
             IScriptTaskRunnerPython.LOG.debug(logMessage, logArgs);
-            out.write(jcode.getBytes());
+            out.write("exec('".getBytes());
+            out.write(jcode.replace("\n", "\\n").replace("'", "\\'").getBytes());
+            out.write("',globals())".getBytes());
             out.write(TERMINATOR_SUFFIX_BYTES);
             out.write(NEW_LINE);
             out.flush();
@@ -163,28 +165,6 @@ public class ModifiedPythonBridge {
         } catch (final IOException ex) {
             throw new RuntimeException("PythonBridge connection broken", ex);
         }
-    }
-
-    /**
-     * Sets a variable in the Python environment.
-     *
-     * @param varname
-     *            name of the variable.
-     * @param value
-     *            value to bind to the variable.
-     */
-    public void set(final String varname, final String value) {
-        final StringBuilder command = new StringBuilder(varname);
-        command.append(" = ");
-        if (value == null) {
-            command.append("nothing");
-        } else {
-            command.append("raw\"");
-            command.append(value.replace("\"", "\\\""));
-            command.append("\"");
-        }
-        final String commandStr = command.toString();
-        exec(commandStr, "> %s", commandStr);
     }
 
     public JsonNode getAsJsonNode(final String variable) {

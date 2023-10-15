@@ -36,7 +36,7 @@ public class ModifiedPythonErrorConsoleWatcher implements Closeable {
                         if (errorThread == null) {
                             return;
                         }
-                        if (Strings.isNotBlank(s) && !s.contains("Info: Precompiling ")) {
+                        if (Strings.isNotBlank(s)) {
                             synchronized (errorMessage) {
                                 if (errorMessage.length() > 0) {
                                     errorMessage.append("\n");

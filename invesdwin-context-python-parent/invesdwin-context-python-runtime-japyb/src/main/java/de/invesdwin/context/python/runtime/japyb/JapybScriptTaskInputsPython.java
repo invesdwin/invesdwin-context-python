@@ -21,7 +21,7 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
 
     @Override
     public void putCharacter(final String variable, final char value) {
-        putExpression(variable, "Char('" + value + "')");
+        putExpression(variable, "'" + value + "'");
     }
 
     @Override
@@ -29,7 +29,7 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Char}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
@@ -38,7 +38,7 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
                 sb.append(value[i]);
                 sb.append("'");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -48,26 +48,28 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{Char}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Char}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     sb.append("'");
                     sb.append(value[row][col]);
                     sb.append("'");
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -77,7 +79,7 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            putExpression(variable, "String(\"" + value + "\")");
+            putExpression(variable, "\"" + value + "\"");
         }
     }
 
@@ -86,21 +88,21 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{String}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 final String v = value[i];
                 if (v == null) {
-                    sb.append("\"\"");
+                    sb.append("None");
                 } else {
                     sb.append("\"");
                     sb.append(v);
                     sb.append("\"");
                 }
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -110,38 +112,48 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{String}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{String}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     final String v = value[row][col];
                     if (v == null) {
-                        sb.append("\"\"");
+                        sb.append("None");
                     } else {
                         sb.append("\"");
                         sb.append(v);
                         sb.append("\"");
                     }
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
 
     @Override
     public void putBoolean(final String variable, final boolean value) {
-        putExpression(variable, "Bool(" + String.valueOf(value) + ")");
+        putExpression(variable, booleanToString(value));
+    }
+
+    private String booleanToString(final boolean value) {
+        if (value) {
+            return "True";
+        } else {
+            return "False";
+        }
     }
 
     @Override
@@ -149,14 +161,14 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Bool}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
-                sb.append(value[i]);
+                sb.append(booleanToString(value[i]));
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -166,31 +178,45 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{Bool}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Bool}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
-                    sb.append(value[row][col]);
+                    sb.append(booleanToString(value[row][col]));
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
 
+    public void putEmptyMatrix(final String variable, final int rows) {
+        final StringBuilder sb = new StringBuilder("[");
+        for (int row = 0; row < rows; row++) {
+            if (row > 0) {
+                sb.append(",");
+            }
+            sb.append("[]");
+        }
+        sb.append("]");
+        putExpression(variable, sb.toString());
+    }
+
     @Override
     public void putByte(final String variable, final byte value) {
-        putExpression(variable, "Int8(" + String.valueOf(value) + ")");
+        putExpression(variable, String.valueOf(value));
     }
 
     @Override
@@ -198,14 +224,14 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Int8}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(value[i]);
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -215,31 +241,33 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{Int8}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Int8}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     sb.append(value[row][col]);
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
 
     @Override
     public void putShort(final String variable, final short value) {
-        putExpression(variable, "Int16(" + String.valueOf(value) + ")");
+        putExpression(variable, String.valueOf(value));
     }
 
     @Override
@@ -247,14 +275,14 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Int16}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(value[i]);
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -264,31 +292,33 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{Int16}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Int16}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     sb.append(value[row][col]);
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
 
     @Override
     public void putInteger(final String variable, final int value) {
-        putExpression(variable, "Int32(" + String.valueOf(value) + ")");
+        putExpression(variable, String.valueOf(value));
     }
 
     @Override
@@ -296,14 +326,14 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Int32}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(value[i]);
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -313,31 +343,33 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{Int32}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Int32}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     sb.append(value[row][col]);
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
 
     @Override
     public void putLong(final String variable, final long value) {
-        putExpression(variable, "Int64(" + String.valueOf(value) + ")");
+        putExpression(variable, String.valueOf(value));
     }
 
     @Override
@@ -345,14 +377,14 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Int64}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(value[i]);
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -362,31 +394,33 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{Int64}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Int64}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     sb.append(value[row][col]);
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
 
     @Override
     public void putFloat(final String variable, final float value) {
-        putExpression(variable, "Float32(" + String.valueOf(value) + ")");
+        putExpression(variable, String.valueOf(value));
     }
 
     @Override
@@ -394,14 +428,14 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Float32}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(value[i]);
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -411,31 +445,33 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{Float32}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Float32}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     sb.append(value[row][col]);
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
 
     @Override
     public void putDouble(final String variable, final double value) {
-        putExpression(variable, "Float64(" + String.valueOf(value) + ")");
+        putExpression(variable, String.valueOf(value));
     }
 
     @Override
@@ -443,14 +479,14 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else {
-            final StringBuilder sb = new StringBuilder("Array{Float64}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int i = 0; i < value.length; i++) {
                 if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(value[i]);
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
@@ -460,24 +496,26 @@ public class JapybScriptTaskInputsPython implements IScriptTaskInputsPython {
         if (value == null) {
             putNull(variable);
         } else if (value.length == 0 || value[0].length == 0) {
-            putExpression(variable, "Array{Float64}(undef, " + value.length + ", 0)");
+            putEmptyMatrix(variable, value.length);
         } else {
             final int rows = value.length;
             final int cols = value[0].length;
-            final StringBuilder sb = new StringBuilder("Array{Float64}([");
+            final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
                 Assertions.checkEquals(value[row].length, cols);
                 if (row > 0) {
-                    sb.append(";");
+                    sb.append(",");
                 }
+                sb.append("[");
                 for (int col = 0; col < cols; col++) {
                     if (col > 0) {
-                        sb.append(" ");
+                        sb.append(",");
                     }
                     sb.append(value[row][col]);
                 }
+                sb.append("]");
             }
-            sb.append("])");
+            sb.append("]");
             putExpression(variable, sb.toString());
         }
     }
