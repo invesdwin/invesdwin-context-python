@@ -1,7 +1,6 @@
 package de.invesdwin.context.python.runtime.jep;
 
 import java.io.Closeable;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,6 +11,7 @@ import de.invesdwin.context.integration.script.callback.ObjectScriptTaskParamete
 import de.invesdwin.context.integration.script.callback.ObjectScriptTaskParametersPool;
 import de.invesdwin.context.integration.script.callback.ObjectScriptTaskReturns;
 import de.invesdwin.context.integration.script.callback.ObjectScriptTaskReturnsPool;
+import de.invesdwin.util.collections.Arrays;
 import de.invesdwin.util.lang.UUIDs;
 
 @ThreadSafe
