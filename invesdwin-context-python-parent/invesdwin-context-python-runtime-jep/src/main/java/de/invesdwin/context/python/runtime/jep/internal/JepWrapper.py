@@ -1,4 +1,5 @@
 import sys
+from de.invesdwin.context.python.runtime.jep import JepScriptTaskCallbackContext
 
 class StdOutToJava(object):
     "Redirects Python's sys.stdout to Slf4j"
@@ -46,4 +47,16 @@ def restoreContext():
         if n not in __saved_context__:
             del sys.modules[__name__].__dict__[n]
             
+def callJava(methodName, *parameters):
+    if 'jepScriptTaskCallbackContext' not in globals():
+        if 'jepScriptTaskCallbackContextUuid' in locals() or 'jepScriptTaskCallbackContextUuid' in globals():
+            global jepScriptTaskCallbackContext
+            jepScriptTaskCallbackContext = JepScriptTaskCallbackContext.getContext(jepScriptTaskCallbackContextUuid)
+        else:
+            raise Exception("IScriptTaskCallback not available")
+    return jepScriptTaskCallbackContext.invoke(methodName, parameters)
+            
 saveContext()
+    
+
+

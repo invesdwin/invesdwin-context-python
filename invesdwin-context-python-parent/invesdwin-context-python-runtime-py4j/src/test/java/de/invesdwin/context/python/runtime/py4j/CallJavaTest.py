@@ -1,13 +1,19 @@
 print("putUuid")
 print(putUuid)
 
-getSecret = gateway.jvm.de.invesdwin.context.python.runtime.py4j.CallJavaTest.getSecret(putUuid)
-
-print("getSecret")
-print(getSecret)
+getSecretStaticGateway = gateway.jvm.de.invesdwin.context.python.runtime.py4j.CallJavaTest.getSecretStatic(putUuid)
+print("getSecretStaticGateway")
+print(getSecretStaticGateway)
 
 java_import(gateway.jvm,'de.invesdwin.context.python.runtime.py4j.CallJavaTest')
-getSecretImport = gateway.jvm.CallJavaTest.getSecret(putUuid)
+getSecretStaticImport = gateway.jvm.CallJavaTest.getSecretStatic(putUuid)
+print("getSecretStaticImport")
+print(getSecretStaticImport)
 
-print("getSecretImport")
-print(getSecretImport)
+getSecretStaticCallJava = callJava("getSecretStatic", putUuid)
+print("getSecretStaticCallJava")
+print(getSecretStaticCallJava)
+
+getSecretCallJava = callJava("getSecret", putUuid)
+print("getSecretCallJava")
+print(getSecretCallJava)

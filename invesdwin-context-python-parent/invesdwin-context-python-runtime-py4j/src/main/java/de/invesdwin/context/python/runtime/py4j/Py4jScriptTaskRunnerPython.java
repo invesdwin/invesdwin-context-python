@@ -1,15 +1,16 @@
 package de.invesdwin.context.python.runtime.py4j;
 
 import javax.annotation.concurrent.Immutable;
-import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
+import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.py4j.pool.Py4jInterpreterObjectPool;
 import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreter;
 import de.invesdwin.util.error.Throwables;
+import jakarta.inject.Named;
 
 @Immutable
 @Named
@@ -22,16 +23,25 @@ public final class Py4jScriptTaskRunnerPython
     /**
      * public for ServiceLoader support
      */
-    public Py4jScriptTaskRunnerPython() {
-    }
+    public Py4jScriptTaskRunnerPython() {}
 
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
         final Py4jInterpreter pyScriptEngine = Py4jInterpreterObjectPool.INSTANCE.borrowObject();
+        final IScriptTaskCallback callback = scriptTask.getCallback();
+        final Py4jScriptTaskCallbackContext context;
+        if (callback != null) {
+            context = new Py4jScriptTaskCallbackContext(callback);
+        } else {
+            context = null;
+        }
         try {
             //inputs
             final Py4jScriptTaskEnginePython engine = new Py4jScriptTaskEnginePython(pyScriptEngine);
+            if (context != null) {
+                engine.getInputs().putString("py4jScriptTaskCallbackContextUuid", context.getUuid());
+            }
             scriptTask.populateInputs(engine.getInputs());
 
             //execute
@@ -47,6 +57,10 @@ public final class Py4jScriptTaskRunnerPython
         } catch (final Throwable t) {
             Py4jInterpreterObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
             throw Throwables.propagate(t);
+        } finally {
+            if (context != null) {
+                context.close();
+            }
         }
     }
 

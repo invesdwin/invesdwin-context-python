@@ -10,6 +10,8 @@ import org.springframework.core.io.ClassPathResource;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.IScriptTaskInputs;
 import de.invesdwin.context.integration.script.IScriptTaskResults;
+import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
+import de.invesdwin.context.integration.script.callback.ReflectiveScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.util.assertions.Assertions;
@@ -26,7 +28,11 @@ public class CallJavaTest {
         this.runner = runner;
     }
 
-    public static String getSecret(final String uuid) {
+    public static String getSecretStatic(final String uuid) {
+        return UUID_SECRET.get(uuid);
+    }
+
+    public String getSecret(final String uuid) {
         return UUID_SECRET.get(uuid);
     }
 
@@ -36,6 +42,11 @@ public class CallJavaTest {
         UUID_SECRET.put(uuid, secret);
         try {
             new AScriptTaskPython<Void>() {
+
+                @Override
+                public IScriptTaskCallback getCallback() {
+                    return new ReflectiveScriptTaskCallback(CallJavaTest.this);
+                }
 
                 @Override
                 public void populateInputs(final IScriptTaskInputs inputs) {
@@ -49,8 +60,14 @@ public class CallJavaTest {
 
                 @Override
                 public Void extractResults(final IScriptTaskResults results) {
-                    final String getSecret = results.getString("getSecret");
-                    Assertions.assertThat(getSecret).isEqualTo(secret);
+                    final String getSecretStaticImport = results.getString("getSecretStaticImport");
+                    Assertions.assertThat(getSecretStaticImport).isEqualTo(secret);
+
+                    final String getSecretStaticCallJava = results.getString("getSecretStaticCallJava");
+                    Assertions.assertThat(getSecretStaticCallJava).isEqualTo(secret);
+
+                    final String getSecretCallJava = results.getString("getSecretCallJava");
+                    Assertions.assertThat(getSecretCallJava).isEqualTo(secret);
                     return null;
                 }
             }.run(runner);

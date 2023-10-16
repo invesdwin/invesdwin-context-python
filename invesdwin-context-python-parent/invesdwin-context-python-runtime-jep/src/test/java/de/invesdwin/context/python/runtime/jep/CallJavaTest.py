@@ -2,8 +2,14 @@ print("putUuid")
 print(putUuid)
 
 from de.invesdwin.context.python.runtime.jep import CallJavaTest
+getSecretStaticImport = CallJavaTest.getSecretStatic(putUuid)
+print("getSecretStaticImport")
+print(getSecretStaticImport)
 
-getSecret = CallJavaTest.getSecret(putUuid)
+getSecretStaticCallJava = callJava("getSecretStatic", putUuid)
+print("getSecretStaticCallJava")
+print(getSecretStaticCallJava)
 
-print("getSecret")
-print(getSecret)
+getSecretCallJava = callJava("getSecret", putUuid)
+print("getSecretCallJava")
+print(getSecretCallJava)

@@ -4,10 +4,10 @@ import java.util.concurrent.Callable;
 
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.Immutable;
-import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
+import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.jep.internal.JepWrapper;
@@ -15,6 +15,7 @@ import de.invesdwin.util.concurrent.Executors;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.future.Futures;
 import de.invesdwin.util.error.Throwables;
+import jakarta.inject.Named;
 import jep.Jep;
 
 /**
@@ -36,8 +37,7 @@ public final class JepScriptTaskRunnerPython
     /**
      * public for ServiceLoader support
      */
-    public JepScriptTaskRunnerPython() {
-    }
+    public JepScriptTaskRunnerPython() {}
 
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
@@ -46,9 +46,19 @@ public final class JepScriptTaskRunnerPython
             public T call() throws Exception {
                 //get session
                 final Jep jep = JepWrapper.get().getJep();
+                final JepScriptTaskCallbackContext context;
+                final IScriptTaskCallback callback = scriptTask.getCallback();
+                if (callback != null) {
+                    context = new JepScriptTaskCallbackContext(callback);
+                } else {
+                    context = null;
+                }
                 try {
                     //inputs
                     final JepScriptTaskEnginePython engine = new JepScriptTaskEnginePython(jep);
+                    if (context != null) {
+                        engine.getInputs().putString("jepScriptTaskCallbackContextUuid", context.getUuid());
+                    }
                     scriptTask.populateInputs(engine.getInputs());
 
                     //execute
@@ -62,6 +72,10 @@ public final class JepScriptTaskRunnerPython
                     return result;
                 } catch (final Throwable t) {
                     throw Throwables.propagate(t);
+                } finally {
+                    if (context != null) {
+                        context.close();
+                    }
                 }
             }
         };
