@@ -11,7 +11,6 @@ import de.invesdwin.context.integration.script.callback.ObjectScriptTaskParamete
 import de.invesdwin.context.integration.script.callback.ObjectScriptTaskParametersPool;
 import de.invesdwin.context.integration.script.callback.ObjectScriptTaskReturns;
 import de.invesdwin.context.integration.script.callback.ObjectScriptTaskReturnsPool;
-import de.invesdwin.util.collections.Arrays;
 import de.invesdwin.util.lang.UUIDs;
 
 @ThreadSafe
@@ -36,14 +35,13 @@ public class JepScriptTaskCallbackContext implements Closeable {
         return uuid;
     }
 
-    public Object invoke(final Object[] args) {
+    public JepScriptTaskCallbackContextReturn invoke(final String methodName, final Object... args) {
         final ObjectScriptTaskParameters parameters = ObjectScriptTaskParametersPool.INSTANCE.borrowObject();
         final ObjectScriptTaskReturns returns = ObjectScriptTaskReturnsPool.INSTANCE.borrowObject();
         try {
-            parameters.setParameters(Arrays.copyOfRange(args, 1, args.length));
-            final String methodName = (String) args[0];
+            parameters.setParameters(args);
             callback.invoke(methodName, parameters, returns);
-            return returns.getReturnValue();
+            return new JepScriptTaskCallbackContextReturn(returns.isReturnExpression(), returns.getReturnValue());
         } finally {
             ObjectScriptTaskReturnsPool.INSTANCE.returnObject(returns);
             ObjectScriptTaskParametersPool.INSTANCE.returnObject(parameters);

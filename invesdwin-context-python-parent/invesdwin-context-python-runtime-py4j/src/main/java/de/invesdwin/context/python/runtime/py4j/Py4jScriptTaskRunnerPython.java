@@ -7,6 +7,7 @@ import org.springframework.beans.factory.FactoryBean;
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
+import de.invesdwin.context.python.runtime.py4j.callback.Py4jScriptTaskCallbackContext;
 import de.invesdwin.context.python.runtime.py4j.pool.Py4jInterpreterObjectPool;
 import de.invesdwin.context.python.runtime.py4j.pool.internal.Py4jInterpreter;
 import de.invesdwin.util.error.Throwables;

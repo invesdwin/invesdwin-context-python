@@ -54,7 +54,11 @@ def callJava(methodName, *parameters):
             jepScriptTaskCallbackContext = JepScriptTaskCallbackContext.getContext(jepScriptTaskCallbackContextUuid)
         else:
             raise Exception("IScriptTaskCallback not available")
-    return jepScriptTaskCallbackContext.invoke(methodName, parameters)
+    returnValue = jepScriptTaskCallbackContext.invoke(methodName, parameters)
+    if returnValue.isReturnExpression():
+        return eval(returnValue.getReturnValue(), globals())
+    else:
+        return returnValue.getReturnValue()
             
 saveContext()
     
