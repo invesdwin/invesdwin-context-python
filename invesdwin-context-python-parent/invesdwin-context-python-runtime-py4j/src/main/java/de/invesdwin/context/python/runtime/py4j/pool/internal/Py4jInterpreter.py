@@ -62,7 +62,7 @@ def callJava(methodName, *parameters):
     if 'py4jScriptTaskCallbackContext' not in globals():
         if 'py4jScriptTaskCallbackContextUuid' in locals() or 'py4jScriptTaskCallbackContextUuid' in globals():
             global py4jScriptTaskCallbackContext
-            py4jScriptTaskCallbackContext = gateway.jvm.de.invesdwin.context.python.runtime.py4j.callback.Py4jScriptTaskCallbackContext.getContext(py4jScriptTaskCallbackContextUuid)
+            py4jScriptTaskCallbackContext = gateway.jvm.de.invesdwin.context.python.runtime.py4j.Py4jScriptTaskCallbackContext.getContext(py4jScriptTaskCallbackContextUuid)
         else:
             raise Exception("IScriptTaskCallback not available")
     returnExpression = py4jScriptTaskCallbackContext.invoke(methodName, json.dumps(parameters))

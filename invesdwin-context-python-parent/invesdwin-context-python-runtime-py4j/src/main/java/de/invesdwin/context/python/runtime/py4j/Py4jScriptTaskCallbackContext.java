@@ -1,4 +1,4 @@
-package de.invesdwin.context.python.runtime.py4j.callback;
+package de.invesdwin.context.python.runtime.py4j;
 
 import java.io.Closeable;
 import java.util.Map;
