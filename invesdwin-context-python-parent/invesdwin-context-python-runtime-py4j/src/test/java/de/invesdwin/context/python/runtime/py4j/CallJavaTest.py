@@ -21,3 +21,5 @@ print(getSecretCallJava)
 getSecretExpressionCallJava = callJava("getSecretExpression", putUuid)
 print("getSecretExpressionCallJava")
 print(getSecretExpressionCallJava)
+
+callJava("voidMethod")

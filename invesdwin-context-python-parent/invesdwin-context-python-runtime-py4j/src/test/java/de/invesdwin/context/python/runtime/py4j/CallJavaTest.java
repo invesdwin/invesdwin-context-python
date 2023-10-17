@@ -24,6 +24,7 @@ public class CallJavaTest {
     private static final Map<String, String> UUID_SECRET = new ConcurrentHashMap<>();
 
     private final IScriptTaskRunnerPython runner;
+    private int voidMethodCalled;
 
     public CallJavaTest(final IScriptTaskRunnerPython runner) {
         this.runner = runner;
@@ -40,6 +41,10 @@ public class CallJavaTest {
     @ReturnExpression
     public String getSecretExpression(final String uuid) {
         return "\"secret\"+\"123\"";
+    }
+
+    public void voidMethod() {
+        voidMethodCalled++;
     }
 
     public void testCallJava() {
@@ -80,6 +85,8 @@ public class CallJavaTest {
 
                     final String getSecretExpressionCallJava = results.getString("getSecretExpressionCallJava");
                     Assertions.assertThat(getSecretExpressionCallJava).isEqualTo(secret);
+
+                    Assertions.assertThat(voidMethodCalled).isEqualTo(1);
                     return null;
                 }
             }.run(runner);
