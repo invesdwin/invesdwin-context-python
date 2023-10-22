@@ -13,6 +13,16 @@
 			<groupId>de.invesdwin</groupId>
 			<artifactId>invesdwin-context-integration</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-integration-channel</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-handler</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 </project>
