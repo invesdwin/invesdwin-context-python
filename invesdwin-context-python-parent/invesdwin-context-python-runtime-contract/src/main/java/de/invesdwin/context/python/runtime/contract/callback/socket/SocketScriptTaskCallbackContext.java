@@ -1,4 +1,4 @@
-package de.invesdwin.context.python.runtime.py4j;
+package de.invesdwin.context.python.runtime.contract.callback.socket;
 
 import java.io.Closeable;
 import java.util.Map;
@@ -6,11 +6,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.concurrent.ThreadSafe;
 
+import org.springframework.core.io.ClassPathResource;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
 
 import de.invesdwin.context.integration.marshaller.MarshallerJsonJackson;
+import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.callback.ScriptTaskParametersPythonFromJson;
 import de.invesdwin.context.python.runtime.contract.callback.ScriptTaskParametersPythonFromJsonPool;
@@ -20,31 +23,45 @@ import de.invesdwin.util.error.Throwables;
 import de.invesdwin.util.lang.UUIDs;
 
 @ThreadSafe
-public class Py4jScriptTaskCallbackContext implements Closeable {
+public class SocketScriptTaskCallbackContext implements Closeable {
 
-    private static final Map<String, Py4jScriptTaskCallbackContext> UUID_CONTEXT = new ConcurrentHashMap<>();
+    private static final Map<String, SocketScriptTaskCallbackContext> UUID_CONTEXT = new ConcurrentHashMap<>();
 
     private final String uuid;
     private final IScriptTaskCallback callback;
     private final ObjectMapper mapper;
+    private final SocketScriptTaskCallbackServer server;
 
-    public Py4jScriptTaskCallbackContext(final IScriptTaskCallback callback) {
+    public SocketScriptTaskCallbackContext(final IScriptTaskCallback callback) {
         this.uuid = UUIDs.newPseudoRandomUUID();
         this.callback = callback;
         UUID_CONTEXT.put(uuid, this);
         this.mapper = MarshallerJsonJackson.getInstance().getJsonMapper(false);
+        this.server = SocketScriptTaskCallbackServerPool.INSTANCE.borrowObject();
     }
 
-    public static Py4jScriptTaskCallbackContext getContext(final String uuid) {
+    public static SocketScriptTaskCallbackContext getContext(final String uuid) {
         return UUID_CONTEXT.get(uuid);
     }
 
-    public void init(final Py4jScriptTaskEnginePython engine) {
-        engine.getInputs().putString("py4jScriptTaskCallbackContextUuid", getUuid());
+    public void init(final IScriptTaskEngine engine) {
+        engine.getInputs().putString("socketScriptTaskCallbackContextUuid", getUuid());
+        engine.getInputs().putString("socketScriptTaskCallbackServerHost", getServerHost());
+        engine.getInputs().putInteger("socketScriptTaskCallbackServerPort", getServerPort());
+        engine.eval(new ClassPathResource(SocketScriptTaskCallbackContext.class.getSimpleName() + ".py",
+                SocketScriptTaskCallbackContext.class));
     }
 
     public String getUuid() {
         return uuid;
+    }
+
+    public String getServerHost() {
+        return server.getHost();
+    }
+
+    public int getServerPort() {
+        return server.getPort();
     }
 
     public String invoke(final String methodName, final String args) {
@@ -79,6 +96,7 @@ public class Py4jScriptTaskCallbackContext implements Closeable {
     @Override
     public void close() {
         UUID_CONTEXT.remove(uuid);
+        SocketScriptTaskCallbackServerPool.INSTANCE.returnObject(server);
     }
 
 }

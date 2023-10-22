@@ -39,7 +39,7 @@ public class ModifiedPythonBridge {
     private static final String TERMINATOR_SUFFIX = "\nprint(" + TERMINATOR + ")";
     private static final byte[] TERMINATOR_SUFFIX_BYTES = TERMINATOR_SUFFIX.getBytes();
 
-    private static final String[] PYTHON_ARGS = { "-u", "-i", "-c", "import json;from array import *;" //
+    private static final String[] PYTHON_ARGS = { "-u", "-i", "-c", "import json;" //
             + "print(" + TERMINATOR + ")" };
 
     private final ProcessBuilder pbuilder;
@@ -146,7 +146,7 @@ public class ModifiedPythonBridge {
             flush();
             IScriptTaskRunnerPython.LOG.debug(logMessage, logArgs);
             out.write("exec('".getBytes());
-            out.write(jcode.replace("\n", "\\n").replace("'", "\\'").getBytes());
+            out.write(jcode.replace("\\", "\\\\").replace("\n", "\\n").replace("'", "\\'").getBytes());
             out.write("',globals())".getBytes());
             out.write(TERMINATOR_SUFFIX_BYTES);
             out.write(NEW_LINE);

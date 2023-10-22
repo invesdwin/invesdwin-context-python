@@ -40,6 +40,14 @@
 			<groupId>clj-python</groupId>
 			<artifactId>libpython-clj</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-integration-channel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-handler</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

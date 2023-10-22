@@ -1,10 +1,12 @@
-package de.invesdwin.context.python.runtime.jep;
+package de.invesdwin.context.python.runtime.jython;
 
 import java.io.Closeable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.concurrent.ThreadSafe;
+
+import org.springframework.core.io.ClassPathResource;
 
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.integration.script.callback.ObjectScriptTaskParameters;
@@ -15,25 +17,27 @@ import de.invesdwin.context.integration.script.callback.ObjectScriptTaskReturnsP
 import de.invesdwin.util.lang.UUIDs;
 
 @ThreadSafe
-public class JepScriptTaskCallbackContext implements Closeable {
+public class JythonScriptTaskCallbackContext implements Closeable {
 
-    private static final Map<String, JepScriptTaskCallbackContext> UUID_CONTEXT = new ConcurrentHashMap<>();
+    private static final Map<String, JythonScriptTaskCallbackContext> UUID_CONTEXT = new ConcurrentHashMap<>();
 
     private final String uuid;
     private final IScriptTaskCallback callback;
 
-    public JepScriptTaskCallbackContext(final IScriptTaskCallback callback) {
+    public JythonScriptTaskCallbackContext(final IScriptTaskCallback callback) {
         this.uuid = UUIDs.newPseudoRandomUUID();
         this.callback = callback;
         UUID_CONTEXT.put(uuid, this);
     }
 
-    public static JepScriptTaskCallbackContext getContext(final String uuid) {
+    public static JythonScriptTaskCallbackContext getContext(final String uuid) {
         return UUID_CONTEXT.get(uuid);
     }
 
-    public void init(final JepScriptTaskEnginePython engine) {
-        engine.getInputs().putString("jepScriptTaskCallbackContextUuid", getUuid());
+    public void init(final JythonScriptTaskEnginePython engine) {
+        engine.getInputs().putString("jythonScriptTaskCallbackContextUuid", getUuid());
+        engine.eval(new ClassPathResource(JythonScriptTaskCallbackContext.class.getSimpleName() + ".py",
+                JythonScriptTaskCallbackContext.class));
     }
 
     public String getUuid() {

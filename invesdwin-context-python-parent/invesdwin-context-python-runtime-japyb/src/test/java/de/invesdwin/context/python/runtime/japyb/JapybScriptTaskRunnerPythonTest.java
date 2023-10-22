@@ -24,4 +24,9 @@ public class JapybScriptTaskRunnerPythonTest extends ATest {
         new InputsAndResultsTests(runner).testParallel();
     }
 
+    @Test
+    public void testCallJava() {
+        new CallJavaTest(runner).testCallJava();
+    }
+
 }

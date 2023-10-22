@@ -1,15 +1,16 @@
 package de.invesdwin.context.python.runtime.jython;
 
 import javax.annotation.concurrent.Immutable;
-import jakarta.inject.Named;
 
 import org.python.jsr223.PyScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
 
+import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.jython.pool.PyScriptEngineObjectPool;
 import de.invesdwin.util.error.Throwables;
+import jakarta.inject.Named;
 
 @Immutable
 @Named
@@ -23,16 +24,25 @@ public final class JythonScriptTaskRunnerPython
     /**
      * public for ServiceLoader support
      */
-    public JythonScriptTaskRunnerPython() {
-    }
+    public JythonScriptTaskRunnerPython() {}
 
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
         final PyScriptEngine pyScriptEngine = PyScriptEngineObjectPool.INSTANCE.borrowObject();
+        final IScriptTaskCallback callback = scriptTask.getCallback();
+        final JythonScriptTaskCallbackContext context;
+        if (callback != null) {
+            context = new JythonScriptTaskCallbackContext(callback);
+        } else {
+            context = null;
+        }
         try {
             //inputs
             final JythonScriptTaskEnginePython engine = new JythonScriptTaskEnginePython(pyScriptEngine);
+            if (context != null) {
+                context.init(engine);
+            }
             scriptTask.populateInputs(engine.getInputs());
 
             //execute
@@ -48,6 +58,10 @@ public final class JythonScriptTaskRunnerPython
         } catch (final Throwable t) {
             PyScriptEngineObjectPool.INSTANCE.invalidateObject(pyScriptEngine);
             throw Throwables.propagate(t);
+        } finally {
+            if (context != null) {
+                context.close();
+            }
         }
     }
 

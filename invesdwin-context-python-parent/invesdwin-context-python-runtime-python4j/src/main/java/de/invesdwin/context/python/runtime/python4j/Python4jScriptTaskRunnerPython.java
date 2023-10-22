@@ -1,16 +1,18 @@
 package de.invesdwin.context.python.runtime.python4j;
 
 import javax.annotation.concurrent.Immutable;
-import jakarta.inject.Named;
 
 import org.springframework.beans.factory.FactoryBean;
 
+import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
+import de.invesdwin.context.python.runtime.contract.callback.socket.SocketScriptTaskCallbackContext;
 import de.invesdwin.context.python.runtime.python4j.internal.IPythonEngineWrapper;
 import de.invesdwin.context.python.runtime.python4j.internal.InitializingPythonEngineWrapper;
 import de.invesdwin.util.concurrent.lock.ILock;
 import de.invesdwin.util.error.Throwables;
+import jakarta.inject.Named;
 
 /**
  * We have to always use the same thread for accessing the jep instance, thus run the tasks in an executor.
@@ -28,8 +30,7 @@ public final class Python4jScriptTaskRunnerPython
     /**
      * public for ServiceLoader support
      */
-    public Python4jScriptTaskRunnerPython() {
-    }
+    public Python4jScriptTaskRunnerPython() {}
 
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
@@ -37,9 +38,19 @@ public final class Python4jScriptTaskRunnerPython
         final IPythonEngineWrapper pythonEngine = InitializingPythonEngineWrapper.getInstance();
         //inputs
         final Python4jScriptTaskEnginePython engine = new Python4jScriptTaskEnginePython(pythonEngine);
+        final IScriptTaskCallback callback = scriptTask.getCallback();
+        final SocketScriptTaskCallbackContext context;
+        if (callback != null) {
+            context = new SocketScriptTaskCallbackContext(callback);
+        } else {
+            context = null;
+        }
         final ILock lock = engine.getSharedLock();
         lock.lock();
         try {
+            if (context != null) {
+                context.init(engine);
+            }
             scriptTask.populateInputs(engine.getInputs());
 
             //execute
@@ -55,6 +66,9 @@ public final class Python4jScriptTaskRunnerPython
             throw Throwables.propagate(t);
         } finally {
             lock.unlock();
+            if (context != null) {
+                context.close();
+            }
         }
     }
 

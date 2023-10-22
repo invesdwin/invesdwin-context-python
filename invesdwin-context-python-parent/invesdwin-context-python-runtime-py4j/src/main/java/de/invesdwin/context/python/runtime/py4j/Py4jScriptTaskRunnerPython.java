@@ -40,7 +40,7 @@ public final class Py4jScriptTaskRunnerPython
             //inputs
             final Py4jScriptTaskEnginePython engine = new Py4jScriptTaskEnginePython(pyScriptEngine);
             if (context != null) {
-                engine.getInputs().putString("py4jScriptTaskCallbackContextUuid", context.getUuid());
+                context.init(engine);
             }
             scriptTask.populateInputs(engine.getInputs());
 

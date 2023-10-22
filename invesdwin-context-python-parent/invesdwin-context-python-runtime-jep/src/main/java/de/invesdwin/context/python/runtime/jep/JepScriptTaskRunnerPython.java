@@ -57,7 +57,7 @@ public final class JepScriptTaskRunnerPython
                     //inputs
                     final JepScriptTaskEnginePython engine = new JepScriptTaskEnginePython(jep);
                     if (context != null) {
-                        engine.getInputs().putString("jepScriptTaskCallbackContextUuid", context.getUuid());
+                        context.init(engine);
                     }
                     scriptTask.populateInputs(engine.getInputs());
 
