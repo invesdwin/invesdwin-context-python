@@ -19,6 +19,11 @@ Dependency declaration:
 ## Runtime Integration Modules
 
 We have a few options available for integrating python:
+- **invesdwin-context-python-runtime-japyb**: This uses a forked version of [Jajub](https://github.com/org-arl/jajub/issues/2) to make it significantly faster, make error handling better, improve robustness and make it compatible with python. It talks to the python process via pipes. Errors are detected by checking for specific protocol messages and by parsing stderr for messages. Python instances are pooled which works well for parallelization. This module provides the following configuration options as system properties:
+```properties
+# you can switch to a different python installation by defining an absolute path here
+de.invesdwin.context.python.runtime.japyb.JapyProperties.PYTHON_COMMAND=python3
+```
 - **invesdwin-context-python-runtime-jep**: This runtime loads python by dynamically linking its libraries into the java process via [Jep](https://github.com/ninia/jep). It should provide the best performance for single threaded use and is suitable for scenarios where forking processes should be prevented. You can still use CPython Extension libraries like [Numpy](http://www.numpy.org/), [Pandas](http://pandas.pydata.org/) and [scikit-learn](http://scikit-learn.org/stable/). Just make sure to register them as shared modules by calling `JepProperties.addSharedModule("modulename")` before launching any tasks so you don't get segmentation faults when Jep instances get closed. Also you might have to apply synchronization if needed as described by the documented [Workarounds for CPython Extensions](https://github.com/mrj0/jep/wiki/Workarounds-for-CPython-Extensions). The interpreter instances are reused in a pooled fashion with fixed threads for each instance for compatibility and performance reasons. To install Jep on your operating system, export the java home system variable via `export JAVA_HOME="/usr/lib/jvm/default-java/"` and execute `pip install jep` or `pip3 install jep`. Please make sure to use the correct Jep libraries you compiled against your desired version of python, or else you will get errors (e.g. syntax errors even with correct syntax) when trying to run your scripts. The following system properties can be used for configuring this module:
 ```properties
 de.invesdwin.context.python.runtime.jep.JepProperties.THREAD_POOL_COUNT=${de.invesdwin.context.ContextProperties.CPU_THREAD_POOL_COUNT}
@@ -104,7 +109,7 @@ The above configuration options for the invidiual runtimes can still be provided
 
 ## Recommended Editor
 
-For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin. If you want to run your scripts from your main application, you can do this easily with `invesdwin-context-python-runtime-py4j` (add this module as a `test` scope dependency) during development (you also need to add a dependecy to the type `test-jar` of `invesdwin-context-python-runtime-contract` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency. You can also remote debug your scripts comfortably with PyDev inside Eclipse by following [this manual](http://www.pydev.org/manual_adv_remote_debugger.html). 
+For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin. If you want to run your scripts from your main application, you can do this easily with `invesdwin-context-python-runtime-japyb` (add this module as a `test` scope dependency) during development (you also need to add a dependecy to the type `test-jar` of `invesdwin-context-python-runtime-contract` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency. You can also remote debug your scripts comfortably with PyDev inside Eclipse by following [this manual](http://www.pydev.org/manual_adv_remote_debugger.html). 
 
 ## Benchmark
 
@@ -140,6 +145,7 @@ public class PythonStrategy extends StrategySupport {
         //        pythonEngine = JepScriptTaskEnginePython.newInstance();
 	//        pythonEngine = LibpythoncljScriptTaskEnginePython.newInstance();
 	//        pythonEngine = Python4jScriptTaskEnginePython.newInstance();
+	//        pythonEngine = JapybScriptTaskEnginePython.newInstance();
         start = new Instant();
         lastLog = new Instant();
     }
