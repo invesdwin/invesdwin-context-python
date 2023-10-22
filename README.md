@@ -216,6 +216,7 @@ public class PythonStrategyTest extends ATest {
     - 112.86/ms python calls with 26.74/ms ticks processed
 - **Py4J-python3**: 29.63/ms python calls with 7463.35/s ticks processed
 - **Py4J-pypy**: 29.3/ms python calls with 7371.21/s ticks processed
+- **Japyb-python3**: 14.6/ms python calls with 3625.96/s ticks processed
 - **Jython**: 2050.49/s python calls with 511.63/s ticks processed 
   - starts with up to ~5900/s python calls but slows down the longer it runs
 
