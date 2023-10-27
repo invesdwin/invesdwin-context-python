@@ -12,7 +12,7 @@ Dependency declaration:
 ```xml
 <dependency>
 	<groupId>de.invesdwin</groupId>
-	<artifactId>invesdwin-context-python-runtime-py4j</artifactId>
+	<artifactId>invesdwin-context-python-runtime-japyb</artifactId>
 	<version>1.0.3</version><!---project.version.invesdwin-context-python-parent-->
 </dependency>
 ```
