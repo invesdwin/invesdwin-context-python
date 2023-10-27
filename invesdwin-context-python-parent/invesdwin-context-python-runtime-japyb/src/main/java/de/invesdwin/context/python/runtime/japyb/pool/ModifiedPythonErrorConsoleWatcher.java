@@ -37,13 +37,13 @@ public class ModifiedPythonErrorConsoleWatcher implements Closeable {
                             return;
                         }
                         if (Strings.isNotBlank(s)) {
+                            IScriptTaskRunnerPython.LOG.warn("< %s", s);
                             synchronized (errorMessage) {
                                 if (errorMessage.length() > 0) {
                                     errorMessage.append("\n");
                                 }
                                 errorMessage.append(s);
                             }
-                            IScriptTaskRunnerPython.LOG.warn("< %s", s);
                         } else {
                             FTimeUnit.MILLISECONDS.sleep(1);
                         }
@@ -71,14 +71,34 @@ public class ModifiedPythonErrorConsoleWatcher implements Closeable {
         }
     }
 
+    private int getErrorMessageLength() {
+        synchronized (errorMessage) {
+            return errorMessage.length();
+        }
+    }
+
     public String getErrorMessage() {
+        final int prevLength = 0;
+        while (true) {
+            final int length = getErrorMessageLength();
+            if (length == 0) {
+                return null;
+            }
+            if (length > prevLength) {
+                //wait for the whole messsage to arrive
+                FTimeUnit.MILLISECONDS.sleepNoInterrupt(50);
+            } else {
+                break;
+            }
+        }
+        final String str;
         synchronized (errorMessage) {
             if (errorMessage.length() == 0) {
                 return null;
             }
-            final String str = String.valueOf(errorMessage).trim();
+            str = String.valueOf(errorMessage).trim();
             errorMessage.setLength(0);
-            return str;
         }
+        return str;
     }
 }
