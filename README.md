@@ -95,6 +95,12 @@ sudo pypy get-pip.py
 rm get-pip.py
 sudo pypy -m pip install py4j
 ```
+
+Or use the `invesdwin-context-python-runtime-japyb` module (no additional python modules required) and set the system property:
+```properties
+de.invesdwin.context.python.runtime.japyb.JapybProperties.PYTHON_COMMAND=pypy
+```
+
 Though as always you should measure the performance for your use cases and scripts before deciding on a specific solution. Also be aware that [CPython extensions might not be fully compatible with PyPy](http://pypy.org/compat.html).
 
 ## Avoiding Bootstrap
