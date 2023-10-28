@@ -1,5 +1,5 @@
 # invesdwin-context-python
-Integrate python functionality with these modules for the [invesdwin-context](https://github.com/invesdwin/invesdwin-context) module system. All integration modules provide unified bidirectional communication between Java and python. That way you can switch the python provider without having to change your script implementation or integration. See test cases for examples on how to imlement your script integrations.
+Integrate python functionality with these modules for the [invesdwin-context](https://github.com/invesdwin/invesdwin-context) module system. All integration modules provide unified bidirectional communication between Java and python. That way you can switch the python provider without having to change your script implementation. See test cases for examples on how to implement your script integrations.
 
 ## Maven
 
@@ -12,7 +12,7 @@ Dependency declaration:
 ```xml
 <dependency>
 	<groupId>de.invesdwin</groupId>
-	<artifactId>invesdwin-context-python-runtime-py4j</artifactId>
+	<artifactId>invesdwin-context-python-runtime-japyb</artifactId>
 	<version>1.0.3</version><!---project.version.invesdwin-context-python-parent-->
 </dependency>
 ```
@@ -95,6 +95,12 @@ sudo pypy get-pip.py
 rm get-pip.py
 sudo pypy -m pip install py4j
 ```
+
+Or use the `invesdwin-context-python-runtime-japyb` module (no additional python modules required) and set the system property:
+```properties
+de.invesdwin.context.python.runtime.japyb.JapybProperties.PYTHON_COMMAND=pypy
+```
+
 Though as always you should measure the performance for your use cases and scripts before deciding on a specific solution. Also be aware that [CPython extensions might not be fully compatible with PyPy](http://pypy.org/compat.html).
 
 ## Avoiding Bootstrap
