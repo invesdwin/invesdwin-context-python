@@ -150,7 +150,7 @@ public class InputsAndResultsTestEmpty {
             @Override
             public void executeScript(final IScriptTaskEngine engine) {
                 engine.eval(new ClassPathResource(InputsAndResultsTestEmpty.class.getSimpleName() + ".py",
-                        InputsAndResultsTestNull.class));
+                        InputsAndResultsTestEmpty.class));
             }
 
             @Override

@@ -44,6 +44,14 @@
 			<groupId>org.nd4j</groupId>
 			<artifactId>python4j-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-integration-channel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-handler</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

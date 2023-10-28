@@ -139,7 +139,7 @@ public class InputsAndResultsTestEmptyMatrixValue {
             @Override
             public void executeScript(final IScriptTaskEngine engine) {
                 engine.eval(new ClassPathResource(InputsAndResultsTestEmptyMatrixValue.class.getSimpleName() + ".py",
-                        InputsAndResultsTestNull.class));
+                        InputsAndResultsTestEmptyMatrixValue.class));
             }
 
             @Override
