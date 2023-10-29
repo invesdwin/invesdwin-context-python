@@ -73,7 +73,7 @@ def callJava_invokeSocket(methodName, parameters):
     return eval(returnExpression, globals())
 
 def callJava(methodName, *parameters):
-    if 'socketScriptTaskCallbackContext' not in globals():
+    if 'socketScriptTaskCallbackContext' not in locals() and 'socketScriptTaskCallbackContext' not in globals():
         if 'socketScriptTaskCallbackContextUuid' in locals() or 'socketScriptTaskCallbackContextUuid' in globals():
             callJava_createSocket()
         else:

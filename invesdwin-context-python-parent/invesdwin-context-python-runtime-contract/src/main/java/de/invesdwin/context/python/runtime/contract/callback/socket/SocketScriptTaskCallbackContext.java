@@ -15,12 +15,15 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import de.invesdwin.context.integration.marshaller.MarshallerJsonJackson;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
+import de.invesdwin.context.log.error.Err;
+import de.invesdwin.context.log.error.LoggedRuntimeException;
 import de.invesdwin.context.python.runtime.contract.callback.ScriptTaskParametersPythonFromJson;
 import de.invesdwin.context.python.runtime.contract.callback.ScriptTaskParametersPythonFromJsonPool;
 import de.invesdwin.context.python.runtime.contract.callback.ScriptTaskReturnsPythonToExpression;
 import de.invesdwin.context.python.runtime.contract.callback.ScriptTaskReturnsPythonToExpressionPool;
 import de.invesdwin.util.error.Throwables;
 import de.invesdwin.util.lang.UUIDs;
+import de.invesdwin.util.lang.string.Strings;
 
 @ThreadSafe
 public class SocketScriptTaskCallbackContext implements Closeable {
@@ -73,6 +76,13 @@ public class SocketScriptTaskCallbackContext implements Closeable {
             final JsonNode jsonArgs = toJsonNode(args);
             parameters.setParameters(jsonArgs);
             callback.invoke(methodName, parameters, returns);
+            return returns.getReturnExpression();
+        } catch (final Throwable t) {
+            final LoggedRuntimeException loggedError = Err.process(t);
+            final String errorMessage = Strings.normalizeNewlines(Throwables.concatMessages(loggedError))
+                    .replace("\n", "\\n")
+                    .replace("\"", "\\\"");
+            returns.returnExpression("raise Exception(\"callJavaException: " + errorMessage + "\")");
             return returns.getReturnExpression();
         } finally {
             ScriptTaskReturnsPythonToExpressionPool.INSTANCE.returnObject(returns);
