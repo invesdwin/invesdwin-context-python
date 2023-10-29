@@ -70,7 +70,12 @@ def callJava_createSocket():
 def callJava_invokeSocket(methodName, parameters):
     socketScriptTaskCallbackSocket.sendall((methodName+";"+json.dumps(parameters)+"\n").encode('UTF-8'))
     returnExpression = socketScriptTaskCallbackSocketReader.readline().decode("UTF-8")
-    return eval(returnExpression, globals())
+    if returnExpression.startswith("raise "):
+        exec(returnExpression, globals())
+        # fallback
+        raise Exception(returnExpression)
+    else:
+        return eval(returnExpression, globals())
 
 def callJava(methodName, *parameters):
     if 'socketScriptTaskCallbackContext' not in locals() and 'socketScriptTaskCallbackContext' not in globals():
@@ -78,13 +83,4 @@ def callJava(methodName, *parameters):
             callJava_createSocket()
         else:
             raise Exception("IScriptTaskCallback not available")
-    try:
-        return callJava_invokeSocket(methodName, parameters)
-    except:
-        #retry once, throw exception on second try
-        try:
-            socketScriptTaskCallbackSocket.close()
-        except:
-            pass
-        callJava_createSocket()
-        return callJava_invokeSocket(methodName, parameters)
+    return callJava_invokeSocket(methodName, parameters)

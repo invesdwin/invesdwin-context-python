@@ -78,13 +78,14 @@ public class ModifiedPythonErrorConsoleWatcher implements Closeable {
     }
 
     public String getErrorMessage() {
-        final int prevLength = 0;
+        int prevLength = 0;
         while (true) {
             final int length = getErrorMessageLength();
             if (length == 0) {
                 return null;
             }
             if (length > prevLength) {
+                prevLength = length;
                 //wait for the whole messsage to arrive
                 FTimeUnit.MILLISECONDS.sleepNoInterrupt(50);
             } else {
