@@ -1,119 +1,119 @@
-getBooleanMatrix = callJava("getBooleanMatrix")
+getBooleanMatrix = callback("getBooleanMatrix")
 if len(getBooleanMatrix) != 2:
 	raise Exception("getBooleanMatrix empty!")
-callJava("setBooleanMatrix", getBooleanMatrix)
+callback("setBooleanMatrix", getBooleanMatrix)
 
-getBooleanMatrixAsList = callJava("getBooleanMatrixAsList")
+getBooleanMatrixAsList = callback("getBooleanMatrixAsList")
 if len(getBooleanMatrixAsList) != 2:
 	raise Exception("getBooleanMatrixAsList empty!")
-callJava("setBooleanMatrixAsList", getBooleanMatrixAsList)
+callback("setBooleanMatrixAsList", getBooleanMatrixAsList)
 
 
-getByteMatrix = callJava("getByteMatrix")
+getByteMatrix = callback("getByteMatrix")
 if len(getByteMatrix) != 2:
 	raise Exception("getByteMatrix empty!")
-callJava("setByteMatrix", getByteMatrix)
+callback("setByteMatrix", getByteMatrix)
 
-getByteMatrixAsList = callJava("getByteMatrixAsList")
+getByteMatrixAsList = callback("getByteMatrixAsList")
 if len(getByteMatrixAsList) != 2:
 	raise Exception("getByteMatrixAsList empty!")
-callJava("setByteMatrixAsList", getByteMatrixAsList)
+callback("setByteMatrixAsList", getByteMatrixAsList)
 
 
-getCharacterMatrix = callJava("getCharacterMatrix")
+getCharacterMatrix = callback("getCharacterMatrix")
 if len(getCharacterMatrix) != 2:
 	raise Exception("getCharacterMatrix empty!")
-callJava("setCharacterMatrix", getCharacterMatrix)
+callback("setCharacterMatrix", getCharacterMatrix)
 
-getCharacterMatrixAsList = callJava("getCharacterMatrixAsList")
+getCharacterMatrixAsList = callback("getCharacterMatrixAsList")
 if len(getCharacterMatrixAsList) != 2:
 	raise Exception("getCharacterMatrixAsList empty!")
-callJava("setCharacterMatrixAsList", getCharacterMatrixAsList)
+callback("setCharacterMatrixAsList", getCharacterMatrixAsList)
 
 
-getDecimalMatrix = callJava("getDecimalMatrix")
+getDecimalMatrix = callback("getDecimalMatrix")
 if len(getDecimalMatrix) != 2:
 	raise Exception("getDecimalMatrix empty!")
-callJava("setDecimalMatrix", getDecimalMatrix)
+callback("setDecimalMatrix", getDecimalMatrix)
 
-getDecimalMatrixAsList = callJava("getDecimalMatrixAsList")
+getDecimalMatrixAsList = callback("getDecimalMatrixAsList")
 if len(getDecimalMatrixAsList) != 2:
 	raise Exception("getDecimalMatrixAsList empty!")
-callJava("setDecimalMatrixAsList", getDecimalMatrixAsList)
+callback("setDecimalMatrixAsList", getDecimalMatrixAsList)
 
 
-getDoubleMatrix = callJava("getDoubleMatrix")
+getDoubleMatrix = callback("getDoubleMatrix")
 if len(getDoubleMatrix) != 2:
 	raise Exception("getDoubleMatrix empty!")
-callJava("setDoubleMatrix", getDoubleMatrix)
+callback("setDoubleMatrix", getDoubleMatrix)
 
-getDoubleMatrixAsList = callJava("getDoubleMatrixAsList")
+getDoubleMatrixAsList = callback("getDoubleMatrixAsList")
 if len(getDoubleMatrixAsList) != 2:
 	raise Exception("getDoubleMatrixAsList empty!")
-callJava("setDoubleMatrixAsList", getDoubleMatrixAsList)
+callback("setDoubleMatrixAsList", getDoubleMatrixAsList)
 
 
-getFloatMatrix = callJava("getFloatMatrix")
+getFloatMatrix = callback("getFloatMatrix")
 if len(getFloatMatrix) != 2:
 	raise Exception("getFloatMatrix empty!")
-callJava("setFloatMatrix", getFloatMatrix)
+callback("setFloatMatrix", getFloatMatrix)
 
-getFloatMatrixAsList = callJava("getFloatMatrixAsList")
+getFloatMatrixAsList = callback("getFloatMatrixAsList")
 if len(getFloatMatrixAsList) != 2:
 	raise Exception("getFloatMatrixAsList empty!")
-callJava("setFloatMatrixAsList", getFloatMatrixAsList)
+callback("setFloatMatrixAsList", getFloatMatrixAsList)
 
 
-getIntegerMatrix = callJava("getIntegerMatrix")
+getIntegerMatrix = callback("getIntegerMatrix")
 if len(getIntegerMatrix) != 2:
 	raise Exception("getIntegerMatrix empty!")
-callJava("setIntegerMatrix", getIntegerMatrix)
+callback("setIntegerMatrix", getIntegerMatrix)
 
-getIntegerMatrixAsList = callJava("getIntegerMatrixAsList")
+getIntegerMatrixAsList = callback("getIntegerMatrixAsList")
 if len(getIntegerMatrixAsList) != 2:
 	raise Exception("getIntegerMatrixAsList empty!")
-callJava("setIntegerMatrixAsList", getIntegerMatrixAsList)
+callback("setIntegerMatrixAsList", getIntegerMatrixAsList)
 
 
-getLongMatrix = callJava("getLongMatrix")
+getLongMatrix = callback("getLongMatrix")
 if len(getLongMatrix) != 2:
 	raise Exception("getLongMatrix empty!")
-callJava("setLongMatrix", getLongMatrix)
+callback("setLongMatrix", getLongMatrix)
 
-getLongMatrixAsList = callJava("getLongMatrixAsList")
+getLongMatrixAsList = callback("getLongMatrixAsList")
 if len(getLongMatrixAsList) != 2:
 	raise Exception("getLongMatrixAsList empty!")
-callJava("setLongMatrixAsList", getLongMatrixAsList)
+callback("setLongMatrixAsList", getLongMatrixAsList)
 
 
-getPercentMatrix = callJava("getPercentMatrix")
+getPercentMatrix = callback("getPercentMatrix")
 if len(getPercentMatrix) != 2:
 	raise Exception("getPercentMatrix empty!")
-callJava("setPercentMatrix", getPercentMatrix)
+callback("setPercentMatrix", getPercentMatrix)
 
-getPercentMatrixAsList = callJava("getPercentMatrixAsList")
+getPercentMatrixAsList = callback("getPercentMatrixAsList")
 if len(getPercentMatrixAsList) != 2:
 	raise Exception("getPercentMatrixAsList empty!")
-callJava("setPercentMatrixAsList", getPercentMatrixAsList)
+callback("setPercentMatrixAsList", getPercentMatrixAsList)
 
 
-getShortMatrix = callJava("getShortMatrix")
+getShortMatrix = callback("getShortMatrix")
 if len(getShortMatrix) != 2:
 	raise Exception("getShortMatrix empty!")
-callJava("setShortMatrix", getShortMatrix)
+callback("setShortMatrix", getShortMatrix)
 
-getShortMatrixAsList = callJava("getShortMatrixAsList")
+getShortMatrixAsList = callback("getShortMatrixAsList")
 if len(getShortMatrixAsList) != 2:
 	raise Exception("getShortMatrixAsList empty!")
-callJava("setShortMatrixAsList", getShortMatrixAsList)
+callback("setShortMatrixAsList", getShortMatrixAsList)
 
 
-getStringMatrix = callJava("getStringMatrix")
+getStringMatrix = callback("getStringMatrix")
 if len(getStringMatrix) != 2:
 	raise Exception("getStringMatrix empty!")
-callJava("setStringMatrix", getStringMatrix)
+callback("setStringMatrix", getStringMatrix)
 
-getStringMatrixAsList = callJava("getStringMatrixAsList")
+getStringMatrixAsList = callback("getStringMatrixAsList")
 if len(getStringMatrixAsList) != 2:
 	raise Exception("getStringMatrixAsList empty!")
-callJava("setStringMatrixAsList", getStringMatrixAsList)
+callback("setStringMatrixAsList", getStringMatrixAsList)

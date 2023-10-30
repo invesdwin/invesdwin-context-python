@@ -47,7 +47,7 @@ def restoreContext():
         if n not in __saved_context__:
             del sys.modules[__name__].__dict__[n]
             
-def callJava(methodName, *parameters):
+def callback(methodName, *parameters):
     if 'jepScriptTaskCallbackContext' not in globals():
         if 'jepScriptTaskCallbackContextUuid' in locals() or 'jepScriptTaskCallbackContextUuid' in globals():
             global jepScriptTaskCallbackContext

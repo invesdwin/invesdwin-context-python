@@ -36,8 +36,8 @@ public class Python4jScriptTaskRunnerPythonTest extends ATest {
     }
 
     @Test
-    public void testCallJava() {
-        new CallJavaTest(runner).testCallJava();
+    public void testCallbackSimple() {
+        new CallbackTest(runner).testCallback();
     }
 
 }

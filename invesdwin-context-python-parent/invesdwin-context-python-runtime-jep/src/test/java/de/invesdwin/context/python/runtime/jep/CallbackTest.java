@@ -1,4 +1,4 @@
-package de.invesdwin.context.python.runtime.py4j;
+package de.invesdwin.context.python.runtime.jep;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,14 +19,14 @@ import de.invesdwin.util.assertions.Assertions;
 import de.invesdwin.util.lang.UUIDs;
 
 @NotThreadSafe
-public class CallJavaTest {
+public class CallbackTest {
 
     private static final Map<String, String> UUID_SECRET = new ConcurrentHashMap<>();
 
     private final IScriptTaskRunnerPython runner;
     private int voidMethodCalled;
 
-    public CallJavaTest(final IScriptTaskRunnerPython runner) {
+    public CallbackTest(final IScriptTaskRunnerPython runner) {
         this.runner = runner;
     }
 
@@ -47,7 +47,7 @@ public class CallJavaTest {
         voidMethodCalled++;
     }
 
-    public void testCallJava() {
+    public void testCallback() {
         final String uuid = UUIDs.newPseudoRandomUUID();
         final String secret = "secret123";
         UUID_SECRET.put(uuid, secret);
@@ -56,7 +56,7 @@ public class CallJavaTest {
 
                 @Override
                 public IScriptTaskCallback getCallback() {
-                    return new ReflectiveScriptTaskCallback(CallJavaTest.this);
+                    return new ReflectiveScriptTaskCallback(CallbackTest.this);
                 }
 
                 @Override
@@ -66,25 +66,22 @@ public class CallJavaTest {
 
                 @Override
                 public void executeScript(final IScriptTaskEngine engine) {
-                    engine.eval(new ClassPathResource(CallJavaTest.class.getSimpleName() + ".py", CallJavaTest.class));
+                    engine.eval(new ClassPathResource(CallbackTest.class.getSimpleName() + ".py", CallbackTest.class));
                 }
 
                 @Override
                 public Void extractResults(final IScriptTaskResults results) {
-                    final String getSecretStaticGateway = results.getString("getSecretStaticGateway");
-                    Assertions.assertThat(getSecretStaticGateway).isEqualTo(secret);
-
                     final String getSecretStaticImport = results.getString("getSecretStaticImport");
                     Assertions.assertThat(getSecretStaticImport).isEqualTo(secret);
 
-                    final String getSecretStaticCallJava = results.getString("getSecretStaticCallJava");
-                    Assertions.assertThat(getSecretStaticCallJava).isEqualTo(secret);
+                    final String getSecretStaticCallback = results.getString("getSecretStaticCallback");
+                    Assertions.assertThat(getSecretStaticCallback).isEqualTo(secret);
 
-                    final String getSecretCallJava = results.getString("getSecretCallJava");
-                    Assertions.assertThat(getSecretCallJava).isEqualTo(secret);
+                    final String getSecretCallback = results.getString("getSecretCallback");
+                    Assertions.assertThat(getSecretCallback).isEqualTo(secret);
 
-                    final String getSecretExpressionCallJava = results.getString("getSecretExpressionCallJava");
-                    Assertions.assertThat(getSecretExpressionCallJava).isEqualTo(secret);
+                    final String getSecretExpressionCallback = results.getString("getSecretExpressionCallback");
+                    Assertions.assertThat(getSecretExpressionCallback).isEqualTo(secret);
 
                     Assertions.assertThat(voidMethodCalled).isEqualTo(1);
                     return null;

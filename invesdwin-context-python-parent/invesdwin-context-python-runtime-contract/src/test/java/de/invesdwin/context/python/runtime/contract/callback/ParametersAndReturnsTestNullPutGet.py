@@ -1,186 +1,186 @@
-getBooleanVector = callJava("getBooleanVector")
+getBooleanVector = callback("getBooleanVector")
 if getBooleanVector is not None:
 	raise Exception("getBooleanVector not None!")
-callJava("setBooleanVector", getBooleanVector)
-getBooleanVectorAsList = callJava("getBooleanVectorAsList")
+callback("setBooleanVector", getBooleanVector)
+getBooleanVectorAsList = callback("getBooleanVectorAsList")
 if getBooleanVectorAsList is not None:
 	raise Exception("getBooleanVectorAsList not None!")
-callJava("setBooleanVectorAsList", getBooleanVectorAsList)
-getBooleanMatrix = callJava("getBooleanMatrix")
+callback("setBooleanVectorAsList", getBooleanVectorAsList)
+getBooleanMatrix = callback("getBooleanMatrix")
 if getBooleanMatrix is not None:
 	raise Exception("getBooleanMatrix not None!")
-callJava("setBooleanMatrix", getBooleanMatrix)
-getBooleanMatrixAsList = callJava("getBooleanMatrixAsList")
+callback("setBooleanMatrix", getBooleanMatrix)
+getBooleanMatrixAsList = callback("getBooleanMatrixAsList")
 if getBooleanMatrixAsList is not None:
 	raise Exception("getBooleanMatrixAsList not None!")
-callJava("setBooleanMatrixAsList", getBooleanMatrixAsList)
+callback("setBooleanMatrixAsList", getBooleanMatrixAsList)
 
-getByteVector = callJava("getByteVector")
+getByteVector = callback("getByteVector")
 if getByteVector is not None:
 	raise Exception("getByteVector not None!")
-callJava("setByteVector", getByteVector)
-getByteVectorAsList = callJava("getByteVectorAsList")
+callback("setByteVector", getByteVector)
+getByteVectorAsList = callback("getByteVectorAsList")
 if getByteVectorAsList is not None:
 	raise Exception("getByteVectorAsList not None!")
-callJava("setByteVectorAsList", getByteVectorAsList)
-getByteMatrix = callJava("getByteMatrix")
+callback("setByteVectorAsList", getByteVectorAsList)
+getByteMatrix = callback("getByteMatrix")
 if getByteMatrix is not None:
 	raise Exception("getByteMatrix not None!")
-callJava("setByteMatrix", getByteMatrix)
-getByteMatrixAsList = callJava("getByteMatrixAsList")
+callback("setByteMatrix", getByteMatrix)
+getByteMatrixAsList = callback("getByteMatrixAsList")
 if getByteMatrixAsList is not None:
 	raise Exception("getByteMatrixAsList not None!")
-callJava("setByteMatrixAsList", getByteMatrixAsList)
+callback("setByteMatrixAsList", getByteMatrixAsList)
 
-getCharacterVector = callJava("getCharacterVector")
+getCharacterVector = callback("getCharacterVector")
 if getCharacterVector is not None:
 	raise Exception("getCharacterVector not None!")
-callJava("setCharacterVector", getCharacterVector)
-getCharacterVectorAsList = callJava("getCharacterVectorAsList")
+callback("setCharacterVector", getCharacterVector)
+getCharacterVectorAsList = callback("getCharacterVectorAsList")
 if getCharacterVectorAsList is not None:
 	raise Exception("getCharacterVectorAsList not None!")
-callJava("setCharacterVectorAsList", getCharacterVectorAsList)
-getCharacterMatrix = callJava("getCharacterMatrix")
+callback("setCharacterVectorAsList", getCharacterVectorAsList)
+getCharacterMatrix = callback("getCharacterMatrix")
 if getCharacterMatrix is not None:
 	raise Exception("getCharacterMatrix not None!")
-callJava("setCharacterMatrix", getCharacterMatrix)
-getCharacterMatrixAsList = callJava("getCharacterMatrixAsList")
+callback("setCharacterMatrix", getCharacterMatrix)
+getCharacterMatrixAsList = callback("getCharacterMatrixAsList")
 if getCharacterMatrixAsList is not None:
 	raise Exception("getCharacterMatrixAsList not None!")
-callJava("setCharacterMatrixAsList", getCharacterMatrixAsList)
+callback("setCharacterMatrixAsList", getCharacterMatrixAsList)
 
-getDecimalVector = callJava("getDecimalVector")
+getDecimalVector = callback("getDecimalVector")
 if getDecimalVector is not None:
 	raise Exception("getDecimalVector not None!")
-callJava("setDecimalVector", getDecimalVector)
-getDecimalVectorAsList = callJava("getDecimalVectorAsList")
+callback("setDecimalVector", getDecimalVector)
+getDecimalVectorAsList = callback("getDecimalVectorAsList")
 if getDecimalVectorAsList is not None:
 	raise Exception("getDecimalVectorAsList not None!")
-callJava("setDecimalVectorAsList", getDecimalVectorAsList)
-getDecimalMatrix = callJava("getDecimalMatrix")
+callback("setDecimalVectorAsList", getDecimalVectorAsList)
+getDecimalMatrix = callback("getDecimalMatrix")
 if getDecimalMatrix is not None:
 	raise Exception("getDecimalMatrix not None!")
-callJava("setDecimalMatrix", getDecimalMatrix)
-getDecimalMatrixAsList = callJava("getDecimalMatrixAsList")
+callback("setDecimalMatrix", getDecimalMatrix)
+getDecimalMatrixAsList = callback("getDecimalMatrixAsList")
 if getDecimalMatrixAsList is not None:
 	raise Exception("getDecimalMatrixAsList not None!")
-callJava("setDecimalMatrixAsList", getDecimalMatrixAsList)
+callback("setDecimalMatrixAsList", getDecimalMatrixAsList)
 
-getDoubleVector = callJava("getDoubleVector")
+getDoubleVector = callback("getDoubleVector")
 if getDoubleVector is not None:
 	raise Exception("getDoubleVector not None!")
-callJava("setDoubleVector", getDoubleVector)
-getDoubleVectorAsList = callJava("getDoubleVectorAsList")
+callback("setDoubleVector", getDoubleVector)
+getDoubleVectorAsList = callback("getDoubleVectorAsList")
 if getDoubleVectorAsList is not None:
 	raise Exception("getDoubleVectorAsList not None!")
-callJava("setDoubleVectorAsList", getDoubleVectorAsList)
-getDoubleMatrix = callJava("getDoubleMatrix")
+callback("setDoubleVectorAsList", getDoubleVectorAsList)
+getDoubleMatrix = callback("getDoubleMatrix")
 if getDoubleMatrix is not None:
 	raise Exception("getDoubleMatrix not None!")
-callJava("setDoubleMatrix", getDoubleMatrix)
-getDoubleMatrixAsList = callJava("getDoubleMatrixAsList")
+callback("setDoubleMatrix", getDoubleMatrix)
+getDoubleMatrixAsList = callback("getDoubleMatrixAsList")
 if getDoubleMatrixAsList is not None:
 	raise Exception("getDoubleMatrixAsList not None!")
-callJava("setDoubleMatrixAsList", getDoubleMatrixAsList)
+callback("setDoubleMatrixAsList", getDoubleMatrixAsList)
 
-getFloatVector = callJava("getFloatVector")
+getFloatVector = callback("getFloatVector")
 if getFloatVector is not None:
 	raise Exception("getFloatVector not None!")
-callJava("setFloatVector", getFloatVector)
-getFloatVectorAsList = callJava("getFloatVectorAsList")
+callback("setFloatVector", getFloatVector)
+getFloatVectorAsList = callback("getFloatVectorAsList")
 if getFloatVectorAsList is not None:
 	raise Exception("getFloatVectorAsList not None!")
-callJava("setFloatVectorAsList", getFloatVectorAsList)
-getFloatMatrix = callJava("getFloatMatrix")
+callback("setFloatVectorAsList", getFloatVectorAsList)
+getFloatMatrix = callback("getFloatMatrix")
 if getFloatMatrix is not None:
 	raise Exception("getFloatMatrix not None!")
-callJava("setFloatMatrix", getFloatMatrix)
-getFloatMatrixAsList = callJava("getFloatMatrixAsList")
+callback("setFloatMatrix", getFloatMatrix)
+getFloatMatrixAsList = callback("getFloatMatrixAsList")
 if getFloatMatrixAsList is not None:
 	raise Exception("getFloatMatrixAsList not None!")
-callJava("setFloatMatrixAsList", getFloatMatrixAsList)
+callback("setFloatMatrixAsList", getFloatMatrixAsList)
 
-getIntegerVector = callJava("getIntegerVector")
+getIntegerVector = callback("getIntegerVector")
 if getIntegerVector is not None:
 	raise Exception("getIntegerVector not None!")
-callJava("setIntegerVector", getIntegerVector)
-getIntegerVectorAsList = callJava("getIntegerVectorAsList")
+callback("setIntegerVector", getIntegerVector)
+getIntegerVectorAsList = callback("getIntegerVectorAsList")
 if getIntegerVectorAsList is not None:
 	raise Exception("getIntegerVectorAsList not None!")
-callJava("setIntegerVectorAsList", getIntegerVectorAsList)
-getIntegerMatrix = callJava("getIntegerMatrix")
+callback("setIntegerVectorAsList", getIntegerVectorAsList)
+getIntegerMatrix = callback("getIntegerMatrix")
 if getIntegerMatrix is not None:
 	raise Exception("getIntegerMatrix not None!")
-callJava("setIntegerMatrix", getIntegerMatrix)
-getIntegerMatrixAsList = callJava("getIntegerMatrixAsList")
+callback("setIntegerMatrix", getIntegerMatrix)
+getIntegerMatrixAsList = callback("getIntegerMatrixAsList")
 if getIntegerMatrixAsList is not None:
 	raise Exception("getIntegerMatrixAsList not None!")
-callJava("setIntegerMatrixAsList", getIntegerMatrixAsList)
+callback("setIntegerMatrixAsList", getIntegerMatrixAsList)
 
-getLongVector = callJava("getLongVector")
+getLongVector = callback("getLongVector")
 if getLongVector is not None:
 	raise Exception("getLongVector not None!")
-callJava("setLongVector", getLongVector)
-getLongVectorAsList = callJava("getLongVectorAsList")
+callback("setLongVector", getLongVector)
+getLongVectorAsList = callback("getLongVectorAsList")
 if getLongVectorAsList is not None:
 	raise Exception("getLongVectorAsList not None!")
-callJava("setLongVectorAsList", getLongVectorAsList)
-getLongMatrix = callJava("getLongMatrix")
+callback("setLongVectorAsList", getLongVectorAsList)
+getLongMatrix = callback("getLongMatrix")
 if getLongMatrix is not None:
 	raise Exception("getLongMatrix not None!")
-callJava("setLongMatrix", getLongMatrix)
-getLongMatrixAsList = callJava("getLongMatrixAsList")
+callback("setLongMatrix", getLongMatrix)
+getLongMatrixAsList = callback("getLongMatrixAsList")
 if getLongMatrixAsList is not None:
 	raise Exception("getLongMatrixAsList not None!")
-callJava("setLongMatrixAsList", getLongMatrixAsList)
+callback("setLongMatrixAsList", getLongMatrixAsList)
 
-getPercentVector = callJava("getPercentVector")
+getPercentVector = callback("getPercentVector")
 if getPercentVector is not None:
 	raise Exception("getPercentVector not None!")
-callJava("setPercentVector", getPercentVector)
-getPercentVectorAsList = callJava("getPercentVectorAsList")
+callback("setPercentVector", getPercentVector)
+getPercentVectorAsList = callback("getPercentVectorAsList")
 if getPercentVectorAsList is not None:
 	raise Exception("getPercentVectorAsList not None!")
-callJava("setPercentVectorAsList", getPercentVectorAsList)
-getPercentMatrix = callJava("getPercentMatrix")
+callback("setPercentVectorAsList", getPercentVectorAsList)
+getPercentMatrix = callback("getPercentMatrix")
 if getPercentMatrix is not None:
 	raise Exception("getPercentMatrix not None!")
-callJava("setPercentMatrix", getPercentMatrix)
-getPercentMatrixAsList = callJava("getPercentMatrixAsList")
+callback("setPercentMatrix", getPercentMatrix)
+getPercentMatrixAsList = callback("getPercentMatrixAsList")
 if getPercentMatrixAsList is not None:
 	raise Exception("getPercentMatrixAsList not None!")
-callJava("setPercentMatrixAsList", getPercentMatrixAsList)
+callback("setPercentMatrixAsList", getPercentMatrixAsList)
 
-getShortVector = callJava("getShortVector")
+getShortVector = callback("getShortVector")
 if getShortVector is not None:
 	raise Exception("getShortVector not None!")
-callJava("setShortVector", getShortVector)
-getShortVectorAsList = callJava("getShortVectorAsList")
+callback("setShortVector", getShortVector)
+getShortVectorAsList = callback("getShortVectorAsList")
 if getShortVectorAsList is not None:
 	raise Exception("getShortVectorAsList not None!")
-callJava("setShortVectorAsList", getShortVectorAsList)
-getShortMatrix = callJava("getShortMatrix")
+callback("setShortVectorAsList", getShortVectorAsList)
+getShortMatrix = callback("getShortMatrix")
 if getShortMatrix is not None:
 	raise Exception("getShortMatrix not None!")
-callJava("setShortMatrix", getShortMatrix)
-getShortMatrixAsList = callJava("getShortMatrixAsList")
+callback("setShortMatrix", getShortMatrix)
+getShortMatrixAsList = callback("getShortMatrixAsList")
 if getShortMatrixAsList is not None:
 	raise Exception("getShortMatrixAsList not None!")
-callJava("setShortMatrixAsList", getShortMatrixAsList)
+callback("setShortMatrixAsList", getShortMatrixAsList)
 
-getStringVector = callJava("getStringVector")
+getStringVector = callback("getStringVector")
 if getStringVector is not None:
 	raise Exception("getStringVector not None!")
-callJava("setStringVector", getStringVector)
-getStringVectorAsList = callJava("getStringVectorAsList")
+callback("setStringVector", getStringVector)
+getStringVectorAsList = callback("getStringVectorAsList")
 if getStringVectorAsList is not None:
 	raise Exception("getStringVectorAsList not None!")
-callJava("setStringVectorAsList", getStringVectorAsList)
-getStringMatrix = callJava("getStringMatrix")
+callback("setStringVectorAsList", getStringVectorAsList)
+getStringMatrix = callback("getStringMatrix")
 if getStringMatrix is not None:
 	raise Exception("getStringMatrix not None!")
-callJava("setStringMatrix", getStringMatrix)
-getStringMatrixAsList = callJava("getStringMatrixAsList")
+callback("setStringMatrix", getStringMatrix)
+getStringMatrixAsList = callback("getStringMatrixAsList")
 if getStringMatrixAsList is not None:
 	raise Exception("getStringMatrixAsList not None!")
-callJava("setStringMatrixAsList", getStringMatrixAsList)
+callback("setStringMatrixAsList", getStringMatrixAsList)

@@ -1,6 +1,6 @@
 from de.invesdwin.context.python.runtime.jython import JythonScriptTaskCallbackContext
  
-def callJava(methodName, *parameters):
+def callback(methodName, *parameters):
     if 'jythonScriptTaskCallbackContext' not in globals():
         if 'jythonScriptTaskCallbackContextUuid' in locals() or 'jythonScriptTaskCallbackContextUuid' in globals():
             global jythonScriptTaskCallbackContext

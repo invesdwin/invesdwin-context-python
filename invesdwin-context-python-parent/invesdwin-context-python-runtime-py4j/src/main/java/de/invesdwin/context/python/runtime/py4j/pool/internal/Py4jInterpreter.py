@@ -58,7 +58,7 @@ gateway.java_gateway_server.resetCallbackClient(
     python_port)
 
 
-def callJava(methodName, *parameters):
+def callback(methodName, *parameters):
     if 'py4jScriptTaskCallbackContext' not in globals():
         if 'py4jScriptTaskCallbackContextUuid' in locals() or 'py4jScriptTaskCallbackContextUuid' in globals():
             global py4jScriptTaskCallbackContext

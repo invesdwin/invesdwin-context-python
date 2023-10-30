@@ -59,7 +59,7 @@ class SocketStreamReader:
         return bytes_read
 
 
-def callJava_createSocket():
+def callback_createSocket():
     global socketScriptTaskCallbackSocket
     socketScriptTaskCallbackSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socketScriptTaskCallbackSocket.connect((socketScriptTaskCallbackServerHost, socketScriptTaskCallbackServerPort))
@@ -67,7 +67,7 @@ def callJava_createSocket():
     global socketScriptTaskCallbackSocketReader
     socketScriptTaskCallbackSocketReader = SocketStreamReader(socketScriptTaskCallbackSocket)
 
-def callJava_invokeSocket(methodName, parameters):
+def callback_invokeSocket(methodName, parameters):
     socketScriptTaskCallbackSocket.sendall((methodName+";"+json.dumps(parameters)+"\n").encode('UTF-8'))
     returnExpression = socketScriptTaskCallbackSocketReader.readline().decode("UTF-8")
     if returnExpression.startswith("raise "):
@@ -77,10 +77,10 @@ def callJava_invokeSocket(methodName, parameters):
     else:
         return eval(returnExpression, globals())
 
-def callJava(methodName, *parameters):
+def callback(methodName, *parameters):
     if 'socketScriptTaskCallbackContext' not in locals() and 'socketScriptTaskCallbackContext' not in globals():
         if 'socketScriptTaskCallbackContextUuid' in locals() or 'socketScriptTaskCallbackContextUuid' in globals():
-            callJava_createSocket()
+            callback_createSocket()
         else:
             raise Exception("IScriptTaskCallback not available")
-    return callJava_invokeSocket(methodName, parameters)
+    return callback_invokeSocket(methodName, parameters)
