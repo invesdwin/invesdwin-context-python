@@ -55,8 +55,9 @@ public class InputsAndResultsTests {
             Futures.submitAndWait(executor, tasks);
         } catch (final InterruptedException e) {
             throw new RuntimeException(e);
-        } finally {
-            executor.shutdown();
+            //let the finalizer do this, somehow otherwise subsequent runs gets interrupted magically
+            //        } finally {
+            //            executor.shutdown();
         }
     }
 
