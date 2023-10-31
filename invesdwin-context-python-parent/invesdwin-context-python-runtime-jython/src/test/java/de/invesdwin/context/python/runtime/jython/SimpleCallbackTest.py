@@ -1,8 +1,8 @@
 print("putUuid")
 print(putUuid)
 
-from de.invesdwin.context.python.runtime.jython import CallbackTest
-getSecretStaticImport = CallbackTest.getSecretStatic(putUuid)
+from de.invesdwin.context.python.runtime.jython import SimpleCallbackTest
+getSecretStaticImport = SimpleCallbackTest.getSecretStatic(putUuid)
 print("getSecretStaticImport")
 print(getSecretStaticImport)
 

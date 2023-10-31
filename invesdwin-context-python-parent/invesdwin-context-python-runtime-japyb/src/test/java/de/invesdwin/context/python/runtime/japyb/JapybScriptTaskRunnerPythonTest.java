@@ -36,8 +36,8 @@ public class JapybScriptTaskRunnerPythonTest extends ATest {
     }
 
     @Test
-    public void testCallbackSimple() {
-        new CallbackTest(runner).testCallback();
+    public void testSimpleCallback() {
+        new SimpleCallbackTest(runner).testSimpleCallback();
     }
 
 }

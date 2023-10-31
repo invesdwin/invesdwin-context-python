@@ -36,8 +36,8 @@ public class LibpythoncljScriptTaskRunnerPythonTest extends ATest {
     }
 
     @Test
-    public void testCallbackSimple() {
-        new CallbackTest(runner).testCallback();
+    public void testSimpleCallback() {
+        new SimpleCallbackTest(runner).testSimpleCallback();
     }
 
 }

@@ -1,8 +1,12 @@
 print("putUuid")
 print(putUuid)
 
-from de.invesdwin.context.python.runtime.jep import CallbackTest
-getSecretStaticImport = CallbackTest.getSecretStatic(putUuid)
+getSecretStaticGateway = gateway.jvm.de.invesdwin.context.python.runtime.py4j.SimpleCallbackTest.getSecretStatic(putUuid)
+print("getSecretStaticGateway")
+print(getSecretStaticGateway)
+
+java_import(gateway.jvm,'de.invesdwin.context.python.runtime.py4j.SimpleCallbackTest')
+getSecretStaticImport = gateway.jvm.SimpleCallbackTest.getSecretStatic(putUuid)
 print("getSecretStaticImport")
 print(getSecretStaticImport)
 

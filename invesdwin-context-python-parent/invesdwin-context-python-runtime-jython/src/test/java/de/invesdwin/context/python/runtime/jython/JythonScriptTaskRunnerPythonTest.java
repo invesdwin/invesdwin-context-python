@@ -37,7 +37,7 @@ public class JythonScriptTaskRunnerPythonTest extends ATest {
 
     @Test
     public void testCallbackSimple() {
-        new CallbackTest(runner).testCallback();
+        new SimpleCallbackTest(runner).testSimpleCallback();
     }
 
 }
