@@ -24,7 +24,17 @@ public final class GilLock extends ASimpleLock {
     private final MutableInt lockedCount = new MutableInt();
     private PythonGIL key;
 
-    public GilLock() {
+    public GilLock() {}
+
+    @Override
+    public boolean isLocked() {
+        return lockedCount.intValue() > 0;
+    }
+
+    @Override
+    public boolean isLockedByCurrentThread() {
+        //we don't share this lock instance between threads anyhow
+        return isLocked();
     }
 
     @Override
