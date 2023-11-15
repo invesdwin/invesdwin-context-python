@@ -15,7 +15,8 @@ public abstract class AScriptTaskParametersPythonFromJson extends AScriptTaskPar
 
     @Override
     public boolean isNull(final int index) {
-        return getAsJsonNode(index) instanceof NullNode;
+        final JsonNode node = getAsJsonNode(index);
+        return node == null || node instanceof NullNode;
     }
 
     @Override
