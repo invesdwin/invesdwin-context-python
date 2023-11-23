@@ -109,7 +109,7 @@ public class ModifiedPythonBridge {
             }
             if (s.startsWith("Python ")) {
                 ver = s;
-            } else if (TERMINATOR.contains(s)) {
+            } else if (s.contains(TERMINATOR_RAW)) {
                 break;
             }
         }
