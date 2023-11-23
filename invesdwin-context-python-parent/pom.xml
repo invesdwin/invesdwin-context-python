@@ -37,7 +37,7 @@
 		<version.jython>2.7.3</version.jython>
 		<version.jep>4.0.0</version.jep>
 		<version.py4j>0.10.9.3</version.py4j>
-		<version.libpython-clj>2.018</version.libpython-clj>
+		<version.libpython-clj>2.024</version.libpython-clj>
 		<version.python4j>1.0.0-M2.1</version.python4j>
 	</properties>
 
