@@ -51,18 +51,14 @@ public abstract class AScriptTaskResultsPythonFromJson extends AScriptTaskResult
 
     @Override
     public String[][] getStringMatrix(final String variable) {
-        //json returns the columns instead of rows
         final JsonNode strsMatrix = getAsJsonNode(variable);
         if (strsMatrix == null) {
             return null;
         }
         if (strsMatrix.size() == 0) {
-            //https://stackoverflow.com/questions/23079625/extract-array-dimensions-in-julia
             final String[][] emptyMatrix = new String[0][];
             return emptyMatrix;
         }
-        //[11 12 13;21 22 23;31 32 33;41 42 43]
-        //[[11,21,31,41],[12,22,32,42],[13,23,33,43]]
         final int rows = strsMatrix.size();
         final int columns = strsMatrix.get(0).size();
         final String[][] valuesMatrix = new String[rows][];
