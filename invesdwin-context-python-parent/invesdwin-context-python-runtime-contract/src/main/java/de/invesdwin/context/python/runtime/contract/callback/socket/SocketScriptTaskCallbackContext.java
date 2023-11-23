@@ -55,6 +55,10 @@ public class SocketScriptTaskCallbackContext implements Closeable {
                 SocketScriptTaskCallbackContext.class));
     }
 
+    public void deinit(final IScriptTaskEngine engine) {
+        engine.eval("socketScriptTaskCallbackSocket.shutdown(2); socketScriptTaskCallbackSocket.close()");
+    }
+
     public String getUuid() {
         return uuid;
     }
