@@ -117,7 +117,7 @@ The above configuration options for the invidiual runtimes can still be provided
 
 For working with python we recommend using [PyDev](http://www.pydev.org/) if you are mainly using Eclipse. Editing and running scripts is very comfortable with this plugin. If you want to run your scripts from your main application, you can do this easily with `invesdwin-context-python-runtime-japyb` (add this module as a `test` scope dependency) during development (you also need to add a dependecy to the type `test-jar` of `invesdwin-context-python-runtime-contract` for the log level to get activated, or alternatively change the log level of `de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython` to `DEBUG` on your own). The actual deployment distribution can choose a different runtime then as a hard dependency. You can also remote debug your scripts comfortably with PyDev inside Eclipse by following [this manual](http://www.pydev.org/manual_adv_remote_debugger.html). 
 
-## Benchmark
+## Benchmark (Intel I9-9900K)
 
 Using python inside strategy backtests (part of the closed source trading platform) has the following overhead. We run a backtest (using the historical engine which is slow in processing speed but efficient in memory usage) on ticks for one month. Each tick we call four times into python to calculate a spread and compare it against the one calculated in java:
 
