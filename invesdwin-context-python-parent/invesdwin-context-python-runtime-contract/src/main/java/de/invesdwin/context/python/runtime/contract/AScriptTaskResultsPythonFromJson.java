@@ -65,8 +65,9 @@ public abstract class AScriptTaskResultsPythonFromJson extends AScriptTaskResult
         for (int r = 0; r < rows; r++) {
             final String[] values = new String[columns];
             valuesMatrix[r] = values;
+            final JsonNode nodeRow = strsMatrix.get(r);
             for (int c = 0; c < columns; c++) {
-                final String str = strsMatrix.get(r).get(c).asText();
+                final String str = nodeRow.get(c).asText();
                 if (Strings.isBlankOrNullText(str)) {
                     values[c] = null;
                 } else {
