@@ -6,11 +6,15 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.integration.channel.async.IAsynchronousHandler;
 import de.invesdwin.context.integration.channel.async.IAsynchronousHandlerContext;
+import de.invesdwin.util.concurrent.Executors;
+import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.lang.string.Strings;
 
 @NotThreadSafe
 public class SocketScriptTaskCallbackServerHandler implements IAsynchronousHandler<String, String> {
 
+    private static final WrappedExecutorService EXECUTOR = Executors
+            .newCachedThreadPool(SocketScriptTaskCallbackServerHandler.class.getSimpleName());
     private SocketScriptTaskCallbackContext callbackContext;
 
     @Override
@@ -39,7 +43,15 @@ public class SocketScriptTaskCallbackServerHandler implements IAsynchronousHandl
         }
         final String methodName = input.substring(0, indexOfSeparator);
         final String args = input.substring(indexOfSeparator + 1, input.length());
-        return callbackContext.invoke(methodName, args);
+        //use executor to prevent blocking requests in a shared netty handler thread
+        EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                final String result = callbackContext.invoke(methodName, args);
+                context.write(result);
+            }
+        });
+        return null;
     }
 
     @Override
