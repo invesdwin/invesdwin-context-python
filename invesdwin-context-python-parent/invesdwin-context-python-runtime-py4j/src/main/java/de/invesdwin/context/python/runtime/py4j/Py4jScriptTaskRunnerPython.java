@@ -5,6 +5,7 @@ import javax.annotation.concurrent.Immutable;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
+import de.invesdwin.context.integration.script.callback.LoggingDelegateScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.py4j.pool.Py4jInterpreterObjectPool;
@@ -32,7 +33,7 @@ public final class Py4jScriptTaskRunnerPython
         final IScriptTaskCallback callback = scriptTask.getCallback();
         final Py4jScriptTaskCallbackContext context;
         if (callback != null) {
-            context = new Py4jScriptTaskCallbackContext(callback);
+            context = new Py4jScriptTaskCallbackContext(LoggingDelegateScriptTaskCallback.maybeWrap(LOG, callback));
         } else {
             context = null;
         }

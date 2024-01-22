@@ -8,6 +8,7 @@ import javax.annotation.concurrent.Immutable;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
+import de.invesdwin.context.integration.script.callback.LoggingDelegateScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.jep.internal.JepWrapper;
@@ -49,7 +50,8 @@ public final class JepScriptTaskRunnerPython
                 final JepScriptTaskCallbackContext context;
                 final IScriptTaskCallback callback = scriptTask.getCallback();
                 if (callback != null) {
-                    context = new JepScriptTaskCallbackContext(callback);
+                    context = new JepScriptTaskCallbackContext(
+                            LoggingDelegateScriptTaskCallback.maybeWrap(LOG, callback));
                 } else {
                     context = null;
                 }

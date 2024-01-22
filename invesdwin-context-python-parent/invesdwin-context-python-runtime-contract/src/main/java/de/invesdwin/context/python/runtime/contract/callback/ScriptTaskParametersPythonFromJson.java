@@ -6,6 +6,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import de.invesdwin.util.lang.string.Strings;
+
 @NotThreadSafe
 public class ScriptTaskParametersPythonFromJson extends AScriptTaskParametersPythonFromJson implements Closeable {
 
@@ -28,6 +30,11 @@ public class ScriptTaskParametersPythonFromJson extends AScriptTaskParametersPyt
     @Override
     public void close() {
         parameters = null;
+    }
+
+    @Override
+    public String toString() {
+        return Strings.asString(parameters);
     }
 
 }

@@ -6,6 +6,7 @@ import org.python.jsr223.PyScriptEngine;
 import org.springframework.beans.factory.FactoryBean;
 
 import de.invesdwin.context.integration.script.callback.IScriptTaskCallback;
+import de.invesdwin.context.integration.script.callback.LoggingDelegateScriptTaskCallback;
 import de.invesdwin.context.python.runtime.contract.AScriptTaskPython;
 import de.invesdwin.context.python.runtime.contract.IScriptTaskRunnerPython;
 import de.invesdwin.context.python.runtime.jython.pool.PyScriptEngineObjectPool;
@@ -33,7 +34,7 @@ public final class JythonScriptTaskRunnerPython
         final IScriptTaskCallback callback = scriptTask.getCallback();
         final JythonScriptTaskCallbackContext context;
         if (callback != null) {
-            context = new JythonScriptTaskCallbackContext(callback);
+            context = new JythonScriptTaskCallbackContext(LoggingDelegateScriptTaskCallback.maybeWrap(LOG, callback));
         } else {
             context = null;
         }

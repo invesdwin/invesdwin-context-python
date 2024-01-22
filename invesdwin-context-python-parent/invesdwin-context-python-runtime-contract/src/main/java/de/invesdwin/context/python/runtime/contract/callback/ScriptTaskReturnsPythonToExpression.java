@@ -24,4 +24,9 @@ public class ScriptTaskReturnsPythonToExpression extends AScriptTaskReturnsPytho
         returnExpression = null;
     }
 
+    @Override
+    public String toString() {
+        return returnExpression;
+    }
+
 }
