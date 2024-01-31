@@ -43,7 +43,7 @@ class SocketStreamReader:
 
             start = len(self._recv_buffer)
             bytes_read = self._recv_into(memoryview(chunk))
-            if bytes_read == 0:
+            if len(buf) > 0 and bytes_read == 0:
                 raise EOFError("Zero bytes on subsequent read, thus connection closed")
             buf += memoryview(chunk)[:bytes_read]
 
