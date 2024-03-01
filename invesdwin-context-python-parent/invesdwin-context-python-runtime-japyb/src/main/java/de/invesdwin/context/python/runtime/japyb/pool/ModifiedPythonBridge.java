@@ -226,7 +226,7 @@ public class ModifiedPythonBridge {
     ////// private stuff
 
     private void write(final String s) throws IOException {
-        //        IScriptTaskRunnerPython.LOG.debug("> " + s);
+        IScriptTaskRunnerPython.LOG.trace("> " + s);
         out.write(s.getBytes());
         out.write(NEW_LINE);
         out.flush();
@@ -264,7 +264,7 @@ public class ModifiedPythonBridge {
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
-        //        IScriptTaskRunnerPython.LOG.debug("< (" + ofs + " bytes)");
+        IScriptTaskRunnerPython.LOG.trace("< (" + ofs + " bytes)");
         return ofs.intValue();
     }
 

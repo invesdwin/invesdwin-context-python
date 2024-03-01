@@ -29,7 +29,7 @@ public final class JapybScriptTaskRunnerPython
     @Override
     public <T> T run(final AScriptTaskPython<T> scriptTask) {
         //get session
-        final ExtendedPythonBridge pythonBridge = JapybObjectPool.INSTANCE.borrowObject();
+        final ExtendedPythonBridge bridge = JapybObjectPool.INSTANCE.borrowObject();
         final IScriptTaskCallback callback = scriptTask.getCallback();
         final SocketScriptTaskCallbackContext context;
         if (callback != null) {
@@ -39,7 +39,7 @@ public final class JapybScriptTaskRunnerPython
         }
         try {
             //inputs
-            final JapybScriptTaskEnginePython engine = new JapybScriptTaskEnginePython(pythonBridge);
+            final JapybScriptTaskEnginePython engine = new JapybScriptTaskEnginePython(bridge);
             if (context != null) {
                 context.init(engine);
             }
@@ -56,11 +56,11 @@ public final class JapybScriptTaskRunnerPython
             engine.close();
 
             //return
-            JapybObjectPool.INSTANCE.returnObject(pythonBridge);
+            JapybObjectPool.INSTANCE.returnObject(bridge);
             return result;
         } catch (final Throwable t) {
             //we have to destroy instances on exceptions, otherwise e.g. SFrontiers.jl might get stuck with some inconsistent state
-            JapybObjectPool.INSTANCE.invalidateObject(pythonBridge);
+            JapybObjectPool.INSTANCE.invalidateObject(bridge);
             throw Throwables.propagate(t);
         } finally {
             if (context != null) {

@@ -12,19 +12,19 @@ import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 @NotThreadSafe
 public class JapybScriptTaskEnginePython implements IScriptTaskEngine {
 
-    private ExtendedPythonBridge juliaCaller;
+    private ExtendedPythonBridge bridge;
     private final JapybScriptTaskInputsPython inputs;
     private final JapybScriptTaskResultsPython results;
 
-    public JapybScriptTaskEnginePython(final ExtendedPythonBridge juliaCaller) {
-        this.juliaCaller = juliaCaller;
+    public JapybScriptTaskEnginePython(final ExtendedPythonBridge bridge) {
+        this.bridge = bridge;
         this.inputs = new JapybScriptTaskInputsPython(this);
         this.results = new JapybScriptTaskResultsPython(this);
     }
 
     @Override
     public void eval(final String expression) {
-        juliaCaller.eval(expression);
+        bridge.eval(expression);
     }
 
     @Override
@@ -39,12 +39,12 @@ public class JapybScriptTaskEnginePython implements IScriptTaskEngine {
 
     @Override
     public void close() {
-        juliaCaller = null;
+        bridge = null;
     }
 
     @Override
     public ExtendedPythonBridge unwrap() {
-        return juliaCaller;
+        return bridge;
     }
 
     /**
