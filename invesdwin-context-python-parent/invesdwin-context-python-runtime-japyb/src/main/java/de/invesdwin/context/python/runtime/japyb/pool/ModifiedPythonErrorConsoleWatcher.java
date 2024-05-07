@@ -32,7 +32,7 @@ public class ModifiedPythonErrorConsoleWatcher implements Closeable {
             public void run() {
                 final Thread currentThread = Thread.currentThread();
                 try {
-                    while (!Threads.isInterrupted() && errorThread != currentThread) {
+                    while (!Threads.isInterrupted() && errorThread == currentThread) {
                         final String s = errorReader.readLine();
                         if (errorThread != currentThread) {
                             return;
