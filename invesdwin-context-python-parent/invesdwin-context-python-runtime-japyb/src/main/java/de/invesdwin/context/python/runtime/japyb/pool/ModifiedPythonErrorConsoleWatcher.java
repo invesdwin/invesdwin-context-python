@@ -30,10 +30,11 @@ public class ModifiedPythonErrorConsoleWatcher implements Closeable {
         errorThread = new Thread(new Runnable() {
             @Override
             public void run() {
+                final Thread currentThread = Thread.currentThread();
                 try {
-                    while (!Threads.isInterrupted() && errorThread != null) {
+                    while (!Threads.isInterrupted() && errorThread != currentThread) {
                         final String s = errorReader.readLine();
-                        if (errorThread == null) {
+                        if (errorThread != currentThread) {
                             return;
                         }
                         if (Strings.isNotBlank(s)) {
@@ -58,10 +59,7 @@ public class ModifiedPythonErrorConsoleWatcher implements Closeable {
 
     @Override
     public void close() {
-        if (errorThread != null) {
-            errorThread.interrupt();
-            errorThread = null;
-        }
+        errorThread = null;
         clearLog();
     }
 

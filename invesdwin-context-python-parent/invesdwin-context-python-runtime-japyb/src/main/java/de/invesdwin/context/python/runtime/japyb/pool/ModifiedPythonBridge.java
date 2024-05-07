@@ -48,7 +48,13 @@ public class ModifiedPythonBridge {
     private ModifiedPythonErrorConsoleWatcher errWatcher = null;
     private OutputStream out = null;
     private String ver = null;
-    private final LoopInterruptedCheck interruptedCheck = new LoopInterruptedCheck();
+    private final LoopInterruptedCheck interruptedCheck = new LoopInterruptedCheck() {
+        @Override
+        protected boolean onInterval() throws InterruptedException {
+            //don't throw on interrupt because this makes tests flaky
+            return true;
+        }
+    };
     private final IByteBuffer readLineBuffer = ByteBuffers.allocateExpandable();
     private int readLineBufferPosition = 0;
     private final ObjectMapper mapper;
