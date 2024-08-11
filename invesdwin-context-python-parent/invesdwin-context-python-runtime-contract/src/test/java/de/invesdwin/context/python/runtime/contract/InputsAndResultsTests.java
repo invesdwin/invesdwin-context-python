@@ -36,6 +36,7 @@ public class InputsAndResultsTests {
         new InputsAndResultsTestNullPutGet(runner).testNullPutGet();
         new InputsAndResultsTestEmpty(runner).testEmpty();
         new InputsAndResultsTestEmptyMatrixValue(runner).testEmptyMatrixValue();
+        new InputsAndResultsTestDoubleNan(runner).testDoubleNan();
     }
 
     public void testParallel() {

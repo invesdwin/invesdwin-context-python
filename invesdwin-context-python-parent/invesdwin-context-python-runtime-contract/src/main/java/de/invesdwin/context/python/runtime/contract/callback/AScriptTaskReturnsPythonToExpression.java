@@ -4,6 +4,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import de.invesdwin.context.integration.script.callback.IScriptTaskReturns;
 import de.invesdwin.util.assertions.Assertions;
+import de.invesdwin.util.math.Doubles;
 
 @NotThreadSafe
 public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTaskReturns {
@@ -43,7 +44,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final char[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -53,7 +55,7 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                         sb.append(",");
                     }
                     sb.append("'");
-                    sb.append(value[row][col]);
+                    sb.append(valueRow[col]);
                     sb.append("'");
                 }
                 sb.append("]");
@@ -107,7 +109,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final String[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -116,7 +119,7 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                     if (col > 0) {
                         sb.append(",");
                     }
-                    final String v = value[row][col];
+                    final String v = valueRow[col];
                     if (v == null) {
                         sb.append("None");
                     } else {
@@ -173,7 +176,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final boolean[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -182,7 +186,7 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                     if (col > 0) {
                         sb.append(",");
                     }
-                    sb.append(booleanToString(value[row][col]));
+                    sb.append(booleanToString(valueRow[col]));
                 }
                 sb.append("]");
             }
@@ -236,7 +240,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final byte[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -245,7 +250,7 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                     if (col > 0) {
                         sb.append(",");
                     }
-                    sb.append(value[row][col]);
+                    sb.append(valueRow[col]);
                 }
                 sb.append("]");
             }
@@ -287,7 +292,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final short[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -296,7 +302,7 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                     if (col > 0) {
                         sb.append(",");
                     }
-                    sb.append(value[row][col]);
+                    sb.append(valueRow[col]);
                 }
                 sb.append("]");
             }
@@ -338,7 +344,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final int[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -347,7 +354,7 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                     if (col > 0) {
                         sb.append(",");
                     }
-                    sb.append(value[row][col]);
+                    sb.append(valueRow[col]);
                 }
                 sb.append("]");
             }
@@ -389,7 +396,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final long[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -398,7 +406,7 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                     if (col > 0) {
                         sb.append(",");
                     }
-                    sb.append(value[row][col]);
+                    sb.append(valueRow[col]);
                 }
                 sb.append("]");
             }
@@ -440,7 +448,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final float[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -449,7 +458,7 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                     if (col > 0) {
                         sb.append(",");
                     }
-                    sb.append(value[row][col]);
+                    sb.append(valueRow[col]);
                 }
                 sb.append("]");
             }
@@ -460,7 +469,15 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
 
     @Override
     public void returnDouble(final double value) {
-        returnExpression(String.valueOf(value));
+        returnExpression(doubleToString(value));
+    }
+
+    private String doubleToString(final double value) {
+        if (Doubles.isNaN(value)) {
+            return "float('nan')";
+        } else {
+            return String.valueOf(value);
+        }
     }
 
     @Override
@@ -473,7 +490,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                 if (i > 0) {
                     sb.append(",");
                 }
-                sb.append(value[i]);
+                final double v = value[i];
+                sb.append(doubleToString(v));
             }
             sb.append("]");
             returnExpression(sb.toString());
@@ -491,7 +509,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
             final int cols = value[0].length;
             final StringBuilder sb = new StringBuilder("[");
             for (int row = 0; row < rows; row++) {
-                Assertions.checkEquals(value[row].length, cols);
+                final double[] valueRow = value[row];
+                Assertions.checkEquals(valueRow.length, cols);
                 if (row > 0) {
                     sb.append(",");
                 }
@@ -500,7 +519,8 @@ public abstract class AScriptTaskReturnsPythonToExpression implements IScriptTas
                     if (col > 0) {
                         sb.append(",");
                     }
-                    sb.append(value[row][col]);
+                    final double v = valueRow[col];
+                    sb.append(doubleToString(v));
                 }
                 sb.append("]");
             }

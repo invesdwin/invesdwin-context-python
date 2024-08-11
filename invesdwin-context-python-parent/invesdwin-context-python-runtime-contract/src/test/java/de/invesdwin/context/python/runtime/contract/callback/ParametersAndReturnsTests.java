@@ -34,6 +34,7 @@ public class ParametersAndReturnsTests {
         new ParametersAndReturnsTestNullPutGet(runner).testNullPutGet();
         new ParametersAndReturnsTestEmpty(runner).testEmpty();
         new ParametersAndReturnsTestEmptyMatrixValue(runner).testEmptyMatrixValue();
+        new ParametersAndReturnsTestDoubleNan(runner).testDoubleNan();
     }
 
     public void testParallel() {
