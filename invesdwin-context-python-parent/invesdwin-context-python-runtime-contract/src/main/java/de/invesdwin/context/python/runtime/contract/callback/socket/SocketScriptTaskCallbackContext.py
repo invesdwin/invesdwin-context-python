@@ -73,7 +73,7 @@ def callback_createSocket():
 
 def callback_invokeSocket(methodName, parameters):
     socketScriptTaskCallbackSocket.sendall((methodName+";"+json.dumps(parameters)+"\n").encode('UTF-8'))
-    returnExpression = socketScriptTaskCallbackSocketReader.readline().decode("UTF-8").replace("\\n", "\n")
+    returnExpression = socketScriptTaskCallbackSocketReader.readline().decode("UTF-8").replace("__##P@\\n@C##__", "\n")
     if returnExpression.startswith("raise "):
         exec(returnExpression, globals())
         # fallback
