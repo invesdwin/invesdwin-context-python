@@ -73,13 +73,23 @@ def callback_createSocket():
 
 def callback_invokeSocket(methodName, parameters):
     socketScriptTaskCallbackSocket.sendall((methodName+";"+json.dumps(parameters)+"\n").encode('UTF-8'))
-    returnExpression = socketScriptTaskCallbackSocketReader.readline().decode("UTF-8")
+    returnExpression = socketScriptTaskCallbackSocketReader.readline().decode("UTF-8").replace("\\n", "\n")
     if returnExpression.startswith("raise "):
         exec(returnExpression, globals())
         # fallback
         raise Exception(returnExpression)
     else:
-        return eval(returnExpression, globals())
+        returnExpressionLines = returnExpression.splitlines()
+        returnExpressionLinesLength = len(returnExpressionLines)
+        if(returnExpressionLinesLength > 1):
+            returnExpressionLinesLastElement = returnExpressionLinesLength-1
+            returnExpressionExec = "\n".join(returnExpressionLines[:returnExpressionLinesLastElement])
+            returnExpressionEval = returnExpressionLines[returnExpressionLinesLastElement]
+            loc = {}
+            exec(returnExpressionExec, globals(), loc)
+            return eval(returnExpressionEval, globals(), loc)
+        else:
+            return eval(returnExpression, globals())
 
 def callback(methodName, *parameters):
     if 'socketScriptTaskCallbackContext' not in locals() and 'socketScriptTaskCallbackContext' not in globals():
