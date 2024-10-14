@@ -48,7 +48,7 @@ public class SocketScriptTaskCallbackServerHandler implements IAsynchronousHandl
             @Override
             public void run() {
                 final String result = callbackContext.invoke(methodName, args);
-                final String resultReplaced = Strings.replace(result, "\n", "__##P@\\n@C##__");
+                final String resultReplaced = Strings.replace(result, "\n", "__##P@NL@C##__");
                 context.write(resultReplaced);
             }
         });
