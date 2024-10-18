@@ -3,8 +3,8 @@ package de.invesdwin.context.python.runtime.graalpy;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.script.ScriptException;
 
+import de.invesdwin.context.graalvm.jsr223.PolyglotScriptEngine;
 import de.invesdwin.context.integration.script.IScriptTaskEngine;
-import de.invesdwin.context.python.runtime.graalpy.pool.GraalpyScriptEngineFactory.GraalpyScriptEngine;
 import de.invesdwin.context.python.runtime.graalpy.pool.GraalpyScriptEngineObjectPool;
 import de.invesdwin.util.concurrent.WrappedExecutorService;
 import de.invesdwin.util.concurrent.lock.ILock;
@@ -13,11 +13,11 @@ import de.invesdwin.util.concurrent.lock.disabled.DisabledLock;
 @NotThreadSafe
 public class GraalpyScriptTaskEnginePython implements IScriptTaskEngine {
 
-    private GraalpyScriptEngine pyScriptEngine;
+    private PolyglotScriptEngine pyScriptEngine;
     private final GraalpyScriptTaskInputsPython inputs;
     private final GraalpyScriptTaskResultsPython results;
 
-    public GraalpyScriptTaskEnginePython(final GraalpyScriptEngine pyScriptEngine) {
+    public GraalpyScriptTaskEnginePython(final PolyglotScriptEngine pyScriptEngine) {
         this.pyScriptEngine = pyScriptEngine;
         this.inputs = new GraalpyScriptTaskInputsPython(this);
         this.results = new GraalpyScriptTaskResultsPython(this);
@@ -51,7 +51,7 @@ public class GraalpyScriptTaskEnginePython implements IScriptTaskEngine {
     }
 
     @Override
-    public GraalpyScriptEngine unwrap() {
+    public PolyglotScriptEngine unwrap() {
         return pyScriptEngine;
     }
 
@@ -72,7 +72,7 @@ public class GraalpyScriptTaskEnginePython implements IScriptTaskEngine {
         return new GraalpyScriptTaskEnginePython(GraalpyScriptEngineObjectPool.INSTANCE.borrowObject()) {
             @Override
             public void close() {
-                final GraalpyScriptEngine unwrap = unwrap();
+                final PolyglotScriptEngine unwrap = unwrap();
                 if (unwrap != null) {
                     GraalpyScriptEngineObjectPool.INSTANCE.returnObject(unwrap);
                 }

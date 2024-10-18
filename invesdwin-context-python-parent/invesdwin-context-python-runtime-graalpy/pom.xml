@@ -23,8 +23,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.graalvm.polyglot</groupId>
-			<artifactId>polyglot</artifactId>
+			<groupId>de.invesdwin</groupId>
+			<artifactId>invesdwin-context-graalvm</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.graalvm.polyglot</groupId>
