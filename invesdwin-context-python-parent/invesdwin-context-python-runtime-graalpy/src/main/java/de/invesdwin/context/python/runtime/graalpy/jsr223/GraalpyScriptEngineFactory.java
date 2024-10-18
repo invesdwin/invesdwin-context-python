@@ -4,14 +4,14 @@ import javax.annotation.concurrent.Immutable;
 
 import org.graalvm.polyglot.Context.Builder;
 
-import de.invesdwin.context.graalvm.jsr223.APolyglotScriptEngineFactory;
+import de.invesdwin.context.graalvm.jsr223.PolyglotScriptEngineFactory;
 import de.invesdwin.context.python.runtime.graalpy.GraalpyProperties;
 
-/**
- * Source: https://www.graalvm.org/latest/reference-manual/embed-languages/#compatibility-with-jsr-223-scriptengine
- */
 @Immutable
-public final class GraalpyScriptEngineFactory extends APolyglotScriptEngineFactory {
+public final class GraalpyScriptEngineFactory extends PolyglotScriptEngineFactory {
+
+    public static final GraalpyScriptEngineFactory INSTANCE = new GraalpyScriptEngineFactory();
+
     public GraalpyScriptEngineFactory() {
         super("python");
     }

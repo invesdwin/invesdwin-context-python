@@ -23,7 +23,6 @@ public final class GraalpyScriptEngineObjectPool extends ATimeoutObjectPool<Poly
         implements FactoryBean<GraalpyScriptEngineObjectPool> {
 
     public static final GraalpyScriptEngineObjectPool INSTANCE = new GraalpyScriptEngineObjectPool();
-    private static final GraalpyScriptEngineFactory FACTORY = new GraalpyScriptEngineFactory();
 
     private GraalpyScriptEngineObjectPool() {
         super(Duration.ONE_MINUTE, new Duration(10, FTimeUnit.SECONDS));
@@ -36,7 +35,7 @@ public final class GraalpyScriptEngineObjectPool extends ATimeoutObjectPool<Poly
 
     @Override
     protected PolyglotScriptEngine newObject() {
-        final PolyglotScriptEngine engine = (PolyglotScriptEngine) FACTORY.getScriptEngine();
+        final PolyglotScriptEngine engine = GraalpyScriptEngineFactory.INSTANCE.getScriptEngine();
         engine.getContext().setWriter(new OutputStreamWriter(new Slf4jDebugOutputStream(IScriptTaskRunnerPython.LOG)));
         engine.getContext()
                 .setErrorWriter(new OutputStreamWriter(new Slf4jWarnOutputStream(IScriptTaskRunnerPython.LOG)));
