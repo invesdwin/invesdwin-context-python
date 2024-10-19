@@ -30,12 +30,12 @@ public final class GraalpyScriptEngineFactory extends PolyglotScriptEngineFactor
      * For now zipping a venv as described above should suffice.
      */
     @Override
-    protected Builder newContextBuilder() {
-        final Builder builder = super.newContextBuilder();
+    public Builder customizeContextBuilder(final Builder builder) {
         if (GraalpyProperties.PYTHON_COMMAND != null) {
             builder.option("python.Executable", GraalpyProperties.PYTHON_COMMAND);
             builder.option("python.ForceImportSite", "true");
         }
-        return builder;
+        return super.customizeContextBuilder(builder);
     }
+
 }
