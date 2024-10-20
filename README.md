@@ -1,3 +1,5 @@
+# ARCHIVED: project has been moved to https://github.com/invesdwin/invesdwin-scripting
+
 # invesdwin-context-python
 Integrate python functionality with these modules for the [invesdwin-context](https://github.com/invesdwin/invesdwin-context) module system. All integration modules provide unified bidirectional communication between Java and python. That way you can switch the python provider without having to change your script implementation. See test cases for examples on how to implement your script integrations.
 
